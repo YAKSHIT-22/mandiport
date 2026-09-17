@@ -1,0 +1,122 @@
+[
+  {
+    "state": "Gujarat",
+    "district": "Anand",
+    "market": "Anand(Veg,Yard,Anand) APMC",
+    "commodity": "Lemon",
+    "variety": "Lemon",
+    "grade": "Grade B",
+    "arrival_date": "17/09/2026",
+    "min_price": 7500,
+    "max_price": 10000,
+    "modal_price": 8750
+  },
+  {
+    "state": "Gujarat",
+    "district": "Anand",
+    "market": "Anand(Veg,Yard,Anand) APMC",
+    "commodity": "Potato",
+    "variety": "Potato",
+    "grade": "Grade B",
+    "arrival_date": "17/09/2026",
+    "min_price": 1000,
+    "max_price": 1200,
+    "modal_price": 1100
+  },
+  {
+    "state": "Maharashtra",
+    "district": "Nashik",
+    "market": "APMC Nasik ",
+    "commodity": "Apple",
+    "variety": "Other",
+    "grade": "Local",
+    "arrival_date": "17/09/2026",
+    "min_price": 7000,
+    "max_price": 18000,
+    "modal_price": 13000
+  },
+  {
+    "state": "Maharashtra",
+    "district": "Nashik",
+    "market": "APMC Nasik ",
+    "commodity": "Chilly Capsicum",
+    "variety": "Other",
+    "grade": "Local",
+    "arrival_date": "17/09/2026",
+    "min_price": 3440,
+    "max_price": 6250,
+    "modal_price": 5000
+  },
+  {
+    "state": "Gujarat",
+    "district": "Anand",
+    "market": "Khambhat(Veg Yard Khambhat) APMC",
+    "commodity": "Guar",
+    "variety": "Other",
+    "grade": "Local",
+    "arrival_date": "17/09/2026",
+    "min_price": 3000,
+    "max_price": 5000,
+    "modal_price": 4000
+  },
+  {
+    "state": "Gujarat",
+    "district": "Anand",
+    "market": "Khambhat(Veg Yard Khambhat) APMC",
+    "commodity": "Tinda",
+    "variety": "Other",
+    "grade": "Local",
+    "arrival_date": "17/09/2026",
+    "min_price": 1500,
+    "max_price": 3000,
+    "modal_price": 2500
+  },
+  {
+    "state": "Gujarat",
+    "district": "Anand",
+    "market": "Khambhat(Veg Yard Khambhat) APMC",
+    "commodity": "Banana",
+    "variety": "Amruthapani",
+    "grade": "Large",
+    "arrival_date": "17/09/2026",
+    "min_price": 1600,
+    "max_price": 1700,
+    "modal_price": 1600
+  },
+  {
+    "state": "Gujarat",
+    "district": "Valsad",
+    "market": "Chikli(Khorgam) APMC",
+    "commodity": "Tinda",
+    "variety": "Other",
+    "grade": "FAQ",
+    "arrival_date": "17/09/2026",
+    "min_price": 3000,
+    "max_price": 3500,
+    "modal_price": 3250
+  },
+  {
+    "state": "Gujarat",
+    "district": "Valsad",
+    "market": "Chikli(Khorgam) APMC",
+    "commodity": "Pointed gourd(Parval)",
+    "variety": "Other",
+    "grade": "FAQ",
+    "arrival_date": "17/09/2026",
+    "min_price": 1750,
+    "max_price": 2000,
+    "modal_price": 1875
+  },
+  {
+    "state": "Gujarat",
+    "district": "Gandhinagar",
+    "market": "Mansa(Manas Veg Yard) APMC",
+    "commodity": "Bhindi(Ladies Finger)",
+    "variety": "Other",
+    "grade": "Local",
+    "arrival_date": "17/09/2026",
+    "min_price": 1500,
+    "max_price": 1500,
+    "modal_price": 1500
+  }
+]

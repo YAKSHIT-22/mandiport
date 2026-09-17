@@ -1,0 +1,231 @@
+{
+  "name": "mandi-daily",
+  "resourceId": "9ef84268-d588-465a-a308-a864a43d0070",
+  "discoveredAt": "2026-09-17T13:08:21.019Z",
+  "responseFormat": "json",
+  "title": "Current Daily Price of Various Commodities from Various Markets (Mandi)",
+  "org": [
+    "Ministry of Agriculture and Farmers Welfare",
+    "Department of Agriculture and Farmers Welfare"
+  ],
+  "updatedDate": "2026-09-17T13:00:44Z",
+  "total": 16747,
+  "fields": [
+    {
+      "id": "state",
+      "name": "State",
+      "type": "keyword"
+    },
+    {
+      "id": "district",
+      "name": "District",
+      "type": "keyword"
+    },
+    {
+      "id": "market",
+      "name": "Market",
+      "type": "keyword"
+    },
+    {
+      "id": "commodity",
+      "name": "Commodity",
+      "type": "keyword"
+    },
+    {
+      "id": "variety",
+      "name": "Variety",
+      "type": "keyword"
+    },
+    {
+      "id": "grade",
+      "name": "Grade",
+      "type": "keyword"
+    },
+    {
+      "id": "arrival_date",
+      "name": "Arrival_Date",
+      "type": "date"
+    },
+    {
+      "id": "min_price",
+      "name": "Min_x0020_Price",
+      "type": "double"
+    },
+    {
+      "id": "max_price",
+      "name": "Max_x0020_Price",
+      "type": "double"
+    },
+    {
+      "id": "modal_price",
+      "name": "Modal_x0020_Price",
+      "type": "double"
+    }
+  ],
+  "fieldsExposed": [
+    {
+      "id": "state.keyword",
+      "name": "State",
+      "type": "keyword"
+    },
+    {
+      "id": "district",
+      "name": "District",
+      "type": "keyword"
+    },
+    {
+      "id": "market",
+      "name": "Market",
+      "type": "keyword"
+    },
+    {
+      "id": "commodity",
+      "name": "Commodity",
+      "type": "keyword"
+    },
+    {
+      "id": "variety",
+      "name": "Variety",
+      "type": "keyword"
+    },
+    {
+      "id": "grade",
+      "name": "Grade",
+      "type": "keyword"
+    }
+  ],
+  "recordKeys": [
+    "state",
+    "district",
+    "market",
+    "commodity",
+    "variety",
+    "grade",
+    "arrival_date",
+    "min_price",
+    "max_price",
+    "modal_price"
+  ],
+  "filterChecks": [
+    {
+      "filter": "state",
+      "value": "Gujarat",
+      "status": "ok",
+      "total": 750
+    },
+    {
+      "filter": "state.keyword",
+      "value": "Gujarat",
+      "status": "ok",
+      "total": 750
+    },
+    {
+      "filter": "district",
+      "value": "Anand",
+      "status": "ok",
+      "total": 28
+    },
+    {
+      "filter": "district.keyword",
+      "value": "Anand",
+      "status": "ok",
+      "total": 28
+    },
+    {
+      "filter": "market",
+      "value": "Anand(Veg,Yard,Anand) APMC",
+      "status": "inexact",
+      "total": 8496
+    },
+    {
+      "filter": "market.keyword",
+      "value": "Anand(Veg,Yard,Anand) APMC",
+      "status": "ok",
+      "total": 12
+    },
+    {
+      "filter": "commodity",
+      "value": "Lemon",
+      "status": "ok",
+      "total": 240
+    },
+    {
+      "filter": "commodity.keyword",
+      "value": "Lemon",
+      "status": "ok",
+      "total": 239
+    },
+    {
+      "filter": "variety",
+      "value": "Lemon",
+      "status": "ok",
+      "total": 171
+    },
+    {
+      "filter": "variety.keyword",
+      "value": "Lemon",
+      "status": "ok",
+      "total": 171
+    },
+    {
+      "filter": "grade",
+      "value": "Grade B",
+      "status": "ok",
+      "total": 1201
+    },
+    {
+      "filter": "grade.keyword",
+      "value": "Grade B",
+      "status": "ok",
+      "total": 397
+    },
+    {
+      "filter": "arrival_date",
+      "value": "17/09/2026",
+      "status": "ok",
+      "total": 16747
+    },
+    {
+      "filter": "arrival_date.keyword",
+      "value": "17/09/2026",
+      "status": "ok",
+      "total": 16747
+    },
+    {
+      "filter": "min_price",
+      "value": "7500",
+      "status": "ok",
+      "total": 119
+    },
+    {
+      "filter": "min_price.keyword",
+      "value": "7500",
+      "status": "no-match",
+      "total": 0
+    },
+    {
+      "filter": "max_price",
+      "value": "10000",
+      "status": "ok",
+      "total": 240
+    },
+    {
+      "filter": "max_price.keyword",
+      "value": "10000",
+      "status": "no-match",
+      "total": 0
+    },
+    {
+      "filter": "modal_price",
+      "value": "8750",
+      "status": "ok",
+      "total": 39
+    },
+    {
+      "filter": "modal_price.keyword",
+      "value": "8750",
+      "status": "no-match",
+      "total": 0
+    }
+  ]
+}

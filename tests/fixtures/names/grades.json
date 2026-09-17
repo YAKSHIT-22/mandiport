@@ -1,0 +1,20 @@
+{
+  "pulledAt": "2026-09-17T13:19:03.296Z",
+  "grades": {
+    "Local": 9282,
+    "FAQ": 4620,
+    "Medium": 1058,
+    "Grade A": 631,
+    "Non-FAQ": 491,
+    "Grade B": 397,
+    "Grade Range-1": 105,
+    "Grade C": 44,
+    "Large": 44,
+    "Small": 32,
+    "Grade Range-2": 18,
+    "TD 3 (FAQ)": 7,
+    "Grade Range-3": 6,
+    "TD 1 (FAQ)": 3,
+    "TD 2 (FAQ)": 1
+  }
+}

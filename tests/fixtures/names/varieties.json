@@ -1,0 +1,1338 @@
+{
+  "pulledAt": "2026-09-17T13:19:03.296Z",
+  "byCommodity": {
+    "Ajwan": [
+      "Ajwan",
+      "Other"
+    ],
+    "Alasande Gram": [
+      "Alasande Gram"
+    ],
+    "Almond(Badam)": [
+      "Other"
+    ],
+    "Alsandikai": [
+      "Alsandikai"
+    ],
+    "Amaranthus": [
+      "Amaranth Greens-Organic",
+      "Amaranthus",
+      "Other"
+    ],
+    "Ambady/Mesta/Patson": [
+      "Ambady/Mesta-Organic"
+    ],
+    "Amla(Nelli Kai)": [
+      "Amla",
+      "Other"
+    ],
+    "Amranthas Red": [
+      "Chawli Lal"
+    ],
+    "Anthorium": [
+      "Anthorium"
+    ],
+    "Apple": [
+      "American",
+      "Apple",
+      "Delicious",
+      "Golden",
+      "Kasmir/Shimla - II",
+      "Kullu Delicious",
+      "Other",
+      "Royal Delicious",
+      "Simla"
+    ],
+    "Arecanut(Betelnut/Supari)": [
+      "Bette",
+      "Bilegotu",
+      "Chali",
+      "Cqca",
+      "EDI",
+      "Hale Chali",
+      "Hosa Chali",
+      "Kempugotu",
+      "New Variety",
+      "Old Variety",
+      "Other",
+      "Rashi",
+      "Raw",
+      "Red",
+      "Sippegotu",
+      "Tattibettee"
+    ],
+    "Asalia": [
+      "Asalia"
+    ],
+    "Asgand": [
+      "Asgand"
+    ],
+    "Ashgourd": [
+      "Ashgourd",
+      "Gouard",
+      "Other"
+    ],
+    "Ashwagandha": [
+      "Ashwagandha"
+    ],
+    "Astera": [
+      "Other"
+    ],
+    "Avare Dal": [
+      "Avare (Whole)"
+    ],
+    "Avocado": [
+      "Avocado"
+    ],
+    "Baby Corn": [
+      "Baby Corn"
+    ],
+    "Bajra(Pearl Millet/Cumbu)": [
+      "Bold",
+      "Deshi",
+      "Hybrid",
+      "Local",
+      "MH-179",
+      "Millet",
+      "Other"
+    ],
+    "Bamboo": [
+      "Bamboo"
+    ],
+    "Banana": [
+      "Amruthapani",
+      "Banana - Ripe",
+      "Banana-Organic",
+      "Besrai",
+      "Bhushavali(Pacha)",
+      "Chakkarakeli(Red)",
+      "Chakkarakeli(White)",
+      "Champa",
+      "Desi(Bontha)",
+      "Elakki Bale",
+      "Karpura",
+      "Khandesh",
+      "Medium",
+      "Nauti Bale",
+      "Nendra Bale",
+      "Other",
+      "Pachha Bale",
+      "Palayamthodan",
+      "Poovan",
+      "Rasakathai",
+      "Red Banana",
+      "Robusta"
+    ],
+    "Banana - Green": [
+      "Banana - Green",
+      "Other"
+    ],
+    "Barley(Jau)": [
+      "Barley",
+      "Barley-Organic",
+      "Dara",
+      "Deshi",
+      "Other"
+    ],
+    "basil": [
+      "Basil seed"
+    ],
+    "Bay leaf(Tejpatta)": [
+      "Local"
+    ],
+    "Beans": [
+      "Beans (Whole)",
+      "Local",
+      "Other"
+    ],
+    "Beetroot": [
+      "Beetroot",
+      "Other",
+      "Ruby Queen"
+    ],
+    "Bengal Gram Dal(Chana Dal)": [
+      "Bengal Gram Dal",
+      "Other"
+    ],
+    "Bengal Gram(Gram)(Whole)": [
+      "999",
+      "Average (Whole)",
+      "Bengal Gram (Split)",
+      "Bold",
+      "Chana Kabuli",
+      "Chana Kanta",
+      "Desi (F.A.Q. Split)",
+      "Desi (Whole)",
+      "Gram",
+      "Gulabi",
+      "Jawari/Local",
+      "Kabul Small",
+      "Medium",
+      "Other",
+      "White (whole)"
+    ],
+    "Ber(Zizyphus/Borehannu)": [
+      "Ber(Zizyphus)"
+    ],
+    "Betal Leaves": [
+      "Local",
+      "Mysore",
+      "Other"
+    ],
+    "Bhindi(Ladies Finger)": [
+      "Bhindi",
+      "Other"
+    ],
+    "Big Gram": [
+      "Other"
+    ],
+    "Bitter gourd": [
+      "Bitter Gourd",
+      "Kareli",
+      "Other"
+    ],
+    "Black Gram Dal(Urd Dal)": [
+      "Black Gram Dal",
+      "Local",
+      "Other"
+    ],
+    "Black Gram(Urd Beans)(Whole)": [
+      "Black Gram (Whole)",
+      "Black Gram Dal",
+      "Desi",
+      "Local",
+      "Mogan Medium",
+      "Other",
+      "Urda/Urd"
+    ],
+    "Black pepper": [
+      "Black Pepper",
+      "Garbled",
+      "Other",
+      "Ungrabled"
+    ],
+    "BOP": [
+      "Other"
+    ],
+    "Bottle gourd": [
+      "Bottle Gourd",
+      "Other"
+    ],
+    "Brinjal": [
+      "Arkasheela Mattigulla",
+      "Brinjal",
+      "Other",
+      "Round",
+      "Round/Long"
+    ],
+    "Broken Rice": [
+      "Broken Rice"
+    ],
+    "Broomstick(Flower Broom)": [
+      "Local"
+    ],
+    "Bunch Beans": [
+      "Bunch Beans"
+    ],
+    "buttery": [
+      "Buttery"
+    ],
+    "Cabbage": [
+      "Cabbage",
+      "MH-139",
+      "Other"
+    ],
+    "Capsicum": [
+      "California Wonder",
+      "Capsicum",
+      "Other"
+    ],
+    "Cardamom": [
+      "Other"
+    ],
+    "Carnation": [
+      "Other"
+    ],
+    "Carrot": [
+      "Carrot",
+      "New Kuroda",
+      "Other",
+      "Pusakesar"
+    ],
+    "Cashewnuts": [
+      "320 Counts",
+      "Local",
+      "Local(Raw)",
+      "Other"
+    ],
+    "Castor Seed": [
+      "Caster",
+      "Castor seed",
+      "Other"
+    ],
+    "Cauliflower": [
+      "African Sarson",
+      "Cauliflower",
+      "Local",
+      "Other",
+      "PGSH-51",
+      "Ranchi"
+    ],
+    "Chapparad Avare": [
+      "Chapparada Avarekai"
+    ],
+    "Chennangi Dal": [
+      "Chennangi Dal"
+    ],
+    "Chiaseeds": [
+      "Chiaseeds"
+    ],
+    "Chicory(Chikori/Kasni)": [
+      "Other"
+    ],
+    "Chikoos(Sapota)": [
+      "Other",
+      "Sapota"
+    ],
+    "Chili Red": [
+      "Bold",
+      "Dry",
+      "Geeli Mirchi",
+      "Other",
+      "Red"
+    ],
+    "Chilly Capsicum": [
+      "Chilly Capsicum",
+      "Other"
+    ],
+    "Chow Chow": [
+      "Chow Chow"
+    ],
+    "Chrysanthemum(Loose)": [
+      "Chysanthemum(Loose)"
+    ],
+    "Cinamon(Dalchini)": [
+      "Other"
+    ],
+    "Cluster beans": [
+      "Cluster Beans",
+      "Other"
+    ],
+    "Cock": [
+      "Boiler/Firm(White)"
+    ],
+    "Cocoa": [
+      "Cocoa"
+    ],
+    "Coconut": [
+      "Big",
+      "Coconut",
+      "Medium",
+      "Other",
+      "Small"
+    ],
+    "Coconut Coir": [
+      "Coconut Coir"
+    ],
+    "Coconut Oil": [
+      "Other"
+    ],
+    "Coconut Seed": [
+      "Other"
+    ],
+    "Coffee": [
+      "Other"
+    ],
+    "Colacasia": [
+      "Arabi",
+      "Colacasia",
+      "Other"
+    ],
+    "Copra": [
+      "Copra",
+      "Milling Copra",
+      "Other"
+    ],
+    "Coriander(Leaves)": [
+      "Coriander",
+      "I Sort",
+      "Local",
+      "Other"
+    ],
+    "Corriander seed": [
+      "A-1, Green",
+      "Coriander Seed",
+      "Other"
+    ],
+    "Cotton": [
+      "170-C2 (Ginned)",
+      "American",
+      "Bengal Deshi (A) FIne",
+      "Bramha",
+      "Bunny",
+      "CO-2 (Unginned)",
+      "Cotton (Ginned)",
+      "Cotton (Unginned)",
+      "DCH-32(Unginned)",
+      "Desi",
+      "Ginned Cotton",
+      "H.B (Unginned)",
+      "H4",
+      "Local",
+      "Medium Fiber",
+      "Narma BT Cotton",
+      "Other",
+      "RCH-2",
+      "Shanker 6 (B) 30mm FIne",
+      "Suyodhar (Ginned)",
+      "Without Ginned Cotton"
+    ],
+    "Cotton Seed": [
+      "Other"
+    ],
+    "Cow": [
+      "Other"
+    ],
+    "Cowpea(Lobia/Karamani)": [
+      "Cowpea (Whole)",
+      "Lobia or Moth",
+      "Other"
+    ],
+    "Cowpea(Veg)": [
+      "Bean Barbati",
+      "Cowpea (Veg)",
+      "Other"
+    ],
+    "Cucumbar(Kheera)": [
+      "Cucumbar",
+      "Malini",
+      "Other"
+    ],
+    "Cummin Seed(Jeera)": [
+      "Bold",
+      "Cummin Seed(Jeera)",
+      "Other"
+    ],
+    "Custard Apple(Sharifa)": [
+      "Custard Apple(Sharifa)"
+    ],
+    "Dal Mix": [
+      "Other"
+    ],
+    "Drumstick": [
+      "Drumstick",
+      "Other"
+    ],
+    "Dry Chillies": [
+      "1st Sort",
+      "2nd Sort",
+      "3rd Sort",
+      "Dabbi",
+      "Desi",
+      "Dry",
+      "Dry Chillies",
+      "Guntur",
+      "Kaddi",
+      "Other",
+      "Red",
+      "Red New",
+      "Red Top",
+      "Talu",
+      "White"
+    ],
+    "Dry Fodder": [
+      "Dry Fodder"
+    ],
+    "Dry Grapes": [
+      "Dry Grapes",
+      "Other"
+    ],
+    "Duster Beans": [
+      "Other"
+    ],
+    "Elephant Yam(Suran)/Amorphophallus": [
+      "Amorphophallus",
+      "Elephant Yam (Suran)",
+      "Other"
+    ],
+    "Field Bean(Anumulu)": [
+      "Field Bean(Anumulu)"
+    ],
+    "Field Pea": [
+      "Field Pea",
+      "Other"
+    ],
+    "Fig(Anjura/Anjeer)": [
+      "Anjura"
+    ],
+    "Firewood": [
+      "Firewood"
+    ],
+    "Fish": [
+      "Bata Putti",
+      "Black Dom",
+      "Chilwa",
+      "Halwa",
+      "Hilsa",
+      "Katla (Small)",
+      "Katla(Big)",
+      "Malli(Big)",
+      "Malli(Small)",
+      "Other",
+      "Pangass",
+      "Rahu(Andhra)",
+      "Rahu(Local)",
+      "Singhra(Big)",
+      "Singhra(Small)",
+      "Sol",
+      "Soli",
+      "Surmai(Big)",
+      "Surmali(Small)",
+      "Zinga(Zambo-A)",
+      "Zinga(Zambo-B)"
+    ],
+    "Flowers-Others": [
+      "Other"
+    ],
+    "Foxtail Millet(Navane)": [
+      "Navane Hybrid"
+    ],
+    "French Beans(Frasbean)": [
+      "French Beans (Frasbean)",
+      "Other",
+      "Selection-9-Manipur"
+    ],
+    "Galgal(Lemon)": [
+      "Other"
+    ],
+    "Garlic": [
+      "Average",
+      "China",
+      "Desi",
+      "Garlic",
+      "Other"
+    ],
+    "Ghee": [
+      "Ghee",
+      "Other"
+    ],
+    "Ginger(Dry)": [
+      "Dry",
+      "Ginger-Organic",
+      "Nadia",
+      "Other",
+      "Vegitable-fresh"
+    ],
+    "Ginger(Green)": [
+      "Green Ginger",
+      "Other"
+    ],
+    "Goat": [
+      "Goat"
+    ],
+    "Gokhru": [
+      "Gokhru"
+    ],
+    "Gram Raw(Chholia)": [
+      "Other"
+    ],
+    "Grapes": [
+      "Annabesahai",
+      "Black",
+      "Espani",
+      "Green",
+      "Other"
+    ],
+    "Green Avare(W)": [
+      "Green Avare (W)",
+      "Other"
+    ],
+    "Green Chilli": [
+      "Green Chilly",
+      "Local",
+      "Other"
+    ],
+    "Green Fodder": [
+      "Green Fodder"
+    ],
+    "Green Gram Dal(Moong Dal)": [
+      "Green Gram Dal",
+      "Local",
+      "Other"
+    ],
+    "Green Gram(Moong)(Whole)": [
+      "Green (Whole)",
+      "Green Gram Dhall-I",
+      "Hybrid",
+      "Local",
+      "Local (Whole)",
+      "Ordinary (Split)",
+      "Other"
+    ],
+    "Green Peas": [
+      "Green Peas",
+      "Other",
+      "Pea",
+      "White Fozi"
+    ],
+    "Ground Nut Seed": [
+      "Ground Nut Seed",
+      "Local",
+      "Other"
+    ],
+    "Groundnut": [
+      "Balli/Habbu",
+      "Big (With Shell)",
+      "Bold",
+      "F.A.Q",
+      "G20",
+      "Gejje",
+      "Groundnut seed",
+      "JL-24",
+      "Local",
+      "Other",
+      "Shelled (Bunch)"
+    ],
+    "Groundnut pods(raw)": [
+      "Groundnut pods (raw)",
+      "Other"
+    ],
+    "Groundnut(Split)": [
+      "Groundnut(Split)"
+    ],
+    "Guar": [
+      "Guaar",
+      "Gwar",
+      "Other"
+    ],
+    "Guar Seed(Cluster Beans Seed)": [
+      "Other",
+      "Whole"
+    ],
+    "Guava": [
+      "Banarasi",
+      "Guava",
+      "Guava Allahabad",
+      "Other"
+    ],
+    "gulli": [
+      "Gulli"
+    ],
+    "Gur(Jaggery)": [
+      "Achhu",
+      "Anakapalli",
+      "Black",
+      "Jaggery",
+      "Kurikatu",
+      "Mudde",
+      "NO 3",
+      "Organic",
+      "Other",
+      "Unde",
+      "Yellow"
+    ],
+    "Hen": [
+      "Boiler/Firm(White)"
+    ],
+    "Indian Beans(Seam)": [
+      "Indian Beans (Seam)",
+      "Other"
+    ],
+    "Isabgul(Psyllium)": [
+      "Isabgol",
+      "Isabgul (Psyllium)"
+    ],
+    "Jack Fruit(Ripe)": [
+      "Jack Fruit"
+    ],
+    "Jarbara": [
+      "Other"
+    ],
+    "Jasmine": [
+      "Jasmine"
+    ],
+    "Jowar(Sorghum)": [
+      "Hybrid",
+      "Jowar ( White)",
+      "Jowar (Yellow)",
+      "Jowar Hybrid",
+      "Local",
+      "Other",
+      "Red",
+      "White",
+      "Yellow"
+    ],
+    "Jute": [
+      "Other",
+      "TD-5"
+    ],
+    "Kabuli Chana(Chickpeas-White)": [
+      "Bitkey",
+      "Dollar Gram",
+      "Kabuli Chana(Chickpeas-white)",
+      "Russian"
+    ],
+    "Kakada": [
+      "Kakada"
+    ],
+    "Karbuja(Musk Melon)": [
+      "Karbhuja",
+      "Other"
+    ],
+    "Khandsari(Desi Khand)": [
+      "Other"
+    ],
+    "Kinnow": [
+      "Kinnow"
+    ],
+    "Kiwi Fruit": [
+      "Kiwi"
+    ],
+    "Knool Khol": [
+      "Knool Khol"
+    ],
+    "Kodo Millet(Varagu)": [
+      "Kondo"
+    ],
+    "Kulthi(Horse Gram)": [
+      "Horse gram (Whole)",
+      "Other"
+    ],
+    "Kutki": [
+      "Kutki"
+    ],
+    "Ladies Finger": [
+      "Ladies Finger"
+    ],
+    "Lak(Teora)": [
+      "Lak (Whole)",
+      "Tiwada"
+    ],
+    "Leafy Vegetable": [
+      "Leafy Vegetables",
+      "Local",
+      "Other"
+    ],
+    "Lemon": [
+      "Lemon",
+      "Other"
+    ],
+    "Lentil(Masur)(Whole)": [
+      "Masoor Gola",
+      "Masur Dal",
+      "Other"
+    ],
+    "Lilly": [
+      "Other"
+    ],
+    "Lime": [
+      "Lime",
+      "Other"
+    ],
+    "Linseed": [
+      "Flaxseed",
+      "Other"
+    ],
+    "Litchi": [
+      "Litchi"
+    ],
+    "Little gourd(Kundru)": [
+      "Little gourd (Kundru)",
+      "Other"
+    ],
+    "Long Melon(Kakri)": [
+      "Long Melon (Kakri)",
+      "Other"
+    ],
+    "Lotus": [
+      "Other"
+    ],
+    "Lotus Sticks": [
+      "Other"
+    ],
+    "Mahedi": [
+      "Mahedi"
+    ],
+    "Mahua": [
+      "Mahua",
+      "Mahua Flower"
+    ],
+    "Maize": [
+      "Deshi Red",
+      "Deshi White",
+      "Fine",
+      "Hybrid",
+      "Hybrid Red (Cattle Feed)",
+      "Hybrid Yellow (Cattle Feed)",
+      "Hybrid/Local",
+      "Local",
+      "Medium",
+      "Other",
+      "Popcorn",
+      "White (SAFED)",
+      "Yellow"
+    ],
+    "Makhana(Foxnut)": [
+      "Other"
+    ],
+    "Mango": [
+      "Chausa",
+      "Hapus(Alphaso)",
+      "Langra",
+      "Neelam",
+      "Other",
+      "Safeda"
+    ],
+    "Mango(Raw-Ripe)": [
+      "Mango - Raw-Ripe",
+      "Other"
+    ],
+    "Marigold(Calcutta)": [
+      "Marigold(Calcutta)",
+      "Other"
+    ],
+    "Marigold(loose)": [
+      "Marigold(Loose)",
+      "Other"
+    ],
+    "Mashrooms": [
+      "Mashrooms",
+      "Other"
+    ],
+    "Masur Dal": [
+      "Masur Dal",
+      "Other"
+    ],
+    "Mataki": [
+      "Mataki (W)",
+      "Other"
+    ],
+    "Mentha Oil": [
+      "Other"
+    ],
+    "Methi Seeds": [
+      "Best",
+      "Methiseeds",
+      "Other"
+    ],
+    "Methi(Leaves)": [
+      "Fenugreek-Organic",
+      "Methi",
+      "Other"
+    ],
+    "Millets": [
+      "Millets"
+    ],
+    "Mint(Pudina)": [
+      "Mint(Pudina)",
+      "Other"
+    ],
+    "Moath Dal": [
+      "Other"
+    ],
+    "Mousambi(Sweet Lime)": [
+      "Mousambi",
+      "Other"
+    ],
+    "Mustard": [
+      "Big 100 Kg",
+      "Mustard",
+      "Other",
+      "Rai UP",
+      "Sarson(Black)",
+      "Yellow (Black)"
+    ],
+    "nigella": [
+      "Kalonji"
+    ],
+    "nigella seeds": [
+      "Kalonji/Nigella"
+    ],
+    "Niger Seed(Ramtil)": [
+      "Ramatilli"
+    ],
+    "Onion": [
+      "1st Sort",
+      "Bangalore-Samall",
+      "Bellary",
+      "Big",
+      "Chinchwad",
+      "Dry F.A.Q.",
+      "Local",
+      "Medium",
+      "Nasik",
+      "Onion",
+      "Other",
+      "Puna",
+      "Pusa-Red",
+      "Red",
+      "Small",
+      "Unhali",
+      "White"
+    ],
+    "Onion Green": [
+      "Onion Green",
+      "Other"
+    ],
+    "Orange": [
+      "Darjeeling",
+      "Medium",
+      "Nagpuri",
+      "Orange",
+      "Other"
+    ],
+    "Orchid": [
+      "Other"
+    ],
+    "Other green and fresh vegetables": [
+      "Other",
+      "Other green and fresh vegetables"
+    ],
+    "Other Pulses": [
+      "Other"
+    ],
+    "Ox": [
+      "Ox"
+    ],
+    "Paddy(Basmati)": [
+      "1121",
+      "Basmati",
+      "Basmati 1509"
+    ],
+    "Paddy(Common)": [
+      "1001",
+      "1121",
+      "ADT 37",
+      "B P T",
+      "Basmati",
+      "Basmati 1509",
+      "Co. 34",
+      "Co. 72",
+      "Common",
+      "D.B.",
+      "Dhan",
+      "HMT",
+      "I.R. 36",
+      "I.R. 50",
+      "I.R. 64",
+      "I.R.-64",
+      "Kaveri Sona",
+      "Kranti",
+      "MTU-1001",
+      "MTU-1010",
+      "Mahamaya",
+      "Masuri",
+      "NO. 2716",
+      "Nellore Sanna",
+      "Other",
+      "Paddy",
+      "Paddy Coarse",
+      "Paddy Medium",
+      "Paddy RNR Old",
+      "Paddy RNR new",
+      "Paddy fine",
+      "Ponni",
+      "Puspa (MR 301)",
+      "Samba Masuri",
+      "Sannalu",
+      "Sarvati",
+      "Sona",
+      "Sona Mahsuri",
+      "Sona Masuri (OLD)",
+      "Sugandha",
+      "SuperFine(Basmati)",
+      "Swarna Masuri (New)"
+    ],
+    "Papaya": [
+      "Other",
+      "Papaya"
+    ],
+    "Papaya(Raw)": [
+      "Other",
+      "Papaya (Raw)"
+    ],
+    "Pea Pod/Pea Cod/हरी मटर": [
+      "Other",
+      "Peas cod"
+    ],
+    "Pear(Marasebu)": [
+      "Babbugosha",
+      "Local",
+      "Other",
+      "Pears"
+    ],
+    "Peas Wet": [
+      "Other",
+      "Peas Wet"
+    ],
+    "Peas(Dry)": [
+      "Other"
+    ],
+    "Pegeon Pea(Arhar Fali)": [
+      "Other",
+      "Pigeon Pea (Arhar Fali)"
+    ],
+    "Pepper garbled": [
+      "Other"
+    ],
+    "Persimon(Japani Fal)": [
+      "Other",
+      "Persimon(Japani Fal)"
+    ],
+    "Pineapple": [
+      "Giant Kew",
+      "Other",
+      "Pine Apple"
+    ],
+    "Plum": [
+      "Other",
+      "Plum"
+    ],
+    "Pointed gourd(Parval)": [
+      "Other",
+      "Pointed gourd (Parval)"
+    ],
+    "Pomegranate": [
+      "Other",
+      "Pomogranate"
+    ],
+    "poppy seeds": [
+      "Khaskhas"
+    ],
+    "Potato": [
+      "Badshah",
+      "Big",
+      "Chips",
+      "Desi",
+      "F.A.Q.",
+      "Jalander",
+      "Jyoti",
+      "Local",
+      "Other",
+      "Potato",
+      "Red",
+      "Red Nanital"
+    ],
+    "Prawn": [
+      "Prawn-White Prawn"
+    ],
+    "Pumpkin": [
+      "Other",
+      "Pumpkin"
+    ],
+    "Quince(Nakh)": [
+      "Quince(Nakh)"
+    ],
+    "Quinoa": [
+      "Quinoa"
+    ],
+    "Rab/Liquid Jaggery/Molasses": [
+      "Other"
+    ],
+    "Raddish": [
+      "Other",
+      "Raddish"
+    ],
+    "Ragi(Finger Millet)": [
+      "Feeds (Poultry Quality)",
+      "Fine",
+      "Local",
+      "Other"
+    ],
+    "Raibel": [
+      "Raibel"
+    ],
+    "Rajgir": [
+      "Other"
+    ],
+    "Rambans(Agave /Century plant)": [
+      "Other"
+    ],
+    "Ramphal": [
+      "Ramphal"
+    ],
+    "Red gram split/Arhar dal/Tur dal": [
+      "Arhar Dal(Tur)",
+      "Medium",
+      "Other"
+    ],
+    "Red gram/Arhar/Tur(whole)": [
+      "(Whole)",
+      "777 New Ind",
+      "Arhar (Whole)",
+      "Arhar Dal(Tur)",
+      "Hybrid",
+      "Local",
+      "Other",
+      "Red"
+    ],
+    "Rice": [
+      "1009 Kar",
+      "B P T",
+      "Basmati Dawat",
+      "Broken Rice",
+      "CR 1009 (Coarse) Boiled",
+      "Coarse",
+      "Common",
+      "Dappa",
+      "Fine",
+      "Fine(Basmati)",
+      "IR 20",
+      "Khaw Khasi",
+      "Masuri",
+      "Medium",
+      "Other",
+      "Sarbati Raw",
+      "Sona",
+      "Sona Mansoori Non Basmati",
+      "Sona Raw Old",
+      "Super Fine"
+    ],
+    "Ridge Gourd(Permal/Hybrid Gourd)": [
+      "Ridge Gourd(Permal/Hybrid Gourd)"
+    ],
+    "Ridgeguard(Tori)": [
+      "Other",
+      "Ridgeguard(Tori)"
+    ],
+    "Rose(Local)": [
+      "Other",
+      "Rose (Local)"
+    ],
+    "Rose(Loose))": [
+      "Other",
+      "Rose(Loose)"
+    ],
+    "Round gourd": [
+      "Other",
+      "Round gourd"
+    ],
+    "Rubber": [
+      "Other"
+    ],
+    "Sabu Dan": [
+      "Other"
+    ],
+    "Safflower": [
+      "Safflower"
+    ],
+    "Seemebadnekai": [
+      "Other",
+      "Seemebadanekai"
+    ],
+    "Seetapal": [
+      "Other",
+      "Seethaphal"
+    ],
+    "Sesamum(Sesame,Gingelly,Til)": [
+      "Black",
+      "Gajjar",
+      "Other",
+      "Red",
+      "Sesame",
+      "White"
+    ],
+    "She Buffalo": [
+      "Other"
+    ],
+    "Snakeguard": [
+      "Other",
+      "Snakeguard"
+    ],
+    "Soanf": [
+      "Other",
+      "Soanf"
+    ],
+    "Soyabean": [
+      "Black",
+      "Local",
+      "Other",
+      "Soyabeen",
+      "Yellow"
+    ],
+    "Spinach": [
+      "Other",
+      "Spinach"
+    ],
+    "Spiny Gourd / Kartali(Kantola)": [
+      "Kartali (Kantola)",
+      "Other"
+    ],
+    "Sponge gourd": [
+      "Other",
+      "Sponge gourd"
+    ],
+    "Squash(Chappal Kadoo)": [
+      "Other",
+      "Squash(Chappal Kadoo)"
+    ],
+    "Sugar": [
+      "Chini",
+      "Other"
+    ],
+    "Sunflower/Sunflower Seed": [
+      "Other",
+      "Sunflower"
+    ],
+    "Surat Beans(Papadi)": [
+      "Other"
+    ],
+    "Suva(Dill Seed)": [
+      "Other",
+      "Suva (Dill Seed)"
+    ],
+    "Sweet Corn": [
+      "Sweet Corn"
+    ],
+    "Sweet Potato": [
+      "Hosur Green",
+      "Hosur Red",
+      "Other",
+      "Sweet Potato"
+    ],
+    "Sweet Pumpkin": [
+      "Other",
+      "Sweet Pumpkin"
+    ],
+    "Sweet Saag": [
+      "Other"
+    ],
+    "Tamarind Fruit": [
+      "Non A/c Fine",
+      "Non A/c Flower",
+      "Other",
+      "Tamarind Fruit",
+      "With Seed 1Variety"
+    ],
+    "Tamarind Seed": [
+      "Other"
+    ],
+    "Tapioca": [
+      "Other",
+      "Tapioca"
+    ],
+    "Taro (Arvi) Leaves": [
+      "Taro (Arvi) Leaves"
+    ],
+    "Tender Coconut": [
+      "Other",
+      "Tender Coconut"
+    ],
+    "Thogrikai": [
+      "Thogarikai"
+    ],
+    "Thondekai": [
+      "Other",
+      "Thondekai"
+    ],
+    "Tinda": [
+      "Other",
+      "Tinda"
+    ],
+    "Tobacco": [
+      "Other"
+    ],
+    "Tomato": [
+      "017",
+      "Deshi",
+      "Hybrid",
+      "Local",
+      "Other",
+      "Tomato"
+    ],
+    "Tube Flower": [
+      "Tube Flower"
+    ],
+    "Tube Rose(Double)": [
+      "Other"
+    ],
+    "Tube Rose(Loose)": [
+      "Tube Rose (Loose)"
+    ],
+    "Tube Rose(Single)": [
+      "Tube Rose (Single)"
+    ],
+    "Turmeric": [
+      "Bulb",
+      "Finger",
+      "Local",
+      "Other"
+    ],
+    "Turmeric(raw)": [
+      "Other"
+    ],
+    "Turnip": [
+      "Other",
+      "Turnip"
+    ],
+    "Water chestnut": [
+      "Water chestnut"
+    ],
+    "Water Melon": [
+      "Other",
+      "Water Melon"
+    ],
+    "Wheat": [
+      "147 Average",
+      "2189 No. 1",
+      "2189 No. 2",
+      "2329",
+      "Bansi",
+      "C-83",
+      "Dara",
+      "Dara Mill Quality",
+      "Deshi",
+      "H.D.",
+      "Hybrid",
+      "Jawari",
+      "Kalawal",
+      "Kalyan",
+      "Local",
+      "Lok-1",
+      "Lokwan",
+      "Lokwan Gujrat",
+      "Maharashtra 2189",
+      "Malwa Shakti",
+      "Medium",
+      "Medium Fine",
+      "Mexican",
+      "Mill Quality",
+      "Other",
+      "PBW-343",
+      "Rajasthan Tukdi",
+      "Red",
+      "Sharbati",
+      "Sona",
+      "Sonalika",
+      "Super Fine",
+      "Wheat",
+      "Wheat Mix",
+      "Wheat-Organic",
+      "White"
+    ],
+    "White Muesli": [
+      "Safed Musli-Organic"
+    ],
+    "White Peas": [
+      "Gota"
+    ],
+    "White Pumpkin": [
+      "White Pumpkin"
+    ],
+    "Wild Cucumber": [
+      "Wild Cucumber"
+    ],
+    "Wood": [
+      "Eucalyptus",
+      "Other",
+      "Subabul"
+    ],
+    "Yam": [
+      "Yam"
+    ],
+    "Yam(Ratalu)": [
+      "Other",
+      "Yam (Ratalu)"
+    ]
+  }
+}

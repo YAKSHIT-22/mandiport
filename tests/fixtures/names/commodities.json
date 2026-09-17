@@ -1,0 +1,1340 @@
+{
+  "pulledAt": "2026-09-17T13:19:03.296Z",
+  "commodities": [
+    {
+      "name": "Tomato",
+      "rows": 558,
+      "markets": 555
+    },
+    {
+      "name": "Potato",
+      "rows": 558,
+      "markets": 550
+    },
+    {
+      "name": "Onion",
+      "rows": 561,
+      "markets": 525
+    },
+    {
+      "name": "Brinjal",
+      "rows": 532,
+      "markets": 523
+    },
+    {
+      "name": "Wheat",
+      "rows": 660,
+      "markets": 480
+    },
+    {
+      "name": "Green Chilli",
+      "rows": 472,
+      "markets": 469
+    },
+    {
+      "name": "Bhindi(Ladies Finger)",
+      "rows": 442,
+      "markets": 441
+    },
+    {
+      "name": "Bitter gourd",
+      "rows": 380,
+      "markets": 380
+    },
+    {
+      "name": "Bottle gourd",
+      "rows": 371,
+      "markets": 371
+    },
+    {
+      "name": "Cabbage",
+      "rows": 359,
+      "markets": 358
+    },
+    {
+      "name": "Banana",
+      "rows": 393,
+      "markets": 338
+    },
+    {
+      "name": "Cauliflower",
+      "rows": 336,
+      "markets": 336
+    },
+    {
+      "name": "Pumpkin",
+      "rows": 325,
+      "markets": 324
+    },
+    {
+      "name": "Paddy(Common)",
+      "rows": 378,
+      "markets": 319
+    },
+    {
+      "name": "Cucumbar(Kheera)",
+      "rows": 319,
+      "markets": 316
+    },
+    {
+      "name": "Ginger(Green)",
+      "rows": 289,
+      "markets": 288
+    },
+    {
+      "name": "Ridgeguard(Tori)",
+      "rows": 267,
+      "markets": 266
+    },
+    {
+      "name": "Carrot",
+      "rows": 263,
+      "markets": 263
+    },
+    {
+      "name": "Raddish",
+      "rows": 250,
+      "markets": 250
+    },
+    {
+      "name": "Lemon",
+      "rows": 239,
+      "markets": 238
+    },
+    {
+      "name": "Coriander(Leaves)",
+      "rows": 236,
+      "markets": 236
+    },
+    {
+      "name": "Banana - Green",
+      "rows": 234,
+      "markets": 234
+    },
+    {
+      "name": "Drumstick",
+      "rows": 222,
+      "markets": 222
+    },
+    {
+      "name": "Snakeguard",
+      "rows": 221,
+      "markets": 221
+    },
+    {
+      "name": "Beetroot",
+      "rows": 220,
+      "markets": 219
+    },
+    {
+      "name": "Maize",
+      "rows": 222,
+      "markets": 212
+    },
+    {
+      "name": "Garlic",
+      "rows": 218,
+      "markets": 210
+    },
+    {
+      "name": "Papaya",
+      "rows": 204,
+      "markets": 204
+    },
+    {
+      "name": "Amaranthus",
+      "rows": 201,
+      "markets": 201
+    },
+    {
+      "name": "Cluster beans",
+      "rows": 200,
+      "markets": 200
+    },
+    {
+      "name": "Coconut",
+      "rows": 198,
+      "markets": 198
+    },
+    {
+      "name": "Ashgourd",
+      "rows": 197,
+      "markets": 196
+    },
+    {
+      "name": "Bengal Gram(Gram)(Whole)",
+      "rows": 208,
+      "markets": 186
+    },
+    {
+      "name": "Onion Green",
+      "rows": 174,
+      "markets": 174
+    },
+    {
+      "name": "Capsicum",
+      "rows": 166,
+      "markets": 166
+    },
+    {
+      "name": "Beans",
+      "rows": 165,
+      "markets": 165
+    },
+    {
+      "name": "Green Avare(W)",
+      "rows": 163,
+      "markets": 163
+    },
+    {
+      "name": "Mint(Pudina)",
+      "rows": 162,
+      "markets": 162
+    },
+    {
+      "name": "Apple",
+      "rows": 150,
+      "markets": 144
+    },
+    {
+      "name": "Soyabean",
+      "rows": 162,
+      "markets": 143
+    },
+    {
+      "name": "Green Gram(Moong)(Whole)",
+      "rows": 153,
+      "markets": 142
+    },
+    {
+      "name": "Guava",
+      "rows": 140,
+      "markets": 140
+    },
+    {
+      "name": "Elephant Yam(Suran)/Amorphophallus",
+      "rows": 131,
+      "markets": 131
+    },
+    {
+      "name": "Chow Chow",
+      "rows": 124,
+      "markets": 124
+    },
+    {
+      "name": "Colacasia",
+      "rows": 123,
+      "markets": 122
+    },
+    {
+      "name": "Mustard",
+      "rows": 123,
+      "markets": 121
+    },
+    {
+      "name": "Rice",
+      "rows": 149,
+      "markets": 121
+    },
+    {
+      "name": "Groundnut",
+      "rows": 116,
+      "markets": 113
+    },
+    {
+      "name": "Cowpea(Veg)",
+      "rows": 112,
+      "markets": 112
+    },
+    {
+      "name": "Pomegranate",
+      "rows": 113,
+      "markets": 112
+    },
+    {
+      "name": "Wood",
+      "rows": 134,
+      "markets": 107
+    },
+    {
+      "name": "Mousambi(Sweet Lime)",
+      "rows": 104,
+      "markets": 104
+    },
+    {
+      "name": "Thondekai",
+      "rows": 104,
+      "markets": 104
+    },
+    {
+      "name": "Tapioca",
+      "rows": 96,
+      "markets": 96
+    },
+    {
+      "name": "Knool Khol",
+      "rows": 92,
+      "markets": 92
+    },
+    {
+      "name": "Bajra(Pearl Millet/Cumbu)",
+      "rows": 91,
+      "markets": 91
+    },
+    {
+      "name": "Black Gram(Urd Beans)(Whole)",
+      "rows": 98,
+      "markets": 89
+    },
+    {
+      "name": "Yam(Ratalu)",
+      "rows": 89,
+      "markets": 89
+    },
+    {
+      "name": "Red gram/Arhar/Tur(whole)",
+      "rows": 92,
+      "markets": 88
+    },
+    {
+      "name": "Cotton",
+      "rows": 90,
+      "markets": 84
+    },
+    {
+      "name": "Tender Coconut",
+      "rows": 80,
+      "markets": 80
+    },
+    {
+      "name": "Mango(Raw-Ripe)",
+      "rows": 77,
+      "markets": 77
+    },
+    {
+      "name": "Sweet Potato",
+      "rows": 77,
+      "markets": 77
+    },
+    {
+      "name": "Amla(Nelli Kai)",
+      "rows": 70,
+      "markets": 70
+    },
+    {
+      "name": "Lime",
+      "rows": 64,
+      "markets": 64
+    },
+    {
+      "name": "Jowar(Sorghum)",
+      "rows": 65,
+      "markets": 61
+    },
+    {
+      "name": "Pineapple",
+      "rows": 60,
+      "markets": 60
+    },
+    {
+      "name": "Firewood",
+      "rows": 58,
+      "markets": 58
+    },
+    {
+      "name": "Spinach",
+      "rows": 54,
+      "markets": 54
+    },
+    {
+      "name": "French Beans(Frasbean)",
+      "rows": 53,
+      "markets": 53
+    },
+    {
+      "name": "Water Melon",
+      "rows": 51,
+      "markets": 51
+    },
+    {
+      "name": "Green Peas",
+      "rows": 52,
+      "markets": 50
+    },
+    {
+      "name": "Indian Beans(Seam)",
+      "rows": 50,
+      "markets": 50
+    },
+    {
+      "name": "Sweet Corn",
+      "rows": 48,
+      "markets": 48
+    },
+    {
+      "name": "Pointed gourd(Parval)",
+      "rows": 46,
+      "markets": 46
+    },
+    {
+      "name": "Chikoos(Sapota)",
+      "rows": 42,
+      "markets": 42
+    },
+    {
+      "name": "Little gourd(Kundru)",
+      "rows": 41,
+      "markets": 41
+    },
+    {
+      "name": "Sesamum(Sesame,Gingelly,Til)",
+      "rows": 51,
+      "markets": 41
+    },
+    {
+      "name": "Lentil(Masur)(Whole)",
+      "rows": 41,
+      "markets": 39
+    },
+    {
+      "name": "Castor Seed",
+      "rows": 37,
+      "markets": 37
+    },
+    {
+      "name": "Sponge gourd",
+      "rows": 37,
+      "markets": 37
+    },
+    {
+      "name": "Guar",
+      "rows": 33,
+      "markets": 33
+    },
+    {
+      "name": "Mashrooms",
+      "rows": 33,
+      "markets": 33
+    },
+    {
+      "name": "Orange",
+      "rows": 33,
+      "markets": 32
+    },
+    {
+      "name": "Gur(Jaggery)",
+      "rows": 36,
+      "markets": 31
+    },
+    {
+      "name": "Tamarind Fruit",
+      "rows": 32,
+      "markets": 30
+    },
+    {
+      "name": "Cummin Seed(Jeera)",
+      "rows": 29,
+      "markets": 29
+    },
+    {
+      "name": "Grapes",
+      "rows": 31,
+      "markets": 29
+    },
+    {
+      "name": "Peas Wet",
+      "rows": 29,
+      "markets": 29
+    },
+    {
+      "name": "Rose(Local)",
+      "rows": 28,
+      "markets": 28
+    },
+    {
+      "name": "Marigold(Calcutta)",
+      "rows": 27,
+      "markets": 27
+    },
+    {
+      "name": "Chilly Capsicum",
+      "rows": 26,
+      "markets": 26
+    },
+    {
+      "name": "Arecanut(Betelnut/Supari)",
+      "rows": 44,
+      "markets": 25
+    },
+    {
+      "name": "Masur Dal",
+      "rows": 25,
+      "markets": 25
+    },
+    {
+      "name": "Sweet Pumpkin",
+      "rows": 24,
+      "markets": 24
+    },
+    {
+      "name": "Methi Seeds",
+      "rows": 23,
+      "markets": 23
+    },
+    {
+      "name": "Paddy(Basmati)",
+      "rows": 22,
+      "markets": 22
+    },
+    {
+      "name": "Kabuli Chana(Chickpeas-White)",
+      "rows": 22,
+      "markets": 21
+    },
+    {
+      "name": "Black Gram Dal(Urd Dal)",
+      "rows": 20,
+      "markets": 20
+    },
+    {
+      "name": "Methi(Leaves)",
+      "rows": 19,
+      "markets": 19
+    },
+    {
+      "name": "Papaya(Raw)",
+      "rows": 19,
+      "markets": 19
+    },
+    {
+      "name": "Fish",
+      "rows": 40,
+      "markets": 18
+    },
+    {
+      "name": "Linseed",
+      "rows": 19,
+      "markets": 18
+    },
+    {
+      "name": "Ragi(Finger Millet)",
+      "rows": 18,
+      "markets": 18
+    },
+    {
+      "name": "Baby Corn",
+      "rows": 17,
+      "markets": 17
+    },
+    {
+      "name": "Green Gram Dal(Moong Dal)",
+      "rows": 17,
+      "markets": 17
+    },
+    {
+      "name": "Karbuja(Musk Melon)",
+      "rows": 17,
+      "markets": 17
+    },
+    {
+      "name": "Pear(Marasebu)",
+      "rows": 17,
+      "markets": 17
+    },
+    {
+      "name": "Chili Red",
+      "rows": 18,
+      "markets": 16
+    },
+    {
+      "name": "Corriander seed",
+      "rows": 17,
+      "markets": 16
+    },
+    {
+      "name": "Dry Chillies",
+      "rows": 27,
+      "markets": 16
+    },
+    {
+      "name": "Field Pea",
+      "rows": 16,
+      "markets": 16
+    },
+    {
+      "name": "Jasmine",
+      "rows": 16,
+      "markets": 16
+    },
+    {
+      "name": "Ladies Finger",
+      "rows": 16,
+      "markets": 16
+    },
+    {
+      "name": "Tinda",
+      "rows": 16,
+      "markets": 16
+    },
+    {
+      "name": "Barley(Jau)",
+      "rows": 15,
+      "markets": 15
+    },
+    {
+      "name": "Bengal Gram Dal(Chana Dal)",
+      "rows": 15,
+      "markets": 15
+    },
+    {
+      "name": "Black pepper",
+      "rows": 15,
+      "markets": 15
+    },
+    {
+      "name": "Pegeon Pea(Arhar Fali)",
+      "rows": 15,
+      "markets": 15
+    },
+    {
+      "name": "Custard Apple(Sharifa)",
+      "rows": 14,
+      "markets": 14
+    },
+    {
+      "name": "Turmeric",
+      "rows": 17,
+      "markets": 14
+    },
+    {
+      "name": "buttery",
+      "rows": 13,
+      "markets": 13
+    },
+    {
+      "name": "Leafy Vegetable",
+      "rows": 13,
+      "markets": 13
+    },
+    {
+      "name": "Betal Leaves",
+      "rows": 13,
+      "markets": 12
+    },
+    {
+      "name": "Red gram split/Arhar dal/Tur dal",
+      "rows": 12,
+      "markets": 12
+    },
+    {
+      "name": "Squash(Chappal Kadoo)",
+      "rows": 12,
+      "markets": 12
+    },
+    {
+      "name": "Gram Raw(Chholia)",
+      "rows": 11,
+      "markets": 11
+    },
+    {
+      "name": "Ground Nut Seed",
+      "rows": 11,
+      "markets": 11
+    },
+    {
+      "name": "Guar Seed(Cluster Beans Seed)",
+      "rows": 11,
+      "markets": 11
+    },
+    {
+      "name": "Jute",
+      "rows": 11,
+      "markets": 11
+    },
+    {
+      "name": "Sunflower/Sunflower Seed",
+      "rows": 11,
+      "markets": 11
+    },
+    {
+      "name": "Turnip",
+      "rows": 11,
+      "markets": 11
+    },
+    {
+      "name": "Ginger(Dry)",
+      "rows": 10,
+      "markets": 10
+    },
+    {
+      "name": "Pea Pod/Pea Cod/हरी मटर",
+      "rows": 10,
+      "markets": 10
+    },
+    {
+      "name": "Copra",
+      "rows": 10,
+      "markets": 9
+    },
+    {
+      "name": "Jack Fruit(Ripe)",
+      "rows": 9,
+      "markets": 9
+    },
+    {
+      "name": "Lak(Teora)",
+      "rows": 9,
+      "markets": 9
+    },
+    {
+      "name": "Mango",
+      "rows": 11,
+      "markets": 9
+    },
+    {
+      "name": "Kulthi(Horse Gram)",
+      "rows": 8,
+      "markets": 8
+    },
+    {
+      "name": "Kutki",
+      "rows": 8,
+      "markets": 8
+    },
+    {
+      "name": "Other green and fresh vegetables",
+      "rows": 8,
+      "markets": 8
+    },
+    {
+      "name": "Peas(Dry)",
+      "rows": 8,
+      "markets": 8
+    },
+    {
+      "name": "Round gourd",
+      "rows": 8,
+      "markets": 8
+    },
+    {
+      "name": "Soanf",
+      "rows": 8,
+      "markets": 8
+    },
+    {
+      "name": "Tobacco",
+      "rows": 8,
+      "markets": 8
+    },
+    {
+      "name": "Tube Rose(Loose)",
+      "rows": 8,
+      "markets": 8
+    },
+    {
+      "name": "Ajwan",
+      "rows": 7,
+      "markets": 7
+    },
+    {
+      "name": "Cashewnuts",
+      "rows": 7,
+      "markets": 7
+    },
+    {
+      "name": "Cowpea(Lobia/Karamani)",
+      "rows": 7,
+      "markets": 7
+    },
+    {
+      "name": "Kakada",
+      "rows": 7,
+      "markets": 7
+    },
+    {
+      "name": "Long Melon(Kakri)",
+      "rows": 7,
+      "markets": 7
+    },
+    {
+      "name": "Makhana(Foxnut)",
+      "rows": 7,
+      "markets": 7
+    },
+    {
+      "name": "Mentha Oil",
+      "rows": 7,
+      "markets": 7
+    },
+    {
+      "name": "Safflower",
+      "rows": 7,
+      "markets": 7
+    },
+    {
+      "name": "Seetapal",
+      "rows": 7,
+      "markets": 7
+    },
+    {
+      "name": "Spiny Gourd / Kartali(Kantola)",
+      "rows": 6,
+      "markets": 6
+    },
+    {
+      "name": "Seemebadnekai",
+      "rows": 5,
+      "markets": 5
+    },
+    {
+      "name": "Sweet Saag",
+      "rows": 5,
+      "markets": 5
+    },
+    {
+      "name": "Field Bean(Anumulu)",
+      "rows": 4,
+      "markets": 4
+    },
+    {
+      "name": "Kodo Millet(Varagu)",
+      "rows": 4,
+      "markets": 4
+    },
+    {
+      "name": "Mataki",
+      "rows": 4,
+      "markets": 4
+    },
+    {
+      "name": "Rajgir",
+      "rows": 4,
+      "markets": 4
+    },
+    {
+      "name": "Alasande Gram",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Chapparad Avare",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Chiaseeds",
+      "rows": 5,
+      "markets": 3
+    },
+    {
+      "name": "Cock",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Dry Grapes",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Fig(Anjura/Anjeer)",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Groundnut pods(raw)",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Groundnut(Split)",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "gulli",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Isabgul(Psyllium)",
+      "rows": 4,
+      "markets": 3
+    },
+    {
+      "name": "Mahua",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Marigold(loose)",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Millets",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "nigella seeds",
+      "rows": 5,
+      "markets": 3
+    },
+    {
+      "name": "Persimon(Japani Fal)",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Plum",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Rose(Loose))",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Suva(Dill Seed)",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Tube Flower",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Wild Cucumber",
+      "rows": 3,
+      "markets": 3
+    },
+    {
+      "name": "Alsandikai",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Amranthas Red",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Asalia",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Big Gram",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Broken Rice",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Bunch Beans",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Coconut Oil",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Coffee",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Cow",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Dal Mix",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Foxtail Millet(Navane)",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Ghee",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Khandsari(Desi Khand)",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "nigella",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Niger Seed(Ramtil)",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Rab/Liquid Jaggery/Molasses",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Rubber",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Sugar",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Surat Beans(Papadi)",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Turmeric(raw)",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "White Muesli",
+      "rows": 2,
+      "markets": 2
+    },
+    {
+      "name": "Almond(Badam)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Ambady/Mesta/Patson",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Anthorium",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Asgand",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Ashwagandha",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Astera",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Avare Dal",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Avocado",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Bamboo",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "basil",
+      "rows": 2,
+      "markets": 1
+    },
+    {
+      "name": "Bay leaf(Tejpatta)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Ber(Zizyphus/Borehannu)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "BOP",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Broomstick(Flower Broom)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Cardamom",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Carnation",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Chennangi Dal",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Chicory(Chikori/Kasni)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Chrysanthemum(Loose)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Cinamon(Dalchini)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Cocoa",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Coconut Coir",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Coconut Seed",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Cotton Seed",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Dry Fodder",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Duster Beans",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Flowers-Others",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Galgal(Lemon)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Goat",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Gokhru",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Green Fodder",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Hen",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Jarbara",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Kinnow",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Kiwi Fruit",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Lilly",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Litchi",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Lotus",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Lotus Sticks",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Mahedi",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Moath Dal",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Orchid",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Other Pulses",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Ox",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Pepper garbled",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "poppy seeds",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Prawn",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Quince(Nakh)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Quinoa",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Raibel",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Rambans(Agave /Century plant)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Ramphal",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Ridge Gourd(Permal/Hybrid Gourd)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Sabu Dan",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "She Buffalo",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Tamarind Seed",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Taro (Arvi) Leaves",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Thogrikai",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Tube Rose(Double)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Tube Rose(Single)",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Water chestnut",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "White Peas",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "White Pumpkin",
+      "rows": 1,
+      "markets": 1
+    },
+    {
+      "name": "Yam",
+      "rows": 1,
+      "markets": 1
+    }
+  ]
+}
