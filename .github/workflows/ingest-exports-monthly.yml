@@ -1,0 +1,56 @@
+name: Ingest exports and MSP
+
+on:
+  schedule:
+    # 06:00 IST on the 3rd of each month.
+    - cron: "30 0 3 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ingest-exports
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATAGOVIN_API_KEY: ${{ secrets.DATAGOVIN_API_KEY }}
+      DATAGOVIN_RESOURCE_MSP: ${{ vars.DATAGOVIN_RESOURCE_MSP }}
+      DATAGOVIN_RESOURCE_EXPORT_PRINCIPAL: ${{ vars.DATAGOVIN_RESOURCE_EXPORT_PRINCIPAL }}
+    steps:
+      - name: Check configuration
+        id: config
+        run: |
+          if [ -z "$DATABASE_URL" ] || [ -z "$DATAGOVIN_API_KEY" ]; then
+            echo "::notice::DATABASE_URL or DATAGOVIN_API_KEY secret not set; skipping."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v7
+        if: steps.config.outputs.ready == 'true'
+      - uses: pnpm/action-setup@v6
+        if: steps.config.outputs.ready == 'true'
+      - uses: actions/setup-node@v7
+        if: steps.config.outputs.ready == 'true'
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - if: steps.config.outputs.ready == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.config.outputs.ready == 'true'
+        run: pnpm db:migrate
+      - name: Exports
+        if: steps.config.outputs.ready == 'true'
+        run: pnpm ingest:exports
+      - name: MSP
+        if: steps.config.outputs.ready == 'true' && !cancelled()
+        run: pnpm ingest:msp
+      - name: Export mapping suggestions
+        if: steps.config.outputs.ready == 'true' && !cancelled()
+        run: pnpm mappings:suggest

@@ -1,0 +1,225 @@
+{
+  "$comment": "Agricultural principal commodities ingested from the Department of Commerce 'Principal Commodity wise Export' resources (one per year). 'key' is the normalized name (uppercase, punctuation collapsed) because spellings vary by year, e.g. 'RICE -BASMOTI' vs 'RICE BASMOTI'. Names verified against 2018-19 and 2022-23 data on 2026-09-17. These are broad groups: many mandi crops map only to a group such as FRESH VEGETABLES.",
+  "commodities": [
+    {
+      "key": "ALCOHOLIC BEVERAGES",
+      "publishedName": "ALCOHOLIC BEVERAGES",
+      "displayName": "Alcoholic beverages"
+    },
+    {
+      "key": "ANIMAL CASINGS",
+      "publishedName": "ANIMAL CASINGS",
+      "displayName": "Animal casings"
+    },
+    {
+      "key": "BUFFALO MEAT",
+      "publishedName": "BUFFALO MEAT",
+      "displayName": "Buffalo meat"
+    },
+    {
+      "key": "CASHEW",
+      "publishedName": "CASHEW",
+      "displayName": "Cashew"
+    },
+    {
+      "key": "CASTOR OIL",
+      "publishedName": "CASTOR OIL",
+      "displayName": "Castor oil"
+    },
+    {
+      "key": "CEREAL PREPARATIONS",
+      "publishedName": "CEREAL PREPARATIONS",
+      "displayName": "Cereal preparations"
+    },
+    {
+      "key": "COCOA PRODUCTS",
+      "publishedName": "COCOA PRODUCTS",
+      "displayName": "Cocoa products"
+    },
+    {
+      "key": "COFFEE",
+      "publishedName": "COFFEE",
+      "displayName": "Coffee"
+    },
+    {
+      "key": "COTTON RAW INCLD WASTE",
+      "publishedName": "COTTON RAW INCLD. WASTE",
+      "displayName": "Raw cotton (incl. waste)"
+    },
+    {
+      "key": "DAIRY PRODUCTS",
+      "publishedName": "DAIRY PRODUCTS",
+      "displayName": "Dairy products"
+    },
+    {
+      "key": "FLORICLTR PRODUCTS",
+      "publishedName": "FLORICLTR PRODUCTS",
+      "displayName": "Floriculture products"
+    },
+    {
+      "key": "FRESH FRUITS",
+      "publishedName": "FRESH FRUITS",
+      "displayName": "Fresh fruits"
+    },
+    {
+      "key": "FRESH VEGETABLES",
+      "publishedName": "FRESH VEGETABLES",
+      "displayName": "Fresh vegetables"
+    },
+    {
+      "key": "FRUITS VEGETABLE SEEDS",
+      "publishedName": "FRUITS / VEGETABLE SEEDS",
+      "displayName": "Fruit and vegetable seeds"
+    },
+    {
+      "key": "GROUNDNUT",
+      "publishedName": "GROUNDNUT",
+      "displayName": "Groundnut"
+    },
+    {
+      "key": "GUERGAM MEAL",
+      "publishedName": "GUERGAM MEAL",
+      "displayName": "Guar gum meal"
+    },
+    {
+      "key": "JUTE RAW",
+      "publishedName": "JUTE, RAW",
+      "displayName": "Raw jute"
+    },
+    {
+      "key": "MARINE PRODUCTS",
+      "publishedName": "MARINE PRODUCTS",
+      "displayName": "Marine products"
+    },
+    {
+      "key": "MILLED PRODUCTS",
+      "publishedName": "MILLED PRODUCTS",
+      "displayName": "Milled products"
+    },
+    {
+      "key": "MISC PROCESSED ITEMS",
+      "publishedName": "MISC PROCESSED ITEMS",
+      "displayName": "Miscellaneous processed items"
+    },
+    {
+      "key": "MOLLASES",
+      "publishedName": "MOLLASES",
+      "displayName": "Molasses"
+    },
+    {
+      "key": "NATURAL RUBBER",
+      "publishedName": "NATURAL RUBBER",
+      "displayName": "Natural rubber"
+    },
+    {
+      "key": "NIGER SEEDS",
+      "publishedName": "NIGER SEEDS",
+      "displayName": "Niger seeds"
+    },
+    {
+      "key": "OIL MEALS",
+      "publishedName": "OIL MEALS",
+      "displayName": "Oil meals"
+    },
+    {
+      "key": "OTHER CEREALS",
+      "publishedName": "OTHER CEREALS",
+      "displayName": "Other cereals"
+    },
+    {
+      "key": "OTHER MEAT",
+      "publishedName": "OTHER MEAT",
+      "displayName": "Other meat"
+    },
+    {
+      "key": "OTHER OIL SEEDS",
+      "publishedName": "OTHER OIL SEEDS",
+      "displayName": "Other oil seeds"
+    },
+    {
+      "key": "POULTRY PRODUCTS",
+      "publishedName": "POULTRY PRODUCTS",
+      "displayName": "Poultry products"
+    },
+    {
+      "key": "PROCESSED FRUITS AND JUICES",
+      "publishedName": "PROCESSED FRUITS AND JUICES",
+      "displayName": "Processed fruits and juices"
+    },
+    {
+      "key": "PROCESSED MEAT",
+      "publishedName": "PROCESSED MEAT",
+      "displayName": "Processed meat"
+    },
+    {
+      "key": "PROCESSED VEGETABLES",
+      "publishedName": "PROCESSED VEGETABLES",
+      "displayName": "Processed vegetables"
+    },
+    {
+      "key": "PULSES",
+      "publishedName": "PULSES",
+      "displayName": "Pulses"
+    },
+    {
+      "key": "RICE BASMOTI",
+      "publishedName": "RICE BASMOTI",
+      "displayName": "Basmati rice"
+    },
+    {
+      "key": "RICE OTHER THAN BASMOTI",
+      "publishedName": "RICE(OTHER THAN BASMOTI)",
+      "displayName": "Non-basmati rice"
+    },
+    {
+      "key": "SESAME SEEDS",
+      "publishedName": "SESAME SEEDS",
+      "displayName": "Sesame seeds"
+    },
+    {
+      "key": "SHEEP GOAT MEAT",
+      "publishedName": "SHEEP/GOAT MEAT",
+      "displayName": "Sheep and goat meat"
+    },
+    {
+      "key": "SHELLAC",
+      "publishedName": "SHELLAC",
+      "displayName": "Shellac"
+    },
+    {
+      "key": "SPICES",
+      "publishedName": "SPICES",
+      "displayName": "Spices"
+    },
+    {
+      "key": "SUGAR",
+      "publishedName": "SUGAR",
+      "displayName": "Sugar"
+    },
+    {
+      "key": "TEA",
+      "publishedName": "TEA",
+      "displayName": "Tea"
+    },
+    {
+      "key": "TOBACCO MANUFACTURED",
+      "publishedName": "TOBACCO MANUFACTURED",
+      "displayName": "Manufactured tobacco"
+    },
+    {
+      "key": "TOBACCO UNMANUFACTURED",
+      "publishedName": "TOBACCO UNMANUFACTURED",
+      "displayName": "Unmanufactured tobacco"
+    },
+    {
+      "key": "VEGETABLE OILS",
+      "publishedName": "VEGETABLE OILS",
+      "displayName": "Vegetable oils"
+    },
+    {
+      "key": "WHEAT",
+      "publishedName": "WHEAT",
+      "displayName": "Wheat"
+    }
+  ]
+}

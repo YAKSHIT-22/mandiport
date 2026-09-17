@@ -1,0 +1,69 @@
+name: Ingest mandi prices
+
+on:
+  schedule:
+    # 20:30 IST (evening) and 07:30 IST (next morning) to catch late-reporting markets.
+    - cron: "0 15 * * *"
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      backfill_days:
+        description: "Also backfill final variety-wise data for this many past days"
+        required: false
+        default: "3"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ingest-mandi
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    # Runs stop starting new work after 40 minutes (SPEC §6.7 alerts at 45).
+    timeout-minutes: 55
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATAGOVIN_API_KEY: ${{ secrets.DATAGOVIN_API_KEY }}
+      DATAGOVIN_RESOURCE_MANDI_DAILY: ${{ vars.DATAGOVIN_RESOURCE_MANDI_DAILY }}
+      DATAGOVIN_RESOURCE_MANDI_VARIETY: ${{ vars.DATAGOVIN_RESOURCE_MANDI_VARIETY }}
+      UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+      UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+      NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    steps:
+      - name: Check configuration
+        id: config
+        run: |
+          if [ -z "$DATABASE_URL" ] || [ -z "$DATAGOVIN_API_KEY" ]; then
+            echo "::notice::DATABASE_URL or DATAGOVIN_API_KEY secret not set; skipping ingestion."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v7
+        if: steps.config.outputs.ready == 'true'
+      - uses: pnpm/action-setup@v6
+        if: steps.config.outputs.ready == 'true'
+      - uses: actions/setup-node@v7
+        if: steps.config.outputs.ready == 'true'
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - if: steps.config.outputs.ready == 'true'
+        run: pnpm install --frozen-lockfile
+      - name: Apply migrations
+        if: steps.config.outputs.ready == 'true'
+        run: pnpm db:migrate
+      - name: Current daily snapshot (provisional)
+        if: steps.config.outputs.ready == 'true'
+        run: pnpm ingest:mandi --max-minutes=15
+      - name: Final variety-wise data for recent days
+        if: steps.config.outputs.ready == 'true' && !cancelled()
+        run: pnpm ingest:backfill --days=${{ github.event.inputs.backfill_days || '3' }} --max-minutes=20
+      - name: Rollups and retention
+        if: steps.config.outputs.ready == 'true' && !cancelled()
+        run: pnpm rollups

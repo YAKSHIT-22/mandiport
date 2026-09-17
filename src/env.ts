@@ -23,6 +23,44 @@ const resourceId = z.preprocess(
     )
     .optional(),
 );
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const resourceIdList = z.preprocess(
+  blankToUndefined,
+  z
+    .string()
+    .optional()
+    .transform((v) =>
+      v
+        ? v
+            .split(",")
+            .map((x) => x.trim())
+            .filter(Boolean)
+        : [],
+    )
+    .refine((ids) => ids.every((x) => UUID_RE.test(x)), "must be comma-separated resource UUIDs"),
+);
+const yearResourceList = z.preprocess(
+  blankToUndefined,
+  z
+    .string()
+    .optional()
+    .transform((v) =>
+      (v
+        ? v
+            .split(",")
+            .map((x) => x.trim())
+            .filter(Boolean)
+        : []
+      ).map((pair) => {
+        const [year = "", resourceId = ""] = pair.split(":").map((x) => x.trim());
+        return { year, resourceId };
+      }),
+    )
+    .refine(
+      (items) => items.every((i) => /^\d{4}-\d{2}$/.test(i.year) && UUID_RE.test(i.resourceId)),
+      "must be comma-separated YYYY-YY:<resource-uuid> pairs",
+    ),
+);
 const flag = (fallback: boolean) =>
   z.preprocess(
     blankToUndefined,
@@ -37,8 +75,11 @@ const positiveInt = (fallback: number) =>
 export const envSchema = z.object({
   // Database
   DATABASE_URL: optionalUrl,
+  /** Separate database for integration tests (local only). */
+  DATABASE_URL_TEST: optionalUrl,
 
-  // Upstash
+  // Redis: Upstash REST in production, or a plain Redis URL for local development.
+  REDIS_URL: optionalUrl,
   UPSTASH_REDIS_REST_URL: optionalUrl,
   UPSTASH_REDIS_REST_TOKEN: optionalString,
 
@@ -49,9 +90,11 @@ export const envSchema = z.object({
     resourceId.default("9ef84268-d588-465a-a308-a864a43d0070"),
   ),
   DATAGOVIN_RESOURCE_MANDI_VARIETY: resourceId,
-  DATAGOVIN_RESOURCE_MSP: resourceId,
-  DATAGOVIN_RESOURCE_EXPORT_PRINCIPAL: resourceId,
-  DATAGOVIN_RESOURCE_EXPORT_COUNTRYWISE: resourceId,
+  /** Comma-separated resource IDs; MSP is published as several tables. */
+  DATAGOVIN_RESOURCE_MSP: resourceIdList,
+  /** Comma-separated `YYYY-YY:<resource-id>`; exports are published one resource per year. */
+  DATAGOVIN_RESOURCE_EXPORT_PRINCIPAL: yearResourceList,
+  DATAGOVIN_RESOURCE_EXPORT_COUNTRYWISE: yearResourceList,
 
   // AI
   AI_GATEWAY_API_KEY: optionalString,

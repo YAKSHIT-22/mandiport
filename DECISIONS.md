@@ -81,7 +81,63 @@ Found by probing resource `9ef84268-d588-465a-a308-a864a43d0070` (current daily 
 - **Decision:** Setting `PLAYWRIGHT_CHANNEL=chrome` runs e2e against the system Chrome. CI uses Playwright's bundled Chromium.
 - **Reason:** `cdn.playwright.dev` timed out from the development network, even with a 10-minute timeout.
 
+## D-011 · Schema deviations from SPEC §6.2 (2026-09-17)
+
+- **`prices_daily` uses the measured compact layout (P-1 resolved: optimized).** No surrogate id or timestamps. `grade_id` and `source` are smallints. The natural key is `(market, commodity, date, variety, grade)` with NULLS NOT DISTINCT, which also serves market lookups.
+- **`source` is not part of the natural key.** The two mandi resources describe the same observations (D-013), so including `source` would double-count them.
+- **Added `prices_market_daily`:** one median price per market, commodity and day. State and national medians, market pages, tiers and best-mandi all read it instead of variety/grade rows.
+- **Added `prices_national_daily`** for the crop hub header and trend. It is computed from market prices, not from a median of state medians.
+- **Weekly and monthly rollups are per market and commodity, not per variety.** Variety-level history stays in `prices_daily` for 400 days.
+- **Other additions:**
+  - `msp` has `variety` and `resource_id` columns.
+  - `crop_mapping` has `status` and `confidence`.
+  - New tables: `telegram_links`, `contact_messages`, `tier_changes`, `grades`.
+  - `pg_trgm` indexes for fuzzy name search.
+
+## D-012 · One Postgres driver: node-postgres (2026-09-17)
+
+- **Decision:** Use `pg` with `drizzle-orm/node-postgres` for local Postgres, CI and Neon. In production this means Neon's pooled connection string.
+- **Reason:** Identical code and transactions everywhere. Vercel functions run on Node, where `pg` works with Neon's pooler. The serverless driver only matters for Edge, which we don't use. This is a deviation from SPEC §3 ("Neon serverless driver").
+
+## D-013 · Variety-wise resource is the final source; daily snapshot is provisional (2026-09-17, P-2 resolved)
+
+- **Resource:** `35985678-0d79-46b4-9ed6-6f13308a1d24` ("Variety-wise Daily Market Prices Data of Commodity", DMI). It has 81.9 million rows back to 2009, updates nightly for the previous day, and uses the same Agmarknet names as the daily resource.
+- **Rule:**
+  - Daily snapshot rows are stored as `source=1`.
+  - When the variety-wise data for a date and state has fully loaded, its `source=2` rows overwrite them, and any provisional rows left over for that date and state are deleted.
+  - Provisional rows never overwrite final ones.
+- **Filter quirks on this resource (verified):**
+  - `Arrival_Date` is an exact date filter. Lowercase `arrival_date` silently turns into a loose full-text match over 5.37 million rows.
+  - `state.keyword`, `district.keyword` and `commodity.keyword` are exact. `State.keyword` returns 0.
+  - The job checks the date filter before looping and refuses to ingest if it isn't exact.
+- **Backfill:** a local 90-day backfill is running. Production backfill depth depends on the Neon plan (see PROGRESS.md).
+
+## D-014 · Cache: Upstash in production, local Redis in development (2026-09-17)
+
+- **Decision:** `src/lib/cache/store.ts` exposes one small interface with an Upstash REST adapter (used when `UPSTASH_*` is set), a node-redis adapter (used when `REDIS_URL` is set), and an in-process no-op fallback. The fallback keeps counters, so rate limits and the token cap still work.
+- **Rate limiting:** implemented with fixed-window counters (`INCRBY` + `EXPIRE NX`) on this interface, instead of `@upstash/ratelimit`, which only supports Upstash. This is a deviation from SPEC §3.
+
+## D-015 · MSP sources and year convention (verified 2026-09-17)
+
+- **Sources:** No single current MSP API exists.
+  - `82e89d31…` covers kharif, rabi and other crops from 2013-14 to 2024-25 (Rajya Sabha data, published 2025-03-05).
+  - `b45f166a…` covers rabi marketing seasons 2014-15 to 2025-26.
+- **Year convention:** stored years are marketing seasons. Kharif crop year X is KMS X. Rabi crop year X is RMS X+1: wheat crop year 2024-25 and RMS 2025-26 are both ₹2,425, and the two tables have zero conflicts after this conversion.
+- **Mapping:** `data/msp-commodities.json` links one variety per crop to a mandi commodity (e.g. Paddy Common → `Paddy(Common)`). Sugarcane (FRP) and de-husked coconut aren't linked.
+- **Data lag:** kharif 2025-26 MSPs aren't in any data.gov.in API yet, and pages will say so.
+
+## D-016 · Export sources (verified 2026-09-17)
+
+- **Resources:** Department of Commerce "Principal Commodity wise Export", one resource per financial year: 2014-15 to 2019-20, 2021-22 and 2022-23. No 2020-21 resource is published, and 2023-24 onward isn't on data.gov.in yet.
+- **Content:** each row is commodity × country × unit × quantity × US$ million, so one resource serves both the "principal" and "country-wise" needs, and `DATAGOVIN_RESOURCE_EXPORT_COUNTRYWISE` is optional.
+- **Fetching:** no exact filters exist and plain filters are full-text. Each agricultural commodity (list in `data/export-commodities.json`) is fetched in one request and matched exactly on a normalized key, because names vary by year ("RICE -BASMOTI" / "RICE BASMOTI").
+- **Granularity:** export groups are broad, so many crops can only map to a group such as "Fresh vegetables". The mapping review page says so, and crop pages will too.
+
+## D-017 · Rollups run in GitHub Actions; Vercel cron recalculates tiers (2026-09-17)
+
+- **Decision:** Rollups and retention run in the ingest workflow after each pull (SPEC §6.7 allows this). The Vercel cron route `/api/cron/rollups` recalculates tiers on Mondays and rebuilds the last 8 days of rollups, which is cheap.
+
 ## Pending decisions for the human
 
-- **P-1 · `prices_daily` layout.** Keep SPEC §6.2 as written (270 bytes/row), or use the optimized layout measured in `PROGRESS.md` (121 bytes/row)? See PROGRESS.md → Storage.
-- **P-2 · Variety-wise resource.** Adopt `35985678-0d79-46b4-9ed6-6f13308a1d24` as `DATAGOVIN_RESOURCE_MANDI_VARIETY`, and decide how much history to backfill.
+- P-1 and P-2 resolved with the recommended options (D-011, D-013) after the human asked to proceed through all phases.
+- **P-3 · Production backfill depth.** It depends on staying on Neon Free (about 140 days of optimized data) or moving to Launch.

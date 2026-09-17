@@ -16,6 +16,19 @@ jobs:
     name: Lint, typecheck, unit + integration tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: mandiport
+          POSTGRES_PASSWORD: mandiport
+          POSTGRES_DB: mandiport_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U mandiport" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgres://mandiport:mandiport@localhost:5432/mandiport
+      DATABASE_URL_TEST: postgres://mandiport:mandiport@localhost:5432/mandiport_test
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6

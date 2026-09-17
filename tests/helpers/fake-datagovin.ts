@@ -15,6 +15,7 @@ export interface FakeApiOptions {
 export function createFakeApi(rows: Row[], options: FakeApiOptions = {}) {
   const maxWindow = options.maxWindow ?? 10_000;
   const calls: { offset: number; limit: number; filters: Filters }[] = [];
+  let failWhen: ((filters: Filters) => boolean) | undefined;
 
   const fetchImpl = (async (input: string | URL) => {
     const url = new URL(String(input));
@@ -26,6 +27,7 @@ export function createFakeApi(rows: Row[], options: FakeApiOptions = {}) {
       if (match?.[1]) filters[match[1]] = value;
     }
     calls.push({ offset, limit, filters });
+    if (failWhen?.(filters)) return new Response("gateway error", { status: 400 });
 
     if (offset + limit > maxWindow) {
       return Response.json({
@@ -36,7 +38,14 @@ export function createFakeApi(rows: Row[], options: FakeApiOptions = {}) {
 
     const matching = rows.filter((row) =>
       Object.entries(filters).every(([field, value]) => {
-        if (field.endsWith(".keyword")) return String(row[field.slice(0, -8)]) === value;
+        if (field.endsWith(".keyword")) {
+          // Real API: `<lowercase field>.keyword` matches regardless of the record key's case;
+          // a capitalised keyword name (`State.keyword`) matches nothing.
+          const name = field.slice(0, -8);
+          if (name !== name.toLowerCase()) return false;
+          const k = Object.keys(row).find((key) => key.toLowerCase() === name);
+          return k !== undefined && String(row[k]) === value;
+        }
         const actual = String(row[field] ?? "");
         return actual.split(" ").some((word) => value.split(" ").includes(word));
       }),
@@ -57,7 +66,18 @@ export function createFakeApi(rows: Row[], options: FakeApiOptions = {}) {
     });
   }) as typeof fetch;
 
-  return { fetch: fetchImpl, calls };
+  return {
+    fetch: fetchImpl,
+    calls,
+    /** Makes matching requests fail with a non-retryable HTTP 400 until cleared. */
+    failRequests(predicate: ((filters: Filters) => boolean) | undefined) {
+      failWhen = predicate;
+    },
+    /** Replace the served rows (e.g. to simulate late reports). */
+    setRows(next: Row[]) {
+      rows.splice(0, rows.length, ...next);
+    },
+  };
 }
 
 export const noSleep = async () => {};

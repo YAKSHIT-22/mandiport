@@ -1,0 +1,422 @@
+[
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "AFGHANISTAN",
+  "unit": "TON",
+  "quantity_": "0",
+  "value_us__million_": "0"
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "ALBANIA",
+  "unit": "TON",
+  "quantity_": 46,
+  "value_us__million_": 0.05
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "ALGERIA",
+  "unit": "TON",
+  "quantity_": 24078,
+  "value_us__million_": 24.84
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "ANGOLA",
+  "unit": "TON",
+  "quantity_": 2352,
+  "value_us__million_": 2.97
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "ARGENTINA",
+  "unit": "TON",
+  "quantity_": 25,
+  "value_us__million_": 0.03
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "ARMENIA",
+  "unit": "TON",
+  "quantity_": 360,
+  "value_us__million_": 0.43
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "AUSTRALIA",
+  "unit": "TON",
+  "quantity_": 45236,
+  "value_us__million_": 56.12
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "AUSTRIA",
+  "unit": "TON",
+  "quantity_": 216,
+  "value_us__million_": 0.33
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "AZERBAIJAN",
+  "unit": "TON",
+  "quantity_": 4069,
+  "value_us__million_": 3.81
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BAHARAIN IS",
+  "unit": "TON",
+  "quantity_": 39801,
+  "value_us__million_": 41.88
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BANGLADESH PR",
+  "unit": "TON",
+  "quantity_": 6282,
+  "value_us__million_": 7.42
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BELARUS",
+  "unit": "TON",
+  "quantity_": 155,
+  "value_us__million_": 0.14
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BELGIUM",
+  "unit": "TON",
+  "quantity_": 8218,
+  "value_us__million_": 9.72
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BENIN",
+  "unit": "TON",
+  "quantity_": 1567,
+  "value_us__million_": 1.53
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BHUTAN",
+  "unit": "TON",
+  "quantity_": 9808,
+  "value_us__million_": 6.11
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BOSNIA-HRZGOVIN",
+  "unit": "TON",
+  "quantity_": 133,
+  "value_us__million_": 0.16
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BOTSWANA",
+  "unit": "TON",
+  "quantity_": 226,
+  "value_us__million_": 0.27
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BRAZIL",
+  "unit": "TON",
+  "quantity_": 34,
+  "value_us__million_": 0.03
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BRUNEI",
+  "unit": "TON",
+  "quantity_": 566,
+  "value_us__million_": 0.71
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BULGARIA",
+  "unit": "TON",
+  "quantity_": 418,
+  "value_us__million_": 0.46
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "BURKINA FASO",
+  "unit": "TON",
+  "quantity_": 66,
+  "value_us__million_": 0.06
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "C AFRI REP",
+  "unit": "TON",
+  "quantity_": 441,
+  "value_us__million_": 0.41
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CAMBODIA",
+  "unit": "TON",
+  "quantity_": 133,
+  "value_us__million_": 0.17
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CAMEROON",
+  "unit": "TON",
+  "quantity_": 517,
+  "value_us__million_": 0.53
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CANADA",
+  "unit": "TON",
+  "quantity_": 63288,
+  "value_us__million_": 74.4
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CAPE VERDE IS",
+  "unit": "TON",
+  "quantity_": "0",
+  "value_us__million_": "0"
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CAYMAN IS",
+  "unit": "TON",
+  "quantity_": 103,
+  "value_us__million_": 0.11
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CHILE",
+  "unit": "TON",
+  "quantity_": 200,
+  "value_us__million_": 0.26
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CHINA P RP",
+  "unit": "TON",
+  "quantity_": 1131,
+  "value_us__million_": 1.28
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "COLOMBIA",
+  "unit": "TON",
+  "quantity_": 75,
+  "value_us__million_": 0.09
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "COMOROS",
+  "unit": "TON",
+  "quantity_": 5901,
+  "value_us__million_": 7.25
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CONGO D. REP.",
+  "unit": "TON",
+  "quantity_": 320,
+  "value_us__million_": 0.36
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CONGO P REP",
+  "unit": "TON",
+  "quantity_": 300,
+  "value_us__million_": 0.32
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "COSTA RICA",
+  "unit": "TON",
+  "quantity_": 20,
+  "value_us__million_": 0.03
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "COTE D' IVOIRE",
+  "unit": "TON",
+  "quantity_": 1352,
+  "value_us__million_": 1.25
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CROATIA",
+  "unit": "TON",
+  "quantity_": 224,
+  "value_us__million_": 0.26
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CYPRUS",
+  "unit": "TON",
+  "quantity_": 1135,
+  "value_us__million_": 1.44
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "CZECH REPUBLIC",
+  "unit": "TON",
+  "quantity_": 120,
+  "value_us__million_": 0.16
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "DENMARK",
+  "unit": "TON",
+  "quantity_": 856,
+  "value_us__million_": 1.07
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "DJIBOUTI",
+  "unit": "TON",
+  "quantity_": 13490,
+  "value_us__million_": 11.08
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "DOMINIC REP",
+  "unit": "TON",
+  "quantity_": "0",
+  "value_us__million_": "0"
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "ECUADOR",
+  "unit": "TON",
+  "quantity_": "0",
+  "value_us__million_": "0"
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "EGYPT A RP",
+  "unit": "TON",
+  "quantity_": 32721,
+  "value_us__million_": 35.85
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "EQUTL GUINEA",
+  "unit": "TON",
+  "quantity_": "0",
+  "value_us__million_": "0"
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "ESTONIA",
+  "unit": "TON",
+  "quantity_": 167,
+  "value_us__million_": 0.19
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "ETHIOPIA",
+  "unit": "TON",
+  "quantity_": 4751,
+  "value_us__million_": 3.61
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "FIJI IS",
+  "unit": "TON",
+  "quantity_": 599,
+  "value_us__million_": 0.71
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "FINLAND",
+  "unit": "TON",
+  "quantity_": 403,
+  "value_us__million_": 0.48
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "FRANCE",
+  "unit": "TON",
+  "quantity_": 7571,
+  "value_us__million_": 8.81
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GABON",
+  "unit": "TON",
+  "quantity_": 159,
+  "value_us__million_": 0.17
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GAMBIA",
+  "unit": "TON",
+  "quantity_": 985,
+  "value_us__million_": 0.69
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GEORGIA",
+  "unit": "TON",
+  "quantity_": 3495,
+  "value_us__million_": 3.68
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GERMANY",
+  "unit": "TON",
+  "quantity_": 9677,
+  "value_us__million_": 12.76
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GHANA",
+  "unit": "TON",
+  "quantity_": 2674,
+  "value_us__million_": 2.95
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GREECE",
+  "unit": "TON",
+  "quantity_": 2137,
+  "value_us__million_": 1.99
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GUADELOUPE",
+  "unit": "TON",
+  "quantity_": 44,
+  "value_us__million_": 0.05
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GUATEMALA",
+  "unit": "TON",
+  "quantity_": 26,
+  "value_us__million_": 0.01
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GUINEA",
+  "unit": "TON",
+  "quantity_": 71,
+  "value_us__million_": 0.07
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GUINEA BISSAU",
+  "unit": "TON",
+  "quantity_": "0",
+  "value_us__million_": "0"
+ },
+ {
+  "principle_commodity": "RICE BASMOTI",
+  "country": "GUYANA",
+  "unit": "TON",
+  "quantity_": 23,
+  "value_us__million_": 0.04
+ }
+]

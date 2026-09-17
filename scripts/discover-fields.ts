@@ -24,13 +24,25 @@ const SAMPLES_DIR = path.join("tests", "fixtures", "datagovin");
 
 async function main() {
   const env = getEnv();
-  const client = new DataGovInClient({ apiKey: requireEnv("DATAGOVIN_API_KEY"), logger });
+  const client = new DataGovInClient({
+    apiKey: requireEnv("DATAGOVIN_API_KEY"),
+    logger,
+    minRequestIntervalMs: 1_100,
+  });
 
   const targets = new Map<string, string>();
   for (const [name, key] of Object.entries(RESOURCE_ENV_KEYS)) {
-    const id = env[key];
-    if (id) targets.set(name, id);
-    else logger.warn("resource ID not set; skipping", { name, envKey: key });
+    const value = env[key];
+    const ids: string[] = !value
+      ? []
+      : typeof value === "string"
+        ? [value]
+        : value.map((v) => (typeof v === "string" ? v : `${v.year}:${v.resourceId}`));
+    if (ids.length === 0) logger.warn("resource ID not set; skipping", { name, envKey: key });
+    for (const entry of ids) {
+      const [label, id] = entry.includes(":") ? entry.split(":") : [undefined, entry];
+      targets.set(ids.length > 1 ? `${name}-${label ?? id!.slice(0, 8)}` : name, id!);
+    }
   }
   for (const arg of process.argv.slice(2)) {
     const [name, id] = arg.split("=");
