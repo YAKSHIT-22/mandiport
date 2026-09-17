@@ -13,7 +13,10 @@ import { todayInIst } from "@/lib/dates";
 import { runMandiJob, type MandiSource } from "@/lib/ingest/mandi-job";
 import { daysBefore } from "@/lib/ingest/rollups";
 import { afterIngest } from "@/lib/ingest/after-ingest";
+import { registerDefaultPostIngestSteps } from "@/lib/ingest/post-steps";
 import { arg, createClient, logger, runScript } from "./lib/context";
+
+registerDefaultPostIngestSteps();
 
 runScript("ingest-mandi", async ({ env, db }) => {
   const source = (arg("source") ?? "daily") as MandiSource;

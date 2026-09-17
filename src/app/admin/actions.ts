@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { assertAdmin } from "@/lib/auth/admin-action";
@@ -19,6 +19,36 @@ export async function confirmCategory(formData: FormData) {
     .update(commodities)
     .set({ categoryId: input.categoryId, categoryConfirmed: true })
     .where(eq(commodities.id, input.commodityId));
+  revalidatePath("/admin/categories");
+}
+
+/** Confirms every commodity whose suggested category matches, in one click. */
+export async function confirmAllSuggested(formData: FormData) {
+  await assertAdmin();
+  const categoryId = z.coerce
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .parse(formData.get("categoryId") ?? undefined);
+  const tier = z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(3)
+    .optional()
+    .parse(formData.get("tier") ?? undefined);
+  await getDb()
+    .update(commodities)
+    .set({ categoryConfirmed: true })
+    .where(
+      and(
+        eq(commodities.categoryConfirmed, false),
+        sql`${commodities.categoryId} is not null`,
+        categoryId ? eq(commodities.categoryId, categoryId) : undefined,
+        tier ? eq(commodities.tier, tier) : undefined,
+      ),
+    );
   revalidatePath("/admin/categories");
 }
 

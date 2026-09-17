@@ -1,1 +1,233 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * Mandiport design system (DESIGN.md).
+ * Structure follows the HandyAds / NightLore references: shadcn-style CSS variables with a
+ * light theme (default, readable outdoors) and a `.dark` theme using NightLore's ink palette.
+ * Typography from NightLore: Space Grotesk headings + Inter body.
+ */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Mandiport semantic tokens */
+  --color-panel: var(--panel);
+  --color-panel-foreground: var(--panel-foreground);
+  --color-panel-muted: var(--panel-muted);
+  --color-highlight: var(--highlight);
+  --color-rise: var(--rise);
+  --color-fall: var(--fall);
+  --color-rise-panel: var(--rise-panel);
+  --color-fall-panel: var(--fall-panel);
+  --color-chart-1: var(--chart-1);
+  --color-chart-band: var(--chart-band);
+
+  /* Aliases kept for existing markup (ledger vocabulary from the first design pass). */
+  --color-ink: var(--foreground);
+  --color-ink-muted: var(--muted-foreground);
+  --color-paper: var(--background);
+  --color-paper-deep: var(--muted);
+  --color-rule: var(--border);
+  --color-chalk: var(--panel);
+  --color-chalk-soft: var(--primary);
+  --color-turmeric: var(--highlight);
+
+  --font-sans: var(--font-inter), system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-heading: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
+  --font-deva: var(--font-noto-deva), var(--font-inter), sans-serif;
+
+  --text-price-xl: clamp(2.5rem, 9vw, 3.5rem);
+  --text-price-xl--line-height: 1.05;
+  --text-price-lg: 1.875rem;
+  --text-price-lg--line-height: 2.25rem;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.7rem;
+
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+
+  --breakpoint-xs: 380px;
+}
+
+:root {
+  --radius: 10px;
+  --background: #f8f6f1;
+  --foreground: #15191b;
+  --card: #ffffff;
+  --card-foreground: #15191b;
+  --popover: #ffffff;
+  --popover-foreground: #15191b;
+  --primary: #1e5a42;
+  --primary-foreground: #ffffff;
+  --secondary: #ece7dc;
+  --secondary-foreground: #15191b;
+  --muted: #efeae0;
+  --muted-foreground: #4a5157;
+  --accent: #e7efe9;
+  --accent-foreground: #15191b;
+  --destructive: #b02a1e;
+  --border: #ddd5c4;
+  --input: #857b68;
+  --ring: #1e5a42;
+
+  --panel: #1e3a2f;
+  --panel-foreground: #f8f4ea;
+  --panel-muted: #cfdcd4;
+  --highlight: #e3a21a;
+  --rise: #0e5a99;
+  --fall: #b02a1e;
+  --rise-panel: #8cc4ff;
+  --fall-panel: #ff9d93;
+  --chart-1: #15191b;
+  --chart-band: #0e5a99;
+}
+
+:root.dark,
+.dark {
+  color-scheme: dark;
+  --background: #07090a;
+  --foreground: #f0ebe2;
+  --card: #0f1315;
+  --card-foreground: #f0ebe2;
+  --popover: #0f1315;
+  --popover-foreground: #f0ebe2;
+  --primary: #c6a66e;
+  --primary-foreground: #07090a;
+  --secondary: #1b2226;
+  --secondary-foreground: #f0ebe2;
+  --muted: #13181b;
+  --muted-foreground: #b8b8b5;
+  --accent: #1b2226;
+  --accent-foreground: #f0ebe2;
+  --destructive: #f0605a;
+  --border: #2b3338;
+  --input: #6f7a80;
+  --ring: #c6a66e;
+
+  --panel: #0f1315;
+  --panel-foreground: #f0ebe2;
+  --panel-muted: #b8b8b5;
+  --highlight: #c6a66e;
+  --rise: #7cb8ff;
+  --fall: #ff7a70;
+  --rise-panel: #8cc4ff;
+  --fall-panel: #ff9d93;
+  --chart-1: #f0ebe2;
+  --chart-band: #7cb8ff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/60;
+  }
+  html {
+    background: var(--background);
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 80px;
+  }
+  body {
+    @apply bg-background text-body text-foreground font-sans antialiased;
+    min-height: 100dvh;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+  h1 {
+    @apply text-3xl font-bold sm:text-4xl;
+  }
+  h2 {
+    @apply text-2xl font-bold;
+  }
+  h3 {
+    @apply text-lg font-semibold;
+  }
+  a {
+    text-underline-offset: 3px;
+  }
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--highlight);
+    color: #15191b;
+  }
+  table {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  [lang="hi"] {
+    font-family: var(--font-deva);
+  }
+}
+
+@layer components {
+  /* NightLore/HandyAds container and panel patterns. */
+  .container-mp {
+    @apply mx-auto w-full max-w-[1216px] px-4 sm:px-6;
+  }
+  .panel {
+    @apply bg-card text-card-foreground rounded-lg border;
+  }
+  .eyebrow {
+    @apply font-heading text-primary inline-flex items-center gap-2 text-[0.78rem] font-bold tracking-[0.12em] uppercase;
+  }
+  .prose-mp {
+    @apply max-w-[42rem];
+  }
+  .prose-mp p + p {
+    @apply mt-4;
+  }
+  .figures {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
+
+/* TrendChart period tabs: CSS-only switching (works without JavaScript). */
+.chart-tabs .chart-panel {
+  display: none;
+}
+.chart-tabs:has(input[data-period-input="30"]:checked) .chart-panel[data-period="30"],
+.chart-tabs:has(input[data-period-input="90"]:checked) .chart-panel[data-period="90"],
+.chart-tabs:has(input[data-period-input="365"]:checked) .chart-panel[data-period="365"] {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -11,6 +11,7 @@ import {
 import type { Db } from "@/lib/db";
 import { PRICE_SOURCE } from "@/lib/db/schema";
 import { refreshDailyAggregates } from "./aggregates";
+import { ensureUniqueMarketSlugsPerState } from "./market-slugs";
 import { DimensionResolver } from "./dimensions";
 import { removeProvisionalRows, upsertMandiPrices } from "./prices";
 import { IngestRun } from "./runs";
@@ -169,6 +170,7 @@ export async function runMandiJob(options: MandiJobOptions): Promise<MandiJobRes
       dates.add(date);
     }
 
+    await ensureUniqueMarketSlugsPerState(db);
     await refreshDailyAggregates(db, [...dates]);
     const status = complete
       ? "success"

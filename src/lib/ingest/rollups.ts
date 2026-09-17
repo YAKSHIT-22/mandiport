@@ -1,5 +1,8 @@
 import { sql } from "drizzle-orm";
+import { daysBefore } from "@/lib/dates";
 import type { Db } from "@/lib/db";
+
+export { daysBefore };
 
 /** Retention (SPEC §6.3). */
 export const RETENTION = {
@@ -7,13 +10,6 @@ export const RETENTION = {
   rejectsDays: 30,
   runsDays: 180,
 } as const;
-
-/** Days before `date` (YYYY-MM-DD), as YYYY-MM-DD. */
-export function daysBefore(date: string, days: number): string {
-  const d = new Date(`${date}T00:00:00Z`);
-  d.setUTCDate(d.getUTCDate() - days);
-  return d.toISOString().slice(0, 10);
-}
 
 /**
  * Rebuilds weekly (ISO weeks starting Monday) and monthly market rollups for every period

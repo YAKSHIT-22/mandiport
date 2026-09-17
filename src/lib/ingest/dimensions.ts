@@ -164,16 +164,20 @@ export class DimensionResolver {
       (r) => !this.marketIds.has(key(districtIdOf(r), r.market)),
     );
     if (newMarkets.length > 0) {
-      const taken = new Map<number, Set<string>>();
+      // Market URLs are /crops/[crop]/[state]/[market], so slugs must be unique within a state.
+      const takenByState = new Map<number, Set<string>>();
       const values = [];
       for (const r of newMarkets) {
         const districtId = districtIdOf(r);
-        if (!taken.has(districtId))
-          taken.set(
-            districtId,
-            await this.takenSlugs(sql`select slug from markets where district_id = ${districtId}`),
+        const stateId = stateIdOf(r);
+        if (!takenByState.has(stateId))
+          takenByState.set(
+            stateId,
+            await this.takenSlugs(
+              sql`select m.slug from markets m join districts d on d.id = m.district_id where d.state_id = ${stateId}`,
+            ),
           );
-        values.push({ districtId, name: r.market, slug: uniqueSlug(r.market, taken.get(districtId)!) });
+        values.push({ districtId, name: r.market, slug: uniqueSlug(r.market, takenByState.get(stateId)!) });
       }
       const inserted = await this.db
         .insert(markets)

@@ -1,6 +1,6 @@
 import { getDb } from "@/lib/db";
 import { getCategoryReviewQueue } from "@/lib/db/admin-queries";
-import { confirmCategory } from "../actions";
+import { confirmAllSuggested, confirmCategory } from "../actions";
 
 export default async function AdminCategoriesPage() {
   const { commodities, categories } = await getCategoryReviewQueue(getDb());
@@ -12,6 +12,32 @@ export default async function AdminCategoriesPage() {
         Suggested by keyword rules. Unconfirmed commodities appear under “Others” on public pages until
         confirmed. Sorted by tier, then markets reporting.
       </p>
+      <form action={confirmAllSuggested} className="flex flex-wrap items-end gap-2 border-y py-3">
+        <label className="flex flex-col text-sm">
+          Confirm all suggestions in
+          <select name="categoryId" className="mt-1 min-h-11 border p-2">
+            <option value="">every category</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex flex-col text-sm">
+          Limited to tier
+          <select name="tier" className="mt-1 min-h-11 border p-2">
+            <option value="">all tiers</option>
+            <option value="1">Tier 1 only</option>
+            <option value="2">Tier 2 only</option>
+            <option value="3">Tier 3 only</option>
+          </select>
+        </label>
+        <button type="submit" className="min-h-11 border px-3 font-semibold">
+          Confirm suggestions
+        </button>
+        <span className="text-sm">Commodities with no suggestion are left alone.</span>
+      </form>
       {commodities.length === 0 ? (
         <p>All categories are confirmed.</p>
       ) : (
