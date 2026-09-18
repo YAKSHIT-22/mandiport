@@ -33,7 +33,8 @@
     "briefs:generate": "tsx --env-file-if-exists=.env.local scripts/generate-ai-briefs.ts",
     "alerts:send": "tsx --env-file-if-exists=.env.local scripts/send-alerts.ts",
     "geocode:markets": "tsx --env-file-if-exists=.env.local scripts/geocode-markets.ts",
-    "telegram:webhook": "tsx --env-file-if-exists=.env.local scripts/setup-telegram-webhook.ts"
+    "telegram:webhook": "tsx --env-file-if-exists=.env.local scripts/setup-telegram-webhook.ts",
+    "db:seed:e2e": "tsx --env-file-if-exists=.env.local scripts/seed-e2e.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
