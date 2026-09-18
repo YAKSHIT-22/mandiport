@@ -24,7 +24,9 @@ class NoopStore implements CacheStore {
     return null;
   }
   async setJson(): Promise<void> {}
-  async del(): Promise<void> {}
+  async del(keys: string[]): Promise<void> {
+    void keys;
+  }
   // Counters still work in-process so rate limits and token caps are enforced without Redis.
   async incrBy(key: string, by: number, ttlSeconds: number): Promise<number> {
     const now = Date.now();

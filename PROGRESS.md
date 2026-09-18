@@ -44,7 +44,7 @@ Local Postgres 18 and Redis, with 90 days of real data loaded from data.gov.in.
 
 ## Tests
 
-- 174 unit and integration tests (Vitest), integration running against a real Postgres database, inserting only `prices_daily` so they exercise the same derivation as production
+- 178 unit and integration tests (Vitest), integration running against a real Postgres database, inserting only `prices_daily` so they exercise the same derivation as production
 - 20 end-to-end tests (Playwright), including axe accessibility checks on key pages in both themes
 - CI runs lint, format check, typecheck and all tests on every push, with a Postgres service; e2e runs on `main`
 
