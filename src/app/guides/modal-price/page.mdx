@@ -1,0 +1,77 @@
+export const metadata = {
+  title: "What modal price means, and how to read mandi prices | Mandiport",
+  description:
+    "Modal, minimum and maximum price explained, why a mandi price is per quintal, what arrival dates really tell you, and the traps to avoid when comparing markets.",
+  alternates: { canonical: "/guides/modal-price" },
+};
+
+# What modal price means, and how to read mandi prices
+
+Every price on Mandiport comes from a market committee's daily report, and every report has the same shape: a crop, a variety, a grade, a market, a date, and three prices. Once you know what those three prices are, and what they are not, the rest of the site is easy to read.
+
+## The three prices
+
+A mandi reports **minimum**, **maximum** and **modal** price for each crop it trades that day.
+
+- **Minimum price** is the lowest rate at which a lot sold that day. It usually reflects poor quality, small lots, or late arrivals sold in a hurry.
+- **Maximum price** is the highest rate, typically the best quality produce in the best condition, sometimes only a few bags.
+- **Modal price** is the rate at which the largest quantity traded. Statisticians call this the mode, the most frequently occurring value.
+
+The modal price is the figure worth watching. An average would be dragged around by a handful of unusual lots at either end; the modal price tells you where the bulk of the trade actually happened. That is why Mandiport headlines the modal price everywhere, and shows the minimum and maximum as a range around it.
+
+A wide gap between minimum and maximum is itself information. It usually means quality varied a lot that day: some well-graded, dry, uniform produce and some that was not. If you are selling good quality, the maximum is closer to your likely price than the modal. If your lot is mixed, expect something near or below the modal.
+
+## Prices are per quintal
+
+Indian mandi prices are quoted in rupees per **quintal**, which is 100 kilograms. If you think in kilograms, divide by 100: ₹2,500 per quintal is ₹25 per kilogram. If you think in tonnes, multiply by 10: the same price is ₹25,000 per tonne. Our [unit converter](/tools/unit-converter) does this for you, and can also show a dollar value if you enter your own exchange rate.
+
+A few commodities are reported in other units, especially livestock, coconut and some flowers, where the report may be per animal, per hundred nuts or per kilogram. Where the source data says so, the page says so.
+
+## The date matters as much as the price
+
+Markets do not all report every day. A market may hold auctions only on certain days, may be closed for a festival, or may simply not have sent its figures yet. The daily feed we collect in the evening is provisional; the final, variety-wise data for the same day is published the next day.
+
+This is why every price on Mandiport is shown with the date it refers to, and why we never write "today's price" unless the data is genuinely from today in India. When you compare two markets, check the two dates first. A market that last reported four days ago may look cheap or expensive for no reason other than the gap in time.
+
+## What the data does not contain
+
+- **No quantity.** The daily price feed does not include arrivals, so you cannot tell from it whether 5 quintals or 5,000 quintals traded at that price. A modal price from a market with tiny arrivals is a weaker signal than one from a large market.
+- **No buyer names or terms.** Payment terms, commission, mandi fee, weighing and loading charges are not in the data. They can move your realisation by a few percent.
+- **No forecast.** Nothing in the data tells you what tomorrow's price will be, and Mandiport never claims to.
+
+## Variety and grade change everything
+
+"Onion" is not one product. The same market on the same day can report Onion (Red), Onion (Local) and Onion (Other), at prices that differ by hundreds of rupees. The same is true of paddy varieties, cotton staple lengths and chilli types.
+
+When you compare markets, compare the same variety where you can. Crop pages list the varieties reported and the latest price for each, so you can see whether a headline difference between two markets is really a difference in what was traded.
+
+Grades work the same way. "FAQ" means fair average quality, the standard used for government procurement. "Local", "Medium", "Grade A" and similar labels are the market's own descriptions. They are not standardised across states, so treat them as a hint rather than a specification.
+
+## How Mandiport combines prices
+
+A single market can report several rows for one crop on one day, one per variety and grade. To give each market one number, we take the **median** of those modal prices, and show the lowest minimum and the highest maximum alongside.
+
+For a state, we take the median of the market prices that reported that day. For India, we take the median of all reporting markets. A median, the middle value, is deliberate: one unusual market cannot pull it far, which an average could.
+
+We also show how many markets reported. A national figure from 400 markets is a solid summary. The same figure from three markets is not, and the page will say so.
+
+## Reading a crop page in order
+
+1. **The headline price and its date.** Is the data recent enough for your decision?
+2. **The number of markets reporting.** More markets, more confidence.
+3. **The change marks.** Up or down against about a week and about a month earlier, in rupees and per cent.
+4. **The trend chart.** Look at the shape, not the last point. A price that has been bouncing in a range tells a different story from one that has moved steadily.
+5. **The market table.** Where is the produce actually fetching more, and on which date?
+6. **MSP, if the crop has one.** Useful context, but MSP applies to procurement, not to every sale.
+
+## Common mistakes
+
+- **Comparing an old price with a fresh one.** Always check both dates.
+- **Reading one market as "the price".** A single mandi can be unusual on any given day.
+- **Ignoring transport.** A market paying ₹150 more per quintal 120 km away may leave you worse off. The [best mandi tool](/tools/best-mandi) works out what you would actually take home.
+- **Treating the maximum as your price.** Unless your lot is the best in the yard, it is not.
+- **Assuming the modal price includes charges.** It does not: mandi fee, commission, loading and weighment come out of it.
+
+## Where these figures come from
+
+Every price on Mandiport is published by the Directorate of Marketing and Inspection through the Government of India's open data platform, under the Government Open Data License – India. We do not collect prices ourselves and we do not adjust them: we store them, combine them into medians, and show them with their dates. The [methodology page](/methodology) sets out exactly how, including the rows we reject as unusable.

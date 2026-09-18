@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { assertAdmin } from "@/lib/auth/admin-action";
 import { getDb } from "@/lib/db";
-import { commodities, cropMapping } from "@/lib/db/schema";
+import { aiBriefs, commodities, cropMapping } from "@/lib/db/schema";
 
 const categoryInput = z.object({
   commodityId: z.coerce.number().int().positive(),
@@ -79,4 +79,33 @@ export async function reviewMapping(formData: FormData) {
     })
     .where(and(eq(cropMapping.id, input.mappingId)));
   revalidatePath("/admin/mappings");
+}
+
+const briefInput = z.object({
+  briefId: z.coerce.number().int().positive(),
+  decision: z.enum(["publish", "unpublish"]),
+});
+
+/** Publishing is a human action: drafts never appear on the site (SPEC §8.8). */
+export async function publishBrief(formData: FormData) {
+  await assertAdmin();
+  const input = briefInput.parse(Object.fromEntries(formData));
+  const publishing = input.decision === "publish";
+  const [row] = await getDb()
+    .update(aiBriefs)
+    .set({ status: publishing ? "published" : "draft", publishedAt: publishing ? new Date() : null })
+    .where(eq(aiBriefs.id, input.briefId))
+    .returning({ commodityId: aiBriefs.commodityId, weekStart: aiBriefs.weekStart });
+  revalidatePath("/admin/briefs");
+  revalidatePath("/briefs");
+  if (row) {
+    const [crop] = await getDb()
+      .select({ slug: commodities.slug })
+      .from(commodities)
+      .where(eq(commodities.id, row.commodityId));
+    if (crop) {
+      revalidatePath(`/crops/${crop.slug}`);
+      revalidatePath(`/briefs/${crop.slug}/${row.weekStart}`);
+    }
+  }
 }

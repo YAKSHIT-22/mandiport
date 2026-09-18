@@ -170,8 +170,9 @@ export const pricesMarketDaily = pgTable(
   },
   (t) => [
     primaryKey({ columns: [t.commodityId, t.arrivalDate, t.marketId] }),
+    // One extra index only: state-level reads use prices_state_daily, and the measured cost of
+    // a third index on this table was ~50 MB per 1.6M rows (DECISIONS D-018).
     index("prices_market_daily_market_idx").on(t.marketId, t.commodityId, t.arrivalDate.desc()),
-    index("prices_market_daily_state_idx").on(t.stateId, t.commodityId, t.arrivalDate.desc()),
   ],
 );
 

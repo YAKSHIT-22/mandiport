@@ -3,9 +3,12 @@ import { cleanText } from "./parse";
 
 /**
  * Normalizer for "Principal Commodity wise Export" resources (Department of Commerce, one
- * per financial year). Verified 2026-09-17: field names vary by year
- * (`principle_commodity` / `commodity`, `value_us__million_` / `value_us_million_`), values
- * can be numbers or strings, names vary slightly ("RICE -BASMOTI" / "RICE BASMOTI").
+ * per financial year). Field names differ in every era of the series (verified 2026-09-18):
+ *   2014-15 to 2016-17: pc_description, cty_desc, qty, val_usd_million_
+ *   2017-18:            commodity, country, qty, values_us_million_, unit_code
+ *   2018-19 to 2019-20: commodity, country, quantity_, value_us_million_
+ *   2021-22 to 2022-23: principle_commodity, country, quantity_, value_us__million_
+ * Values can be numbers or strings, and names vary slightly ("RICE -BASMOTI" / "RICE BASMOTI").
  */
 
 export interface ExportRecord {
@@ -35,20 +38,41 @@ function toNumber(value: unknown): number | null {
   return Number(cleaned);
 }
 
+/** Finds the commodity, country, quantity, value or unit field whatever the year's naming. */
+export function findExportField(
+  keys: string[],
+  kind: "commodity" | "country" | "quantity" | "value" | "unit",
+): string | undefined {
+  const pick = (test: (name: string) => boolean) => keys.find((key) => test(key.toLowerCase()));
+  switch (kind) {
+    case "commodity":
+      return pick((n) => (n.includes("commodity") || n.includes("pc_description")) && !n.endsWith("_code"));
+    case "country":
+      return pick((n) => (n.includes("country") || n.startsWith("cty")) && !n.endsWith("_code"));
+    case "quantity":
+      return pick((n) => n === "qty" || n.startsWith("quantity"));
+    case "value":
+      return pick((n) => (n.startsWith("val") || n.includes("value")) && n.includes("million"));
+    case "unit":
+      return pick((n) => n === "unit" || n === "unit_code");
+  }
+}
+
 export function normalizeExportRow(
   raw: Record<string, unknown>,
 ): { ok: true; value: ExportRecord } | { ok: false; reject: ExportReject } {
   const r = normalizeRecordKeys(raw);
-  const commodityName = cleanText(r.principle_commodity ?? r.principal_commodity ?? r.commodity);
+  const keys = Object.keys(r);
+  const field = (kind: Parameters<typeof findExportField>[1]) => r[findExportField(keys, kind) ?? ""];
+
+  const commodityName = cleanText(field("commodity"));
   if (!commodityName) return { ok: false, reject: { raw, reason: "missing_commodity" } };
-  const country = cleanText(r.country);
+  const country = cleanText(field("country"));
   if (!country) return { ok: false, reject: { raw, reason: "missing_country" } };
 
-  const valueField = Object.keys(r).find((k) => k.startsWith("value"));
-  const value = valueField ? toNumber(r[valueField]) : null;
+  const value = toNumber(field("value"));
   if (value === null || value < 0) return { ok: false, reject: { raw, reason: "invalid_value" } };
-  const quantityField = Object.keys(r).find((k) => k.startsWith("quantity"));
-  const quantity = quantityField ? toNumber(r[quantityField]) : null;
+  const quantity = toNumber(field("quantity"));
 
   return {
     ok: true,
@@ -56,7 +80,7 @@ export function normalizeExportRow(
       commodityKey: exportKey(commodityName),
       commodityName,
       country,
-      unit: cleanText(r.unit),
+      unit: cleanText(field("unit")),
       quantity: quantity !== null && quantity >= 0 ? quantity : null,
       valueUsdMillion: value,
     },

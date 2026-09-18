@@ -67,3 +67,6 @@ jobs:
       - name: Rollups and retention
         if: steps.config.outputs.ready == 'true' && !cancelled()
         run: pnpm rollups
+      - name: Price alerts
+        if: steps.config.outputs.ready == 'true' && !cancelled()
+        run: pnpm alerts:send

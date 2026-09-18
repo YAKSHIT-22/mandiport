@@ -1,0 +1,1 @@
+DROP INDEX "prices_market_daily_state_idx";

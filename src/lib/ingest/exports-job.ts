@@ -3,6 +3,7 @@ import exportCommodityList from "../../../data/export-commodities.json";
 import {
   countryDisplayName,
   exportKey,
+  findExportField,
   normalizeExportRow,
   type ExportRecord,
 } from "@/lib/datagovin/exports";
@@ -43,10 +44,21 @@ export async function runExportsJob(opts: {
       const partitionKey = year;
       if (run.isDone(partitionKey)) continue;
 
-      // Field name differs by year; find it from a one-row sample.
+      // Field names differ in every era of the series; find them from a one-row sample.
       const sample = await client.fetchPage({ resourceId, limit: 1 });
-      const fieldName = Object.keys(sample.records[0] ?? {}).find((k) => /commodity/i.test(k));
-      if (!fieldName) throw new Error(`No commodity field in export resource ${resourceId} (${year})`);
+      const sampleKeys = Object.keys(sample.records[0] ?? {});
+      const fieldName = findExportField(sampleKeys, "commodity");
+      if (!fieldName)
+        throw new Error(
+          `No commodity field in export resource ${resourceId} (${year}); fields: ${sampleKeys.join(", ")}`,
+        );
+      if ((sample.total ?? 0) < 1000) {
+        logger.warn("export resource looks incomplete for a full year", {
+          year,
+          resourceId,
+          total: sample.total,
+        });
+      }
 
       const yearRecords: ExportRecord[] = [];
       for (const commodity of exportCommodityList.commodities) {

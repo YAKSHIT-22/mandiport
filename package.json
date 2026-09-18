@@ -31,10 +31,17 @@
     "tiers": "tsx --env-file-if-exists=.env.local scripts/calculate-tiers.ts",
     "mappings:suggest": "tsx --env-file-if-exists=.env.local scripts/suggest-export-mappings.ts",
     "briefs:generate": "tsx --env-file-if-exists=.env.local scripts/generate-ai-briefs.ts",
-    "alerts:send": "tsx --env-file-if-exists=.env.local scripts/send-alerts.ts"
+    "alerts:send": "tsx --env-file-if-exists=.env.local scripts/send-alerts.ts",
+    "geocode:markets": "tsx --env-file-if-exists=.env.local scripts/geocode-markets.ts",
+    "telegram:webhook": "tsx --env-file-if-exists=.env.local scripts/setup-telegram-webhook.ts"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "^16.3.5",
+    "@types/mdx": "^2.0.14",
     "@upstash/redis": "^1.38.4",
+    "ai": "^7.0.105",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
@@ -51,6 +58,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@ai-sdk/provider": "4",
     "@axe-core/playwright": "^4.13.0",
     "@next/env": "^16.3.5",
     "@playwright/test": "^1.63.0",

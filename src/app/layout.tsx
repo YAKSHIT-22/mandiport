@@ -57,7 +57,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to content
         </a>
         <SiteHeader />
-        <SiteProviders>
+        <SiteProviders needsConsent={Boolean(env.NEXT_PUBLIC_GA_MEASUREMENT_ID)}>
           <div id="main" className="flex-1">
             {children}
           </div>

@@ -1,0 +1,76 @@
+export const metadata = {
+  title: "How Indian agri export data works | Mandiport",
+  description:
+    "Annual versus monthly trade figures, principal commodity groups, HS codes, the reporting lag, and how to read export numbers next to mandi prices without over-reading them.",
+  alternates: { canonical: "/guides/export-data" },
+};
+
+# How Indian agricultural export data works
+
+Export figures answer a different question from mandi prices. A mandi price tells you what one market paid on one day. An export figure tells you what India sold abroad over a whole financial year. Used together they are useful; confused with each other they mislead.
+
+## What is published, and by whom
+
+India's merchandise trade statistics come from the Directorate General of Commercial Intelligence and Statistics, under the Ministry of Commerce and Industry, compiled from customs records. The figures published as open data give, for each financial year:
+
+- the **principal commodity** group,
+- the **destination country**,
+- a **quantity** and its unit,
+- a **value in US dollars (millions)**.
+
+The financial year runs April to March, so "2022-23" means April 2022 to March 2023.
+
+## Principal commodity groups are broad
+
+This is the single most important thing to understand. Export data is not published crop by crop. It is published for groups such as **Fresh vegetables**, **Fresh fruits**, **Spices**, **Pulses**, **Rice (basmati)** and **Rice (other than basmati)**.
+
+That means:
+
+- Onion, tomato, potato and okra all sit inside "Fresh vegetables".
+- Cumin, turmeric, chilli and pepper all sit inside "Spices".
+- Basmati and non-basmati rice are separate, as are groundnut, sesame seeds and niger seeds.
+
+When a Mandiport crop page shows export figures, it names the group the crop belongs to, and says so plainly. A rise in "Fresh vegetables" exports is not proof that onion exports rose, though onion is a large part of that group in most years.
+
+## Mapping crops to groups
+
+We keep a mapping table from mandi commodities to export groups. Each mapping is reviewed by a person before it is marked verified, and pages show an "Unverified mapping" note until that review happens. Some crops have no sensible export counterpart at all, and those pages simply show no export section rather than an empty box.
+
+## HS codes
+
+Customs data is organised by the Harmonised System, an international classification, extended in India as ITC-HS codes. A code identifies a product precisely: 0703 10 is onions and shallots, for example.
+
+Two cautions:
+
+1. HS codes are revised periodically, and some codes are dropped or reallocated. A code that identified a product a few years ago may not today.
+2. The principal commodity groups in the published data do not map one-to-one onto HS codes.
+
+For that reason Mandiport never guesses an HS code. Where one is shown, a person entered it.
+
+## The reporting lag
+
+Annual data appears well after the year ends. At the time of writing, the latest year published through the open data API is **2022-23**, and **no 2020-21 dataset is published there at all**. Monthly trade data exists on the commerce ministry's own systems, but not as an open API we can use, so Mandiport does not show monthly export figures.
+
+Every export section on the site states the year it refers to and notes the lag. If you need current-month trade flows, go to the Department of Commerce's trade statistics portal directly.
+
+## Reading the numbers sensibly
+
+- **Value, not price.** US$ million is the total value shipped, not a rate per quintal. A rise can come from higher volumes, higher prices, or a weaker rupee.
+- **Quantity units vary** by group and year: kilograms, tonnes or numbers. Compare quantities only within the same group and unit.
+- **Country rankings are stable, growth is noisy.** A country going from US$0.2 million to US$0.6 million has tripled, but is still small. Our fastest-growing list only includes destinations buying at least US$1 million in both years, to keep the ranking meaningful.
+- **Policy moves the numbers.** Export duties, minimum export prices and outright bans have repeatedly changed Indian agricultural exports within a single year. A fall in the data may reflect a policy decision rather than demand.
+
+## How export figures relate to mandi prices
+
+The link is real but indirect. Strong export demand can pull produce out of domestic markets and support prices; an export restriction can do the opposite. But the export data you can see is annual and a year or two old, while the mandi price you can see is from this week. Use exports to understand the shape of demand for a crop, not to explain today's price.
+
+A sensible way to use both:
+
+1. Read the crop's price trend for the short-term picture.
+2. Read the export section for the medium-term direction of overseas demand for that group.
+3. Use the [export destination finder](/tools/export-destinations) to see which countries buy, and which have grown, before you look for a buyer.
+4. Check current export policy separately: it changes faster than any dataset.
+
+## Sources
+
+Export figures on Mandiport come from the Department of Commerce's "Principal Commodity wise Export" datasets on data.gov.in, one per financial year, used under the Government Open Data License – India. Our [methodology page](/methodology) lists exactly which years we hold and how we fetch them.
