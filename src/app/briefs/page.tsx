@@ -4,6 +4,7 @@ import { sql } from "drizzle-orm";
 import { EmptyState, SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { getDb } from "@/lib/db";
+import { tryQuery } from "@/lib/db/safe";
 import { formatDataDate } from "@/lib/dates";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -17,11 +18,18 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function BriefsPage() {
-  const rows = await getDb().execute<{ slug: string; name: string; week: string; headline: string }>(sql`
+  const briefs = await tryQuery(
+    "briefs.list",
+    async () =>
+      (
+        await getDb().execute<{ slug: string; name: string; week: string; headline: string }>(sql`
     select c.slug, c.display_name as name, b.week_start::text as week, b.headline
     from ai_briefs b join commodities c on c.id = b.commodity_id
     where b.status = 'published' and b.language = 'en'
-    order by b.week_start desc, c.markets_reporting_90d desc limit 60`);
+    order by b.week_start desc, c.markets_reporting_90d desc limit 60`)
+      ).rows,
+    [] as { slug: string; name: string; week: string; headline: string }[],
+  );
 
   return (
     <main className="container-mp space-y-6 py-6">
@@ -37,7 +45,7 @@ export default async function BriefsPage() {
         written by a language model from figures in our database, and reviewed by a person before it is
         published. Briefs describe what happened; they never predict prices.
       </p>
-      {rows.rows.length === 0 ? (
+      {briefs.length === 0 ? (
         <EmptyState title="No briefs have been published yet">
           Briefs appear here once the first week of data has been summarised and reviewed.{" "}
           <Link href="/crops" className="underline">
@@ -47,7 +55,7 @@ export default async function BriefsPage() {
         </EmptyState>
       ) : (
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {rows.rows.map((b) => (
+          {briefs.map((b) => (
             <li key={`${b.slug}-${b.week}`}>
               <Link
                 href={`/briefs/${b.slug}/${b.week}`}

@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { CATEGORY_OVERVIEWS } from "@/content/categories";
 import { formatDataDate } from "@/lib/dates";
 import { formatPercent, formatRupees } from "@/lib/format";
+import { tryQuery } from "@/lib/db/safe";
 import { getAllCrops, getBiggestMovers, getCategories } from "@/lib/queries/site";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -34,13 +35,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CategoryPage({ params }: Props) {
   const { category } = await params;
   const overview = CATEGORY_OVERVIEWS[category];
-  const [cats, allCrops] = await Promise.all([getCategories(), getAllCrops()]);
-  const cat = cats.find((c) => c.slug === category);
-  if (!overview || !cat) notFound();
+  const [cats, allCrops] = await Promise.all([
+    tryQuery("category.categories", () => getCategories(), []),
+    tryQuery("category.crops", () => getAllCrops(), []),
+  ]);
+  // With no data yet (a fresh database), still render the category's written overview.
+  const cat = cats.find((c) => c.slug === category) ?? { slug: category, name: category, count: 0 };
+  if (!overview) notFound();
   const crops = allCrops
     .filter((c) => c.categorySlug === category)
     .sort((a, b) => a.tier - b.tier || b.markets - a.markets);
-  const movers = await getBiggestMovers(5, 5, category === "others" ? undefined : category);
+  const movers = await tryQuery(
+    "category.movers",
+    () => getBiggestMovers(5, 5, category === "others" ? undefined : category),
+    { up: [], down: [] },
+  );
   const moverList =
     category === "others"
       ? []

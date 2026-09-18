@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/site/section-heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDb } from "@/lib/db";
+import { tryQuery } from "@/lib/db/safe";
 import { formatDataDate } from "@/lib/dates";
 import { formatNumber, formatPercent, formatRupees } from "@/lib/format";
 import {
@@ -93,14 +94,21 @@ function MoverRow({ mover, direction }: { mover: Mover; direction: "up" | "down"
 
 export default async function HomePage() {
   const [categories, movers, latestDate, stats, briefs] = await Promise.all([
-    getCategories(),
-    getBiggestMovers(5, 10),
-    getLatestDataDate(),
-    getSiteStats(),
-    getDb().execute<{ slug: string; name: string; week: string; headline: string }>(sql`
+    tryQuery("home.categories", () => getCategories(), []),
+    tryQuery("home.movers", () => getBiggestMovers(5, 10), { up: [], down: [] }),
+    tryQuery("home.latestDate", () => getLatestDataDate(), null),
+    tryQuery("home.stats", () => getSiteStats(), { commodities: 0, markets: 0, states: 0, days: 0 }),
+    tryQuery(
+      "home.briefs",
+      async () =>
+        (
+          await getDb().execute<{ slug: string; name: string; week: string; headline: string }>(sql`
       select c.slug, c.display_name as name, b.week_start::text as week, b.headline
       from ai_briefs b join commodities c on c.id = b.commodity_id
-      where b.status = 'published' and b.language = 'en' order by b.week_start desc, c.tier, c.display_name limit 6`),
+      where b.status = 'published' and b.language = 'en' order by b.week_start desc, c.tier, c.display_name limit 6`)
+        ).rows,
+      [] as { slug: string; name: string; week: string; headline: string }[],
+    ),
   ]);
 
   return (
@@ -242,7 +250,7 @@ export default async function HomePage() {
             title="Latest weekly briefs"
             description="AI-assisted summaries of official data for the most traded crops."
           />
-          {briefs.rows.length === 0 ? (
+          {briefs.length === 0 ? (
             <p>
               No briefs have been published yet.{" "}
               <Link href="/briefs" className="underline">
@@ -252,7 +260,7 @@ export default async function HomePage() {
             </p>
           ) : (
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {briefs.rows.map((b) => (
+              {briefs.map((b) => (
                 <li key={`${b.slug}-${b.week}`}>
                   <Link
                     href={`/briefs/${b.slug}/${b.week}`}

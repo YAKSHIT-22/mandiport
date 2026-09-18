@@ -6,6 +6,7 @@ import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
 import { AdSlot } from "@/components/site/ad-slot";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { CROP_GUIDES } from "@/content/crop-guides";
+import { tryQuery } from "@/lib/db/safe";
 import { formatDataDate } from "@/lib/dates";
 import { formatNumber, formatRupees } from "@/lib/format";
 import {
@@ -46,20 +47,25 @@ export default async function CropGuidePage({ params }: Props) {
   const { crop: slug } = await params;
   const guide = CROP_GUIDES.find((g) => g.slug === slug);
   if (!guide) notFound();
-  const crop = await getCropBySlug(slug);
-  if (!crop) notFound();
+  // The written sections stand on their own, so the guide still renders without price data.
+  const crop = await tryQuery(`guide.crop.${slug}`, () => getCropBySlug(slug), null);
+  if (!crop) {
+    return <GuideWithoutData guide={guide} slug={slug} />;
+  }
 
   const [series, topMarkets, states, varieties, msp, mapping] = await Promise.all([
-    getNationalSeries(crop.id),
-    getTopMarkets(crop.id, 8),
-    getStatesForCrop(crop.id),
-    getVarietyPrices(crop.id),
-    getLatestMsp(crop.id),
-    getExportMapping(crop.id),
+    tryQuery("guide.series", () => getNationalSeries(crop.id), []),
+    tryQuery("guide.topMarkets", () => getTopMarkets(crop.id, 8), []),
+    tryQuery("guide.states", () => getStatesForCrop(crop.id), []),
+    tryQuery("guide.varieties", () => getVarietyPrices(crop.id), []),
+    tryQuery("guide.msp", () => getLatestMsp(crop.id), null),
+    tryQuery("guide.mapping", () => getExportMapping(crop.id), null),
   ]);
   const headline = headlineFrom(series);
-  const exportYears = mapping ? await getExportYears(mapping.exportCommodityId) : [];
-  const firstDate = await getFirstDataDate(crop.id);
+  const exportYears = mapping
+    ? await tryQuery("guide.exportYears", () => getExportYears(mapping.exportCommodityId), [])
+    : [];
+  const firstDate = await tryQuery("guide.firstDate", () => getFirstDataDate(crop.id), null);
 
   return (
     <article className="w-full max-w-none space-y-2">
@@ -229,6 +235,28 @@ export default async function CropGuidePage({ params }: Props) {
           ]}
         />
       </div>
+    </article>
+  );
+}
+
+/** Fallback when the crop is not in the database yet: the written guide, without figures. */
+function GuideWithoutData({ guide, slug }: { guide: (typeof CROP_GUIDES)[number]; slug: string }) {
+  return (
+    <article className="w-full max-w-none space-y-2">
+      <Breadcrumbs
+        crumbs={[
+          { name: "Home", path: "/" },
+          { name: "Guides", path: "/guides" },
+          { name: guide.title, path: `/guides/crops/${slug}` },
+        ]}
+      />
+      <h1>{guide.title}</h1>
+      {[...guide.intro, ...guide.seasons, ...guide.varieties, ...guide.selling].map((p) => (
+        <p key={p.slice(0, 30)}>{p}</p>
+      ))}
+      <EmptyState title="Live prices for this crop are not available right now">
+        <Link href="/crops">Browse all crops</Link> or try again shortly.
+      </EmptyState>
     </article>
   );
 }

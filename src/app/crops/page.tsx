@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { CropDirectory } from "@/components/site/crop-directory";
+import { tryQuery } from "@/lib/db/safe";
 import { getAllCrops, getCategories } from "@/lib/queries/site";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -15,7 +16,10 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function CropsPage() {
-  const [crops, categories] = await Promise.all([getAllCrops(), getCategories()]);
+  const [crops, categories] = await Promise.all([
+    tryQuery("crops.all", () => getAllCrops(), []),
+    tryQuery("crops.categories", () => getCategories(), []),
+  ]);
   return (
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
