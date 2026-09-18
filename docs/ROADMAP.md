@@ -15,10 +15,10 @@ Recorded from SPEC §15, plus measurements made while building. Nothing here is 
 
 ## Storage and cost
 
-Measured on 88 days of all-India data (see PROGRESS.md):
+Measured on 91 days of all-India data (see PROGRESS.md). The largest saving has now been taken: `prices_market_daily` became a view (DECISIONS D-024), halving projected growth. What is left:
 
-- `prices_daily` costs about 126 bytes a row, as designed.
-- `prices_market_daily` costs about 163 bytes a row for almost the same number of rows, because a market usually reports one variety and grade per day. It is a derived table, so it could be removed and its queries answered from `prices_daily` with a group-by, roughly halving storage growth. That is the single biggest saving available, and worth doing before the 400-day retention window fills.
+- **Rollups overlap the retention window.** Weekly and monthly rollups are built for periods that `prices_daily` still covers, so the same days are stored twice for up to 400 days (about 0.6 MB a day). Building rollups only for periods older than 90 days would save roughly 200 MB at the 400-day mark, at the cost of a more complicated retention job.
+- **Shorter retention.** If the 400-day window is not earning its keep, dropping to 180 days would keep the database under about 0.6 GB indefinitely.
 
 ## Product
 

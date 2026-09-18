@@ -26,8 +26,8 @@ async function seed() {
     insert into commodities (source_name, display_name, slug, tier, markets_reporting_90d, days_reported_90d)
     values ('Onion', 'Onion', 'onion', 1, 60, 70)`);
   await db.execute(sql`
-    insert into prices_market_daily (arrival_date, market_id, commodity_id, state_id, modal_price, min_price, max_price)
-    select ${ASOF}::date - d, m, 1, 1, 2400 + d * 10 + m, 2300, 2600 from generate_series(0, 40) d, generate_series(1, 2) m`);
+    insert into prices_daily (arrival_date, market_id, commodity_id, source, min_price, max_price, modal_price)
+    select ${ASOF}::date - d, m, 1, 2, 2300, 2600, 2400 + d * 10 + m from generate_series(0, 40) d, generate_series(1, 2) m`);
   await db.execute(sql`
     insert into prices_state_daily (arrival_date, state_id, commodity_id, median_modal, markets_reporting)
     select ${ASOF}::date - d, 1, 1, 2400 + d * 10, 2 from generate_series(0, 40) d`);

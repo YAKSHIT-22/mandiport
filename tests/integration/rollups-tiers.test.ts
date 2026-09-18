@@ -18,10 +18,8 @@ async function seedDims(marketCount: number) {
   );
 }
 
+/** One reported price; prices_market_daily is a view, so this is the only insert needed. */
 async function marketDaily(date: string, marketId: number, commodityId: number, modal: number) {
-  await testDb().execute(sql`
-    insert into prices_market_daily (arrival_date, market_id, commodity_id, state_id, modal_price, min_price, max_price)
-    values (${date}, ${marketId}, ${commodityId}, 1, ${modal}, ${modal - 50}, ${modal + 50})`);
   await testDb().execute(sql`
     insert into prices_daily (arrival_date, market_id, commodity_id, source, min_price, max_price, modal_price)
     values (${date}, ${marketId}, ${commodityId}, 2, ${modal - 50}, ${modal + 50}, ${modal})`);
@@ -75,7 +73,6 @@ describe("rollups", () => {
 
     const result = await applyRetention(testDb(), today);
     expect(result.pricesDaily).toBe(1);
-    expect(result.marketDaily).toBe(1);
     const remaining = await testDb().execute(sql`select arrival_date::text from prices_daily`);
     expect(remaining.rows).toEqual([{ arrival_date: recent }]);
     const monthly = await testDb().execute(
@@ -97,18 +94,18 @@ describe("tiers", () => {
     const db = testDb();
     // Wheat: 60 markets over 65 days → tier 1.
     await db.execute(sql`
-      insert into prices_market_daily (arrival_date, market_id, commodity_id, state_id, modal_price, min_price, max_price)
-      select ${asOf}::date - d, m, 1, 1, 2000, 1900, 2100
+      insert into prices_daily (arrival_date, market_id, commodity_id, source, min_price, max_price, modal_price)
+      select ${asOf}::date - d, m, 1, 2, 1900, 2100, 2000
       from generate_series(0, 64) d, generate_series(1, 60) m`);
     // Onion: 6 markets over 25 days → tier 2.
     await db.execute(sql`
-      insert into prices_market_daily (arrival_date, market_id, commodity_id, state_id, modal_price, min_price, max_price)
-      select ${asOf}::date - d, m, 2, 1, 1500, 1400, 1600
+      insert into prices_daily (arrival_date, market_id, commodity_id, source, min_price, max_price, modal_price)
+      select ${asOf}::date - d, m, 2, 2, 1400, 1600, 1500
       from generate_series(0, 24) d, generate_series(1, 6) m`);
     // Lotus: 2 markets, plus old data outside the window → tier 3.
     await db.execute(sql`
-      insert into prices_market_daily (arrival_date, market_id, commodity_id, state_id, modal_price, min_price, max_price)
-      values (${asOf}, 1, 3, 1, 100, 90, 110), (${asOf}, 2, 3, 1, 100, 90, 110), ('2026-01-01', 3, 3, 1, 100, 90, 110)`);
+      insert into prices_daily (arrival_date, market_id, commodity_id, source, min_price, max_price, modal_price)
+      values (${asOf}, 1, 3, 2, 90, 110, 100), (${asOf}, 2, 3, 2, 90, 110, 100), ('2026-01-01', 3, 3, 2, 90, 110, 100)`);
 
     const { counts, changes } = await recalculateTiers(db, asOf);
     expect(counts).toEqual({ 1: 1, 2: 1, 3: 1 });

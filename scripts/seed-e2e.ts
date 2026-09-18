@@ -63,11 +63,6 @@ runScript("seed-e2e", async ({ db }) => {
     on conflict do nothing`);
 
   await db.execute(sql`
-    insert into prices_market_daily (arrival_date, market_id, commodity_id, state_id, modal_price, min_price, max_price)
-    select p.arrival_date, p.market_id, p.commodity_id, d.state_id, p.modal_price, p.min_price, p.max_price
-    from prices_daily p join markets m on m.id = p.market_id join districts d on d.id = m.district_id
-    on conflict do nothing`);
-  await db.execute(sql`
     insert into prices_state_daily (arrival_date, state_id, commodity_id, median_modal, markets_reporting)
     select arrival_date, state_id, commodity_id, round(avg(modal_price))::int, count(*)
     from prices_market_daily group by 1, 2, 3 on conflict do nothing`);

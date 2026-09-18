@@ -17,7 +17,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 /**
- * Database schema (SPEC §6.2). Deviations are recorded in DECISIONS.md D-011:
+ * Database schema (SPEC §6.2). Deviations are recorded in DECISIONS.md D-011 and D-024:
  * - prices_daily uses the measured compact layout: no surrogate id or timestamps,
  *   grade and source as small integers, source not part of the natural key.
  * - prices_national_daily added for the national median on crop hubs.
@@ -156,25 +156,12 @@ export const pricesDaily = pgTable(
   ],
 );
 
-export const pricesMarketDaily = pgTable(
-  "prices_market_daily",
-  {
-    arrivalDate: date("arrival_date").notNull(),
-    marketId: integer("market_id").notNull(),
-    commodityId: integer("commodity_id").notNull(),
-    stateId: integer("state_id").notNull(),
-    /** Median modal across the market's variety/grade rows for that day. */
-    modalPrice: integer("modal_price").notNull(),
-    minPrice: integer("min_price").notNull(),
-    maxPrice: integer("max_price").notNull(),
-  },
-  (t) => [
-    primaryKey({ columns: [t.commodityId, t.arrivalDate, t.marketId] }),
-    // One extra index only: state-level reads use prices_state_daily, and the measured cost of
-    // a third index on this table was ~50 MB per 1.6M rows (DECISIONS D-018).
-    index("prices_market_daily_market_idx").on(t.marketId, t.commodityId, t.arrivalDate.desc()),
-  ],
-);
+/**
+ * `prices_market_daily` is a VIEW over prices_daily (migration 0003), not a table: one row per
+ * market, commodity and day, with the median of that market's variety and grade rows. It held
+ * almost one row per prices_daily row and cost more per row than the source (163 vs 126 bytes),
+ * so materialising it doubled storage for no query we could not compute. See DECISIONS D-024.
+ */
 
 export const pricesStateDaily = pgTable(
   "prices_state_daily",

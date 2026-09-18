@@ -44,7 +44,7 @@ Local Postgres 18 and Redis, with 90 days of real data loaded from data.gov.in.
 
 ## Tests
 
-- 174 unit and integration tests (Vitest), integration running against a real Postgres database
+- 174 unit and integration tests (Vitest), integration running against a real Postgres database, inserting only `prices_daily` so they exercise the same derivation as production
 - 20 end-to-end tests (Playwright), including axe accessibility checks on key pages in both themes
 - CI runs lint, format check, typecheck and all tests on every push, with a Postgres service; e2e runs on `main`
 
@@ -65,27 +65,30 @@ Improvements already made: the Devanagari font is no longer loaded (no Hindi rou
 
 Rows per day settle at about **19,500** once late reports arrive (the same-day snapshot showed 16,747 at 18:49 IST; the final variety-wise data for 15 Sep held 20,394).
 
-Measured bytes per row, including indexes, on 90 days of real data:
+Measured on 91 days of real data, after `prices_market_daily` became a view (DECISIONS D-024):
 
-| Table                   | Rows   | Bytes/row | Notes                                       |
-| ----------------------- | ------ | --------- | ------------------------------------------- |
-| `prices_daily`          | 1.76 M | 126       | The compact layout, as designed             |
-| `prices_market_daily`   | 1.65 M | 163       | Derived, and almost 1:1 with `prices_daily` |
-| `prices_state_daily`    | 125 k  | 106       |                                             |
-| `prices_national_daily` | 21 k   | 95        |                                             |
+| Table                   | Rows   | Size       | Notes                                   |
+| ----------------------- | ------ | ---------- | --------------------------------------- |
+| `prices_daily`          | 1.78 M | 183 MB     | About 108 bytes a row including indexes |
+| `prices_weekly`         | 396 k  | 42 MB      | Kept indefinitely                       |
+| `prices_monthly`        | 134 k  | 15 MB      | Kept indefinitely                       |
+| `prices_state_daily`    | 130 k  | 11 MB      |                                         |
+| `prices_national_daily` | 22 k   | 1.8 MB     |                                         |
+| `exports_annual`        | 28 k   | 5.5 MB     | 7 years                                 |
+| **Database total**      |        | **269 MB** | for 91 days, rollups included           |
 
-That is about **5.4 MB a day**, or 485 MB for 90 days.
+That is about **2.7 MB a day**: roughly 2.15 MB of daily prices and state and national medians, plus 0.6 MB of rollups.
 
-| Days retained       | Projected size                                        |
-| ------------------- | ----------------------------------------------------- |
-| 90                  | ~0.49 GB (measured)                                   |
-| 180                 | ~1.0 GB                                               |
-| 400 (retention cap) | ~2.2 GB                                               |
-| After 400 days      | +~0.2 GB a year (state and national medians, rollups) |
+| Days retained       | Projected size                                      |
+| ------------------- | --------------------------------------------------- |
+| 91                  | 0.27 GB (measured)                                  |
+| 180                 | ~0.5 GB                                             |
+| 400 (retention cap) | ~1.1 GB                                             |
+| After 400 days      | +~0.2 GB a year (rollups and medians keep accruing) |
 
-**Neon Free (0.5 GB) is already full at 90 days of all-India data.** Production therefore needs Neon Launch, or a shorter retention window. At Launch pricing (verified 2026-09-17: no monthly minimum, $0.35/GB-month storage, $0.106/CU-hour compute) the 400-day steady state costs about **$0.77/month for storage**, with compute the larger variable: roughly **$2–8/month in total**, depending on how often the database is awake.
+**Neon Free (0.5 GB) now lasts about 180 days** of all-India data, against 90 days before the change. The full 400-day window in SPEC §6.3 needs Neon Launch. At Launch pricing (verified 2026-09-17: no monthly minimum, $0.35/GB-month storage, $0.106/CU-hour compute) storage at the 400-day steady state costs about **$0.39/month**, with compute the larger variable: roughly **$2–8/month in total**.
 
-**The biggest saving available** is removing `prices_market_daily` and computing market-level medians from `prices_daily` with a group-by: it is a derived table that costs about as much as the source. That would roughly halve growth, to about 2.8 MB a day and 1.2 GB at 400 days. It is recorded in `docs/ROADMAP.md` rather than done now, because it touches most queries and the current numbers are affordable.
+Before the change the same 91 days cost 485 MB without rollups, because `prices_market_daily` duplicated `prices_daily` almost row for row at a higher cost per row.
 
 ## Rate-limit budget
 
@@ -102,4 +105,4 @@ The data.gov.in gateway allows about 60 requests a minute (measured: the 61st ra
 2. **Confirm crop categories** and **review export mappings** in `/admin` (bulk actions provided).
 3. **Keys** for the AI gateway, Ola Maps, Telegram and GA4, to turn those features on.
 4. **Production Lighthouse run** to confirm LCP, and the rest of `docs/LAUNCH_CHECKLIST.md`.
-5. A decision on **retention versus plan**: 400 days on Neon Launch, or a shorter window.
+5. A decision on **retention versus plan**: 400 days on Neon Launch (~1.1 GB), or a shorter window (180 days stays inside Neon Free).

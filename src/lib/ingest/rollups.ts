@@ -49,7 +49,6 @@ export async function buildRollups(
 
 export interface RetentionResult {
   pricesDaily: number;
-  marketDaily: number;
   rejects: number;
   runs: number;
 }
@@ -64,10 +63,8 @@ export async function applyRetention(db: Db, today: string): Promise<RetentionRe
   await buildRollups(db, daysBefore(cutoff, 45), cutoff);
 
   return db.transaction(async (tx) => {
+    // Market-level prices are a view over prices_daily, so this one delete covers both.
     const pricesDaily = await tx.execute(sql`delete from prices_daily where arrival_date < ${cutoff}::date`);
-    const marketDaily = await tx.execute(
-      sql`delete from prices_market_daily where arrival_date < ${cutoff}::date`,
-    );
     const rejects = await tx.execute(
       sql`delete from ingest_rejects where created_at < now() - make_interval(days => ${RETENTION.rejectsDays})`,
     );
@@ -76,7 +73,6 @@ export async function applyRetention(db: Db, today: string): Promise<RetentionRe
     );
     return {
       pricesDaily: pricesDaily.rowCount ?? 0,
-      marketDaily: marketDaily.rowCount ?? 0,
       rejects: rejects.rowCount ?? 0,
       runs: runs.rowCount ?? 0,
     };

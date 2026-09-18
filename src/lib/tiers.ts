@@ -29,7 +29,7 @@ export async function recalculateTiers(
            coalesce(count(distinct p.market_id), 0)::int as markets,
            coalesce(count(distinct p.arrival_date), 0)::int as days
     from commodities c
-    left join prices_market_daily p
+    left join prices_daily p
       on p.commodity_id = c.id and p.arrival_date between ${windowStart} and ${asOf}::date
     group by c.id`);
 

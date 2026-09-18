@@ -2,12 +2,11 @@ import { sql } from "drizzle-orm";
 import type { Db } from "@/lib/db";
 
 /**
- * Derived daily tables, recomputed for whole dates after each ingest (SPEC §6.7 "refresh
- * prices_state_daily for affected dates").
+ * Derived daily tables, recomputed for whole dates after each ingest (SPEC §6.7).
  *
- * - prices_market_daily: one price per market/commodity/day = median modal across that
- *   market's variety and grade rows; min/max across them.
- * - prices_state_daily: median of market prices in the state; markets reporting.
+ * Market-level prices are a view over prices_daily (see schema), so only the state and
+ * national medians are stored:
+ * - prices_state_daily: median of the market prices in the state; markets reporting.
  * - prices_national_daily: median of all market prices; min/max; markets and states reporting.
  *
  * Medians are percentile_cont(0.5) rounded to whole rupees.
@@ -20,18 +19,6 @@ export async function refreshDailyAggregates(db: Db, dates: string[]): Promise<v
   )}`;
 
   await db.transaction(async (tx) => {
-    await tx.execute(sql`delete from prices_market_daily where arrival_date in (${dateList})`);
-    await tx.execute(sql`
-      insert into prices_market_daily (arrival_date, market_id, commodity_id, state_id, modal_price, min_price, max_price)
-      select p.arrival_date, p.market_id, p.commodity_id, d.state_id,
-             round(percentile_cont(0.5) within group (order by p.modal_price))::int,
-             min(p.min_price), max(p.max_price)
-      from prices_daily p
-      join markets m on m.id = p.market_id
-      join districts d on d.id = m.district_id
-      where p.arrival_date in (${dateList})
-      group by p.arrival_date, p.market_id, p.commodity_id, d.state_id`);
-
     await tx.execute(sql`delete from prices_state_daily where arrival_date in (${dateList})`);
     await tx.execute(sql`
       insert into prices_state_daily (arrival_date, state_id, commodity_id, median_modal, markets_reporting)

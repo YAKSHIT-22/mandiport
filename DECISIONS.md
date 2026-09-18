@@ -141,7 +141,7 @@ Found by probing resource `9ef84268-d588-465a-a308-a864a43d0070` (current daily 
 
 - **Decision:** `prices_market_daily` keeps its primary key and a market index; the state index was dropped. State-level reads use `prices_state_daily`.
 - **Reason:** measured on 90 days of real data, the table costs 163 bytes a row for almost the same row count as `prices_daily` (126 bytes a row). Indexes were the largest part. Dropping the redundant one freed ~17 MB at this size.
-- **Bigger saving, not taken now:** the whole table is derived and could be replaced by group-by queries over `prices_daily`, roughly halving storage growth. Recorded in `docs/ROADMAP.md` because it touches most queries.
+- **Superseded by D-024:** the table itself was later replaced by a view.
 
 ## D-019 · AI SDK 7 runs tools through an agent, not generateText (2026-09-18)
 
@@ -172,9 +172,26 @@ Found by probing resource `9ef84268-d588-465a-a308-a864a43d0070` (current daily 
 - **Decision:** the four explanatory guides are static MDX pages. The 15 crop guides are one route backed by written sections in `src/content/crop-guides.ts` plus live data (top markets, varieties, MSP, export group) read at render time.
 - **Reason:** SPEC §9.5 asks for a guide per top-15 crop, but prices, markets and seasons must never be written into prose that then goes stale or, worse, is invented. Only general, well-established background is written by hand.
 
+## D-024 · prices_market_daily is a view, not a table (measured 2026-09-18, resolves P-4)
+
+- **Decision:** `prices_market_daily` is now a SQL view over `prices_daily` (migration 0003), keeping the same name and columns so every query that reads it is unchanged. Ingestion writes only the state and national medians; retention deletes only `prices_daily`.
+- **Reason:** measured on 91 days of real data, the materialised table held 1.65 M rows at 163 bytes each (257 MB) for almost exactly one row per `prices_daily` row, which itself costs about 108 bytes. It duplicated the source for no query we could not compute.
+- **Measured effect:** database 485 MB → 269 MB for the same 91 days, with weekly and monthly rollups now included (they were not built before). Projected 400-day size falls from about 2.2 GB to about 1.1 GB, so Neon Free lasts roughly 180 days instead of 90.
+- **Query cost, benchmarked before committing:**
+
+  | Query                                 | Table  | View           |
+  | ------------------------------------- | ------ | -------------- |
+  | Crop hub, latest price per market     | 44 ms  | 118 ms         |
+  | State median series                   | 249 ms | 92 ms (faster) |
+  | Single market series                  | 0.7 ms | 0.7 ms         |
+  | Weekly tier recalculation (all crops) | 2.18 s | 2.48 s         |
+
+  The hub query is the only one materially slower, and those pages are revalidated every six hours.
+
+- **Bonus:** integration tests and the e2e seed now insert only `prices_daily`, so they exercise the same derivation as production instead of hand-written aggregates.
+
 ## Pending decisions for the human
 
 - P-1 and P-2 resolved with the recommended options (D-011, D-013) after the human asked to proceed through all phases.
-- **P-3 · Retention versus plan.** 90 days of all-India data measures 485 MB, so Neon Free (0.5 GB) is already full at 90 days. Production needs Neon Launch (about $2–8 a month, mostly compute) or a shorter retention window than the 400 days in SPEC §6.3.
-- **P-4 · Whether to drop `prices_market_daily`** (D-018) to roughly halve storage growth, at the cost of touching most queries.
+- **P-3 · Retention versus plan.** After D-024, 91 days of all-India data measures 269 MB including rollups, so Neon Free (0.5 GB) lasts roughly 180 days. The 400-day window in SPEC §6.3 needs about 1.1 GB, which means Neon Launch (roughly $2–8 a month, mostly compute) or a shorter window.
 - **P-5 · Keys** for the AI gateway, Ola Maps, Telegram and GA4, which are the only things standing between the built features and live use.
