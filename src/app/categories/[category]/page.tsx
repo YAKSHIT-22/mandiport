@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CategoryArt } from "@/components/art/category-art";
 import { SourceNote } from "@/components/data/meta";
 import { Section } from "@/components/data/panels";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -64,7 +65,12 @@ export default async function CategoryPage({ params }: Props) {
           { name: cat.name, path: `/categories/${category}` },
         ]}
       />
-      <h1>{cat.name}</h1>
+      <div className="flex items-center gap-4">
+        <span className="bg-accent flex size-16 shrink-0 items-center justify-center rounded-lg border">
+          <CategoryArt slug={category} />
+        </span>
+        <h1>{cat.name}</h1>
+      </div>
       <div className="prose-mp">
         {overview.intro.map((p) => (
           <p key={p.slice(0, 30)}>{p}</p>

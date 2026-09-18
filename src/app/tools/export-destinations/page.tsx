@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ToolArt } from "@/components/art/tool-art";
 import { EmptyState, SourceNote } from "@/components/data/meta";
 import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -61,11 +62,16 @@ export default async function ExportDestinationsPage({ searchParams }: Props) {
           { name: "Export destinations", path: "/tools/export-destinations" },
         ]}
       />
-      <h1>Export destination finder</h1>
-      <p className="prose-mp">
-        India’s export figures are published by broad commodity group, per financial year, in US dollars. Pick
-        a crop to see the group it belongs to and which countries buy the most.
-      </p>
+      <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
+        <div className="space-y-4">
+          <h1>Export destination finder</h1>
+          <p className="prose-mp">
+            India’s export figures are published by broad commodity group, per financial year, in US dollars.
+            Pick a crop to see the group it belongs to and which countries buy the most.
+          </p>
+        </div>
+        <ToolArt name="export-destinations" className="hidden w-52 self-center sm:block" />
+      </div>
 
       <form className="bg-card flex flex-wrap items-end gap-3 rounded-lg border p-4" method="get">
         <Field label="Crop" htmlFor="crop" className="min-w-56">

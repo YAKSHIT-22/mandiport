@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getEnv } from "@/env";
+import { ToolArt } from "@/components/art/tool-art";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { getCropOptions } from "@/lib/queries/tools";
@@ -30,11 +31,16 @@ export default async function BestMandiPage({ searchParams }: Props) {
           { name: "Best mandi to sell", path: "/tools/best-mandi" },
         ]}
       />
-      <h1>Best mandi to sell</h1>
-      <p className="prose-mp">
-        Compare what you would take home after transport, using each market’s most recent reported price.
-        Prices may have changed since the date shown, and the transport cost is your own estimate.
-      </p>
+      <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
+        <div className="space-y-4">
+          <h1>Best mandi to sell</h1>
+          <p className="prose-mp">
+            Compare what you would take home after transport, using each market’s most recent reported price.
+            Prices may have changed since the date shown, and the transport cost is your own estimate.
+          </p>
+        </div>
+        <ToolArt name="best-mandi" className="hidden w-52 self-center sm:block" />
+      </div>
       <BestMandiTool crops={crops} initialCrop={crop} mapsConfigured={mapsConfigured} />
       <SourceNote datasets={["mandiVariety", "mandiDaily"]} />
     </main>

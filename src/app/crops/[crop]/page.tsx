@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sql } from "drizzle-orm";
+import { CategoryArt } from "@/components/art/category-art";
 import { PricePanel, LedgerTable, Section, td, tdNum, th, CropLink } from "@/components/data/panels";
 import { EmptyState, PlainDate, SourceNote } from "@/components/data/meta";
 import { TrendChart } from "@/components/data/trend-chart";
@@ -139,15 +140,22 @@ export default async function CropHubPage({ params }: Props) {
     <main className="container-mp space-y-8 py-6">
       <CropViewTracker crop={crop.slug} />
       <Breadcrumbs crumbs={crumbs} />
-      <header className="space-y-2">
-        <h1>{crop.name} prices</h1>
-        {crop.categoryConfirmed && crop.categoryName && (
-          <p className="text-muted-foreground">
-            <Link href={`/categories/${crop.categorySlug}`} className="underline">
-              {crop.categoryName}
-            </Link>
-          </p>
+      <header className="flex items-center gap-4">
+        {crop.categoryConfirmed && crop.categorySlug && (
+          <span className="bg-accent flex size-14 shrink-0 items-center justify-center rounded-lg border">
+            <CategoryArt slug={crop.categorySlug} className="size-10" />
+          </span>
         )}
+        <div className="space-y-2">
+          <h1>{crop.name} prices</h1>
+          {crop.categoryConfirmed && crop.categoryName && (
+            <p className="text-muted-foreground">
+              <Link href={`/categories/${crop.categorySlug}`} className="underline">
+                {crop.categoryName}
+              </Link>
+            </p>
+          )}
+        </div>
       </header>
 
       <PricePanel

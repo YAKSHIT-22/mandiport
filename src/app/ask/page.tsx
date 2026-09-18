@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getEnv } from "@/env";
+import { ToolArt } from "@/components/art/tool-art";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { EXAMPLE_QUESTIONS } from "@/lib/ai/prompt";
@@ -37,11 +38,16 @@ export default async function AskPage({ searchParams }: Props) {
           { name: "Ask Mandiport", path: "/ask" },
         ]}
       />
-      <h1>Ask Mandiport</h1>
-      <p className="prose-mp">
-        Answers are written by a language model that can only read the official figures in our database, and
-        every answer lists the data it used. It does not predict prices or give trading advice.
-      </p>
+      <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
+        <div className="space-y-4">
+          <h1>Ask Mandiport</h1>
+          <p className="prose-mp">
+            Answers are written by a language model that can only read the official figures in our database,
+            and every answer lists the data it used. It does not predict prices or give trading advice.
+          </p>
+        </div>
+        <ToolArt name="ask" className="hidden w-52 self-center sm:block" />
+      </div>
       {!configured && (
         <p className="border-highlight bg-muted border-l-4 px-4 py-3">
           AI answers are not configured on this site yet. The tools and crop pages work as usual.

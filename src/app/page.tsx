@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BarChart3, Compass, IndianRupee, MessageSquare, Ruler, Ship } from "lucide-react";
 import { sql } from "drizzle-orm";
+import { CategoryArt } from "@/components/art/category-art";
+import { MandiScene } from "@/components/art/mandi-scene";
+import { ToolArt, type ToolArtName } from "@/components/art/tool-art";
 import { EmptyState, SourceNote } from "@/components/data/meta";
 import { SearchBox } from "@/components/site/search-box";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -32,36 +35,42 @@ export const metadata: Metadata = pageMetadata({
 const TOOLS = [
   {
     href: "/tools/best-mandi",
+    art: "best-mandi" as ToolArtName,
     label: "Best mandi to sell",
     text: "Compare take-home prices after transport.",
     icon: Compass,
   },
   {
     href: "/tools/price-history",
+    art: "price-history" as ToolArtName,
     label: "Price history",
     text: "Trends and monthly averages for any market.",
     icon: BarChart3,
   },
   {
     href: "/tools/msp-check",
+    art: "msp-check" as ToolArtName,
     label: "MSP check",
     text: "Mandi prices against the support price.",
     icon: IndianRupee,
   },
   {
     href: "/tools/export-destinations",
+    art: "export-destinations" as ToolArtName,
     label: "Export destinations",
     text: "Which countries buy, and how that is changing.",
     icon: Ship,
   },
   {
     href: "/tools/unit-converter",
+    art: "unit-converter" as ToolArtName,
     label: "Unit converter",
     text: "Quintal, kg and tonne; rupees and dollars.",
     icon: Ruler,
   },
   {
     href: "/ask",
+    art: "ask" as ToolArtName,
     label: "Ask Mandiport",
     text: "Plain answers from official data only.",
     icon: MessageSquare,
@@ -114,36 +123,40 @@ export default async function HomePage() {
   return (
     <main>
       <section className="from-accent/70 to-background border-b bg-gradient-to-b">
-        <div className="container-mp py-12 sm:py-16">
-          <p className="eyebrow">
-            <span className="bg-primary size-1.5 rounded-full" aria-hidden="true" /> Official Government of
-            India data
-          </p>
-          <h1 className="mt-4 max-w-3xl text-4xl leading-[1.05] font-bold sm:text-5xl">
-            Mandi prices and export demand, <span className="text-primary">crop by crop.</span>
-          </h1>
-          <p className="text-muted-foreground mt-5 max-w-xl text-lg">
-            Where a crop’s price is heading, where to sell it in India, and who buys it abroad — with the date
-            every figure refers to.
-          </p>
-          <div className="mt-7 max-w-xl">
-            <SearchBox />
+        <div className="container-mp grid items-center gap-8 py-12 sm:py-16 lg:grid-cols-[1.15fr_1fr]">
+          <div>
+            <p className="eyebrow">
+              <span className="bg-primary size-1.5 rounded-full" aria-hidden="true" /> Official Government of
+              India data
+            </p>
+            <h1 className="mt-4 max-w-3xl text-4xl leading-[1.05] font-bold sm:text-5xl">
+              Mandi prices and export demand, <span className="text-primary">crop by crop.</span>
+            </h1>
+            <p className="text-muted-foreground mt-5 max-w-xl text-lg">
+              Where a crop’s price is heading, where to sell it in India, and who buys it abroad — with the
+              date every figure refers to.
+            </p>
+            <div className="mt-7 max-w-xl">
+              <SearchBox />
+            </div>
+            <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+              {[
+                ["Commodities", formatNumber(stats.commodities)],
+                ["Markets", formatNumber(stats.markets)],
+                ["States and UTs", formatNumber(stats.states)],
+                ["Days of price data", formatNumber(stats.days)],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <dt className="font-heading text-muted-foreground text-[0.76rem] font-bold tracking-[0.12em] uppercase">
+                    {label}
+                  </dt>
+                  <dd className="figures font-heading text-3xl font-bold">{value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-          <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
-            {[
-              ["Commodities", formatNumber(stats.commodities)],
-              ["Markets", formatNumber(stats.markets)],
-              ["States and UTs", formatNumber(stats.states)],
-              ["Days of price data", formatNumber(stats.days)],
-            ].map(([label, value]) => (
-              <div key={label}>
-                <dt className="font-heading text-muted-foreground text-[0.76rem] font-bold tracking-[0.12em] uppercase">
-                  {label}
-                </dt>
-                <dd className="figures font-heading text-3xl font-bold">{value}</dd>
-              </div>
-            ))}
-          </dl>
+          {/* Decorative: the yard and the port, the two ends of the trade this site covers. */}
+          <MandiScene className="hidden max-w-lg justify-self-end lg:block" />
         </div>
       </section>
 
@@ -159,6 +172,7 @@ export default async function HomePage() {
                 <li key={c.slug}>
                   <Button variant="outline" size="sm" asChild>
                     <Link href={`/categories/${c.slug}`}>
+                      <CategoryArt slug={c.slug} className="size-5" />
                       {c.name} <span className="text-muted-foreground">{c.count}</span>
                     </Link>
                   </Button>
@@ -230,12 +244,17 @@ export default async function HomePage() {
               <li key={t.href}>
                 <Link
                   href={t.href}
-                  className="bg-card hover:border-primary flex h-full gap-3 rounded-lg border p-4 transition-colors"
+                  className="bg-card hover:border-primary block h-full overflow-hidden rounded-lg border transition-colors"
                 >
-                  <t.icon className="text-primary mt-1 size-5 shrink-0" aria-hidden="true" />
-                  <span>
-                    <span className="font-heading block font-semibold">{t.label}</span>
-                    <span className="text-muted-foreground block text-sm">{t.text}</span>
+                  <span className="bg-accent/60 block border-b px-6 py-3">
+                    <ToolArt name={t.art} className="max-h-24" />
+                  </span>
+                  <span className="flex gap-3 p-4">
+                    <t.icon className="text-primary mt-1 size-5 shrink-0" aria-hidden="true" />
+                    <span>
+                      <span className="font-heading block font-semibold">{t.label}</span>
+                      <span className="text-muted-foreground block text-sm">{t.text}</span>
+                    </span>
                   </span>
                 </Link>
               </li>

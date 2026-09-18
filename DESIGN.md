@@ -87,6 +87,21 @@ Numbers use Indian digit grouping (`₹1,25,000`), and units are always shown (`
 - `Button`, `Input`, `Select`, `Card`, `Badge`, `Sheet`, `Separator`, `Table`, `Skeleton`: shadcn primitives (the reference projects' own files where they were generic), restyled to these tokens.
 - `SiteHeader` (sticky, blurred, Sheet mobile menu, theme toggle), `SiteFooter`, `SectionHeading`, `LogoMark`.
 
+## Illustration
+
+Artwork is hand-drawn inline SVG built from the same tokens as everything else, not photography:
+
+- `MandiScene`: the home hero — a rate board, sacks, a produce crate, a hanging balance and a ship at the port.
+- `ToolArt`: one panel per tool (best mandi, price history, MSP check, export destinations, unit converter, Ask), on the tool cards and at the head of each tool page.
+- `CategoryArt`: a glyph per crop category, used on the home category chips, the "browse by category" tiles on `/crops`, the category hubs and each crop page.
+
+Why drawn, not photographed: pages are read outdoors on phones, where photographic heroes cost payload and
+contrast; the hero is inside the LCP window and must stay a few kilobytes; stock photography needs licensing;
+and an AI-generated "mandi photo" would imply a real place we cannot vouch for, which the rest of the site's
+sourcing rules would not allow. Every piece carries no text (nothing to translate, no font to load), adapts to
+light and dark through `--panel`, `--highlight`, `--rise`, `--muted` and `--border`, and is marked
+`aria-hidden` with `focusable="false"` so screen readers and keyboard users skip it.
+
 ## Wireframes (mobile first)
 
 ### Home `/`

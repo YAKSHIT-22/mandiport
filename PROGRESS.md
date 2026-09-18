@@ -50,14 +50,15 @@ Local Postgres 18 and Redis, with 90 days of real data loaded from data.gov.in.
 
 ## Lighthouse (local production build, mobile preset)
 
-| Page                      | Performance | Accessibility | Best practices | SEO | LCP   | CLS   |
-| ------------------------- | ----------- | ------------- | -------------- | --- | ----- | ----- |
-| Home                      | 94          | 100           | 100            | 100 | 2.9 s | 0.038 |
-| Crop hub (onion)          | 92          | 100           | 100            | 100 | 3.3 s | 0     |
-| Best mandi tool           | 92          | 100           | 100            | 100 | 3.3 s | 0     |
-| Crop hub (desktop preset) | 98          | 100           | 100            | 100 | —     | —     |
+| Page                      | Performance | Accessibility | Best practices | SEO | LCP   | CLS |
+| ------------------------- | ----------- | ------------- | -------------- | --- | ----- | --- |
+| Home                      | 96          | 100           | 100            | 100 | 2.3 s | 0   |
+| Tools index               | 96          | 100           | 100            | 100 | 2.6 s | 0   |
+| Crop hub (onion)          | 92          | 100           | 100            | 100 | 3.3 s | 0   |
+| Best mandi tool           | 92          | 100           | 100            | 100 | 3.3 s | 0   |
+| Crop hub (desktop preset) | 98          | 100           | 100            | 100 | —     | —   |
 
-Performance, accessibility, best practices and SEO meet the SPEC §9.1 targets. **LCP does not**: the target is under 2.5 s and the local measurement is 2.9–3.3 s under Lighthouse's simulated slow 4G, against a local server with no CDN and no HTTP/2. Re-measure on the deployed site before launch; the launch checklist has this as a blocking item.
+Measured again after the SVG illustrations were added (they cost no request and the hero scene is not rendered below the `lg` breakpoint, so mobile improved rather than regressed). Performance, accessibility, best practices and SEO meet the SPEC §9.1 targets. **LCP is borderline**: the target is under 2.5 s, home now measures 2.3 s but crop and tool pages are 2.6–3.3 s under Lighthouse's simulated slow 4G, against a local server with no CDN and no HTTP/2. Re-measure on the deployed site before launch; the launch checklist has this as a blocking item.
 
 Improvements already made: the Devanagari font is no longer loaded (no Hindi route exists yet), the heading font is not preloaded so the first paint uses its fallback, and the 27 KB default favicon was replaced by a 1 KB SVG mark.
 

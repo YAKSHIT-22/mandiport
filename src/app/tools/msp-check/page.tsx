@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ToolArt } from "@/components/art/tool-art";
 import { EmptyState, PlainDate, SourceNote } from "@/components/data/meta";
 import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -43,11 +44,16 @@ export default async function MspCheckPage({ searchParams }: Props) {
           { name: "MSP check", path: "/tools/msp-check" },
         ]}
       />
-      <h1>MSP check</h1>
-      <p className="prose-mp">
-        The minimum support price (MSP) is the price at which government agencies procure certain crops. Most
-        mandi sales are not procurement, so market prices can sit above or below MSP.
-      </p>
+      <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
+        <div className="space-y-4">
+          <h1>MSP check</h1>
+          <p className="prose-mp">
+            The minimum support price (MSP) is the price at which government agencies procure certain crops.
+            Most mandi sales are not procurement, so market prices can sit above or below MSP.
+          </p>
+        </div>
+        <ToolArt name="msp-check" className="hidden w-52 self-center sm:block" />
+      </div>
 
       <form className="bg-card flex flex-wrap items-end gap-3 rounded-lg border p-4" method="get">
         <Field label="Crop" htmlFor="crop" className="min-w-56">

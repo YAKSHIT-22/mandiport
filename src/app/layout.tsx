@@ -43,7 +43,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IN" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    // The theme script adds `dark` to <html> before hydration, which React would otherwise flag.
+    <html lang="en-IN" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

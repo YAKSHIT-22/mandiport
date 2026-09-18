@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { CategoryArt } from "@/components/art/category-art";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { CropDirectory } from "@/components/site/crop-directory";
@@ -34,6 +36,29 @@ export default async function CropsPage() {
         traded are listed first; the full list is below, A to Z. Crops reported by only a few markets are
         marked “limited data”.
       </p>
+      <nav aria-labelledby="browse-categories">
+        <h2 id="browse-categories" className="font-heading text-lg font-semibold">
+          Browse by category
+        </h2>
+        <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {categories
+            .filter((c) => c.count > 0)
+            .map((c) => (
+              <li key={c.slug}>
+                <Link
+                  href={`/categories/${c.slug}`}
+                  className="bg-card hover:border-primary flex h-full min-h-14 items-center gap-3 rounded-lg border p-3 transition-colors"
+                >
+                  <CategoryArt slug={c.slug} className="size-9 shrink-0" />
+                  <span>
+                    <span className="font-heading block font-semibold">{c.name}</span>
+                    <span className="text-muted-foreground block text-sm">{c.count} crops</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+        </ul>
+      </nav>
       <CropDirectory crops={crops} categories={categories.filter((c) => c.count > 0)} />
       <SourceNote datasets={["mandiVariety", "mandiDaily"]} />
     </main>
