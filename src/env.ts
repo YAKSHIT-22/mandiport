@@ -156,6 +156,11 @@ export function parseEnv(source: Record<string, string | undefined>): Env {
 
 let cached: Env | undefined;
 
+/** Clears the cached environment so tests can change process.env. Tests only. */
+export function resetEnvCache(): void {
+  cached = undefined;
+}
+
 /** Validated environment. Parsed once, on first access. */
 export function getEnv(): Env {
   cached ??= parseEnv(process.env);

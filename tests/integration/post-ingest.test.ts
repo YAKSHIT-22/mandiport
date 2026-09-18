@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { resetEnvCache } from "@/env";
 import { keys } from "@/lib/cache/keys";
 import { NoopStore, setCacheForTesting, type CacheStore } from "@/lib/cache/store";
 import { afterIngest } from "@/lib/ingest/after-ingest";
@@ -20,8 +21,13 @@ const logger = { info: vi.fn(), warn: vi.fn() };
 describe("post-ingest steps", () => {
   let store: RecordingStore;
   const originalFetch = globalThis.fetch;
+  const originalEnv = { secret: process.env.CRON_SECRET, site: process.env.NEXT_PUBLIC_SITE_URL };
 
   beforeEach(async () => {
+    // CI has no deployment to revalidate, so the test supplies both values itself.
+    process.env.CRON_SECRET = "test-cron-secret-0123456789";
+    process.env.NEXT_PUBLIC_SITE_URL = "https://mandiport.test";
+    resetEnvCache();
     await resetDb();
     store = new RecordingStore();
     setCacheForTesting(store as unknown as CacheStore);
@@ -35,6 +41,9 @@ describe("post-ingest steps", () => {
 
   afterEach(() => {
     globalThis.fetch = originalFetch;
+    process.env.CRON_SECRET = originalEnv.secret;
+    process.env.NEXT_PUBLIC_SITE_URL = originalEnv.site;
+    resetEnvCache();
   });
 
   afterAll(async () => {
@@ -57,7 +66,7 @@ describe("post-ingest steps", () => {
     await afterIngest({ db: testDb(), logger, dates: ["2026-09-16"], commodityIds: [1, 2] });
 
     const call = fetchMock.mock.calls.at(-1) as unknown as [string, RequestInit] | undefined;
-    expect(call?.[0]).toMatch(/\/api\/revalidate$/);
+    expect(String(call?.[0])).toBe("https://mandiport.test/api/revalidate");
     expect(call?.[1].method).toBe("POST");
     expect(
       String(call?.[1].headers ? (call[1].headers as Record<string, string>).authorization : ""),
