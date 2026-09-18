@@ -137,7 +137,44 @@ Found by probing resource `9ef84268-d588-465a-a308-a864a43d0070` (current daily 
 
 - **Decision:** Rollups and retention run in the ingest workflow after each pull (SPEC §6.7 allows this). The Vercel cron route `/api/cron/rollups` recalculates tiers on Mondays and rebuilds the last 8 days of rollups, which is cheap.
 
+## D-018 · One fewer index on prices_market_daily (measured 2026-09-18)
+
+- **Decision:** `prices_market_daily` keeps its primary key and a market index; the state index was dropped. State-level reads use `prices_state_daily`.
+- **Reason:** measured on 90 days of real data, the table costs 163 bytes a row for almost the same row count as `prices_daily` (126 bytes a row). Indexes were the largest part. Dropping the redundant one freed ~17 MB at this size.
+- **Bigger saving, not taken now:** the whole table is derived and could be replaced by group-by queries over `prices_daily`, roughly halving storage growth. Recorded in `docs/ROADMAP.md` because it touches most queries.
+
+## D-019 · AI SDK 7 runs tools through an agent, not generateText (2026-09-18)
+
+- **Decision:** Ask Mandiport uses `ToolLoopAgent` from the `ai` package.
+- **Reason:** in AI SDK 7, `generateText` returns tool calls but does not execute them or loop; only the agent runs the tool loop. Tests caught this: tools were being "called" with no results.
+- **Model:** `deepseek/deepseek-v4.1-flash`, verified in the gateway's model list (tool-use and 1M context, $0.30/M input tokens).
+- **Test note:** provider v4 returns `finishReason` as an object (`{ unified, raw }`) and token usage as nested objects; mocks must match or tool execution is silently skipped.
+
+## D-020 · Export datasets change shape every few years (verified 2026-09-18)
+
+- **Finding:** the four eras of "Principal Commodity wise Export" use different field names: `pc_description`/`cty_desc`/`qty`/`val_usd_million_` (2014-15 to 2016-17), `commodity`/`country`/`qty`/`values_us_million_`/`unit_code` (2017-18), `commodity`/`country`/`quantity_`/`value_us_million_` (2018-19, 2019-20), `principle_commodity`/`country`/`quantity_`/`value_us__million_` (2021-22, 2022-23).
+- **Decision:** fields are found by pattern rather than by name, and the job logs a warning when a year's dataset looks too small to be complete.
+- **Data gaps:** the 2014-15 dataset contains only 12 rows and is effectively empty; no 2020-21 dataset is published. Pages state the latest year available.
+- **Sanity check:** 2022-23 totals came out at US$8,078 M for marine products, US$4,788 M for basmati rice and US$3,785 M for spices, in line with published figures.
+
+## D-021 · Content Security Policy without nonces (2026-09-18)
+
+- **Decision:** the CSP allows `'unsafe-inline'` for scripts and styles, and restricts everything else (`default-src 'self'`, `object-src 'none'`, `frame-ancestors 'none'`, explicit allow-lists for Google Analytics and AdSense).
+- **Reason:** a per-request nonce forces every page to render dynamically, which would remove ISR from a site whose pages are almost entirely static. Our inline scripts are our own theme-preference script and JSON-LD blocks; third-party scripts load only after consent. Revisit if Next.js offers nonces that survive static generation.
+
+## D-022 · UI follows the human's reference projects (2026-09-18)
+
+- **Decision:** after the human asked twice, the interface follows `~/Desktop/handyads` and `~/Desktop/horrorlog` (NightLore): shadcn "new-york" primitives with Radix and `cva`, lucide icons, CSS-variable tokens, a sticky blurred header with a Sheet mobile menu, section headings with eyebrows, bordered cards, Space Grotesk headings with Inter body, and a light theme plus NightLore's ink palette as a dark theme.
+- **Overrides SPEC §13** where they conflict ("avoid card grids and eyebrow labels"): the human's instruction wins. Accessibility minimums were kept: every token pair passes WCAG AA, tap targets are at least 44 px, and axe reports no violations in either theme.
+
+## D-023 · Guides are MDX, crop guides are data-driven (2026-09-18)
+
+- **Decision:** the four explanatory guides are static MDX pages. The 15 crop guides are one route backed by written sections in `src/content/crop-guides.ts` plus live data (top markets, varieties, MSP, export group) read at render time.
+- **Reason:** SPEC §9.5 asks for a guide per top-15 crop, but prices, markets and seasons must never be written into prose that then goes stale or, worse, is invented. Only general, well-established background is written by hand.
+
 ## Pending decisions for the human
 
 - P-1 and P-2 resolved with the recommended options (D-011, D-013) after the human asked to proceed through all phases.
-- **P-3 · Production backfill depth.** It depends on staying on Neon Free (about 140 days of optimized data) or moving to Launch.
+- **P-3 · Retention versus plan.** 90 days of all-India data measures 485 MB, so Neon Free (0.5 GB) is already full at 90 days. Production needs Neon Launch (about $2–8 a month, mostly compute) or a shorter retention window than the 400 days in SPEC §6.3.
+- **P-4 · Whether to drop `prices_market_daily`** (D-018) to roughly halve storage growth, at the cost of touching most queries.
+- **P-5 · Keys** for the AI gateway, Ola Maps, Telegram and GA4, which are the only things standing between the built features and live use.

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" role="img" aria-label="Mandiport">
+  <rect x="1" y="1" width="38" height="38" rx="9" fill="#1e3a2f" />
+  <path d="M11 20c0-3.6 2-5.4 2-7.6 0-1-.5-1.6-.5-2.4h8c0 .8-.5 1.4-.5 2.4 0 2.2 2 4 2 7.6 0 4.4-2.5 7.4-5.5 7.4S11 24.4 11 20Z" fill="#e3a21a" />
+  <path d="M12.5 10h8" stroke="#1e3a2f" stroke-width="1.6" stroke-linecap="round" />
+  <path d="M22 25.5 26 21l3 2.5L33.5 15.5" stroke="#f8f4ea" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M30 15.5h4v4" stroke="#f8f4ea" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M8 31h24l-3 4H11l-3-4Z" fill="#f8f4ea" fill-opacity="0.85" />
+</svg>

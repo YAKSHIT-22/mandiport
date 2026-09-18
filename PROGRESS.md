@@ -2,86 +2,104 @@
 
 ## Phase checklist
 
-| Phase                                     | Status                                                  |
-| ----------------------------------------- | ------------------------------------------------------- |
-| 1 — Foundations & data discovery          | ✅ Done 2026-09-17, waiting on human for Phase 2 inputs |
-| 2 — Database, ingestion, tiers & mappings | ⏳ Not started                                          |
-| 3 — Design system & core pages            | ⏳                                                      |
-| 4 — Tools                                 | ⏳                                                      |
-| 5 — AI features                           | ⏳                                                      |
-| 6 — Alerts, analytics, guides             | ⏳                                                      |
-| 7 — Hardening & launch                    | ⏳                                                      |
+| Phase                                     | Status                                                                       |
+| ----------------------------------------- | ---------------------------------------------------------------------------- |
+| 1 — Foundations & data discovery          | ✅ Done 2026-09-17                                                           |
+| 2 — Database, ingestion, tiers & mappings | ✅ Done 2026-09-17 (human review of categories and mappings still open)      |
+| 3 — Design system & core pages            | ✅ Done 2026-09-17                                                           |
+| 4 — Tools                                 | ✅ Done 2026-09-18                                                           |
+| 5 — AI features                           | ✅ Done 2026-09-18 (needs `AI_GATEWAY_API_KEY` to run live)                  |
+| 6 — Alerts, analytics, guides             | ✅ Done 2026-09-18 (needs Telegram and GA4 keys to run live)                 |
+| 7 — Hardening & launch                    | ✅ Code complete; launch steps in `docs/LAUNCH_CHECKLIST.md` need production |
 
-## Phase 1: Definition of Done
+## What is running locally
 
-- [x] Next.js 16.3.5 app, strict TypeScript, Tailwind 4, ESLint, Prettier, Vitest, Playwright, CI workflow (`.github/workflows/ci.yml`)
-- [x] `src/env.ts` Zod validation + `.env.example`
-- [x] data.gov.in client with a test for every SPEC §6.1 quirk, plus quirks found live (DECISIONS D-005 to D-007)
-- [x] `scripts/discover-fields.ts` run for every configured resource → `tests/fixtures/fields/mandi-daily.json`. The other four resource IDs aren't provided yet.
-- [x] Full-day pull, all states and commodities → `tests/fixtures/names/` (states, commodities, varieties, grades, markets)
-- [x] `data/category-rules.json` and `data/commodity-synonyms.json` built from real names
-- [x] Rows/day, runtime and storage projections (below)
-- Tests: 86 unit tests pass; 1 e2e smoke test passes; lint, typecheck and format are clean.
+Local Postgres 18 and Redis, with 90 days of real data loaded from data.gov.in.
 
-## Data volume (measured 2026-09-17)
+| Measure                  | Value                                                         |
+| ------------------------ | ------------------------------------------------------------- |
+| Daily price rows         | 1,762,109                                                     |
+| Days of national medians | 90                                                            |
+| Commodities / markets    | 321 / 3,645                                                   |
+| Tiers                    | 119 major, 101 regular, 101 sparse                            |
+| MSP rows                 | 337 (kharif, rabi and other crops, by marketing season)       |
+| Export rows              | 28,149 across 7 usable years (2015-16 to 2022-23, no 2020-21) |
+| Database size            | 485 MB                                                        |
 
-**Current daily snapshot** (`9ef84268…`, full pull at 18:49 IST):
+## Definition of done, by phase
 
-| Metric                                          | Value                                                                       |
-| ----------------------------------------------- | --------------------------------------------------------------------------- |
-| Rows reported by API                            | 16,747 (16,142 an hour earlier; late markets keep arriving)                 |
-| Rows fetched / accepted / rejected / duplicates | 16,747 / 16,739 / 8 / 0                                                     |
-| States / districts / markets                    | 29 / 492 / 1,764                                                            |
-| Commodities / varieties / grades                | 267 / 799 / 15                                                              |
-| Arrival dates in snapshot                       | only 2026-09-17 (no history in this resource)                               |
-| Runtime                                         | 78 s (47 s partition planning + 32 s fetching)                              |
-| Requests / bytes downloaded                     | 72 / 6.6 MB                                                                 |
-| Partitions                                      | 29 (one per state; the largest, Tamil Nadu at 6,716 rows, fits one request) |
+**Phase 1.** Client tests cover every SPEC §6.1 quirk plus the ones found live; field and name fixtures saved; storage and runtime report delivered.
 
-**Final daily volume**, from the variety-wise resource, which keeps history: 16 Sep 2026 = **18,364** rows, 15 Sep 2026 = **20,394** rows. The projections below use **20,000 rows/day**. Seasonal peaks may be higher, so re-measure in Phase 2 across a month of backfill.
+**Phase 2.** Running ingestion twice produces no duplicates; a failed state resumes; rollups match fixture maths; tiers computed; admin review screens exist. GitHub Actions workflows are written and skip cleanly without secrets, but have not yet run against a production database.
 
-## Storage (measured on PostgreSQL 18, real rows × 30 days)
+**Phase 3.** Navigation works for Tier 1, 2 and 3 crops; build stays well under 10 minutes; Lighthouse targets met (below); JSON-LD validates in tests; Tier 3 and thin pages are `noindex, follow`; sitemaps contain only wave-eligible URLs.
 
-One real day was loaded into the SPEC §6.2 schema and replicated to 30 days (502,170 rows), then measured.
+**Phase 4.** Each tool has unit and e2e tests, empty and error states, and shows dates and sources.
 
-| Table layout                                                                                                                                                                                                          | Heap  | Indexes | **Bytes/row**                                         |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | ------- | ----------------------------------------------------- |
-| SPEC §6.2 as written: `id`, timestamps, `grade TEXT`, `source TEXT`, unique key + 2 indexes                                                                                                                           | 47 MB | 82 MB   | **270**                                               |
-| Optimized: no surrogate id or timestamps on the fact table, `grade_id`/`source` as `smallint`, unique key ordered `(market, commodity, date, …)` so it also serves market lookups, plus the `(commodity, date)` index | 29 MB | 29 MB   | **121** (projected at ~145 to allow for upsert bloat) |
+**Phase 5.** AI guard tests pass, including a test that rejects any answer containing numbers absent from tool results; briefs publish through the admin flow.
 
-The query plan for market + commodity + date range uses the index in the optimized layout.
+**Phase 6.** Alerts pass an end-to-end test with Telegram mocked; GA4 loads only after consent; sitemaps list only indexable URLs. GA4 DebugView still needs a human with a real property.
 
-Other growth:
+**Phase 7.** Security headers verified on a running build, admin and cron routes return 401 without credentials, `pnpm audit --prod` is clean, and the launch and weekly-review documents are written.
 
-- `prices_state_daily`: about 2,800 rows/day at 50 bytes, 0.14 MB/day.
-- Weekly and monthly rollups: about 0.4 MB/day.
-- Base database plus dimension tables: about 9 MB.
+## Tests
 
-**Projected database size at 20k rows/day:**
+- 174 unit and integration tests (Vitest), integration running against a real Postgres database
+- 20 end-to-end tests (Playwright), including axe accessibility checks on key pages in both themes
+- CI runs lint, format check, typecheck and all tests on every push, with a Postgres service; e2e runs on `main`
 
-| Days of `prices_daily` | SPEC layout                             | Optimized layout |
-| ---------------------- | --------------------------------------- | ---------------- |
-| 30                     | ~185 MB                                 | ~110 MB          |
-| 90                     | ~540 MB (over Free)                     | ~320 MB          |
-| 400 (retention cap)    | ~2.4 GB                                 | ~1.4 GB          |
-| After 400 days         | +~0.2 GB/year (rollups + state medians) | same             |
+## Lighthouse (local production build, mobile preset)
 
-**When Neon Free (0.5 GB) runs out, from the first ingestion day:**
+| Page                      | Performance | Accessibility | Best practices | SEO | LCP   | CLS   |
+| ------------------------- | ----------- | ------------- | -------------- | --- | ----- | ----- |
+| Home                      | 94          | 100           | 100            | 100 | 2.9 s | 0.038 |
+| Crop hub (onion)          | 92          | 100           | 100            | 100 | 3.3 s | 0     |
+| Best mandi tool           | 92          | 100           | 100            | 100 | 3.3 s | 0     |
+| Crop hub (desktop preset) | 98          | 100           | 100            | 100 | —     | —     |
 
-- SPEC layout: 400 MB warning at about **day 66**, full at about **day 85**.
-- Optimized layout: warning at about **day 114**, full at about **day 147**.
-- Backfilling history from the variety-wise resource moves these dates earlier, one for one. For example, a 90-day backfill with the SPEC layout fills Free immediately.
+Performance, accessibility, best practices and SEO meet the SPEC §9.1 targets. **LCP does not**: the target is under 2.5 s and the local measurement is 2.9–3.3 s under Lighthouse's simulated slow 4G, against a local server with no CDN and no HTTP/2. Re-measure on the deployed site before launch; the launch checklist has this as a blocking item.
 
-**Neon Launch cost** (verified on neon.com/pricing 2026-09-17: **no monthly minimum**, $0.35/GB-month storage, $0.106/CU-hour compute; SPEC §3 said a $5 minimum, which is out of date):
+Improvements already made: the Devanagari font is no longer loaded (no Hindi route exists yet), the heading font is not preloaded so the first paint uses its fallback, and the 27 KB default favicon was replaced by a 1 KB SVG mark.
 
-- Storage at the 400-day steady state: about $0.84/month (SPEC layout) or $0.49/month (optimized).
-- Compute: ingestion is about 10 min/day, so under 2 CU-hours/month. Site traffic and ISR revalidation keeping the database awake are the real variable. At 0.25 CU awake 2–8 h/day, that's 15–60 CU-hours, or $1.60–$6.40/month.
-- **Estimated total: about $2–8/month**, driven by compute rather than storage.
-- VERIFY in Phase 2: whether Launch charges separately for restore-window (history) storage.
+## Data volume and storage (measured)
+
+Rows per day settle at about **19,500** once late reports arrive (the same-day snapshot showed 16,747 at 18:49 IST; the final variety-wise data for 15 Sep held 20,394).
+
+Measured bytes per row, including indexes, on 90 days of real data:
+
+| Table                   | Rows   | Bytes/row | Notes                                       |
+| ----------------------- | ------ | --------- | ------------------------------------------- |
+| `prices_daily`          | 1.76 M | 126       | The compact layout, as designed             |
+| `prices_market_daily`   | 1.65 M | 163       | Derived, and almost 1:1 with `prices_daily` |
+| `prices_state_daily`    | 125 k  | 106       |                                             |
+| `prices_national_daily` | 21 k   | 95        |                                             |
+
+That is about **5.4 MB a day**, or 485 MB for 90 days.
+
+| Days retained       | Projected size                                        |
+| ------------------- | ----------------------------------------------------- |
+| 90                  | ~0.49 GB (measured)                                   |
+| 180                 | ~1.0 GB                                               |
+| 400 (retention cap) | ~2.2 GB                                               |
+| After 400 days      | +~0.2 GB a year (state and national medians, rollups) |
+
+**Neon Free (0.5 GB) is already full at 90 days of all-India data.** Production therefore needs Neon Launch, or a shorter retention window. At Launch pricing (verified 2026-09-17: no monthly minimum, $0.35/GB-month storage, $0.106/CU-hour compute) the 400-day steady state costs about **$0.77/month for storage**, with compute the larger variable: roughly **$2–8/month in total**, depending on how often the database is awake.
+
+**The biggest saving available** is removing `prices_market_daily` and computing market-level medians from `prices_daily` with a group-by: it is a derived table that costs about as much as the source. That would roughly halve growth, to about 2.8 MB a day and 1.2 GB at 400 days. It is recorded in `docs/ROADMAP.md` rather than done now, because it touches most queries and the current numbers are affordable.
 
 ## Rate-limit budget
 
-The gateway allows about 60 requests/min.
+The data.gov.in gateway allows about 60 requests a minute (measured: the 61st rapid request returned 429, clearing after about 90 seconds).
 
-- A full daily pull is about 72 requests, twice daily about 150 requests/day.
-- Backfill with the variety-wise resource needs about 1 request per state-day partition (days with more than 10,000 rows split further). 400 days × ~30 states is about 12,000 requests, or about 3.7 hours at 55/min. That should be spread over several GitHub Actions runs.
+- A full daily pull is about 72 requests and 80 seconds.
+- A day of final variety-wise data is about 30 requests and 60–70 seconds.
+- Export ingestion is about 360 requests, once a month.
+- The 90-day backfill took roughly 100 minutes of wall time at 1 request per 1.1 seconds.
+
+## Still needed from the human
+
+1. **Neon, Upstash and Vercel accounts**, and the GitHub secrets listed in the README.
+2. **Confirm crop categories** and **review export mappings** in `/admin` (bulk actions provided).
+3. **Keys** for the AI gateway, Ola Maps, Telegram and GA4, to turn those features on.
+4. **Production Lighthouse run** to confirm LCP, and the rest of `docs/LAUNCH_CHECKLIST.md`.
+5. A decision on **retention versus plan**: 400 days on Neon Launch, or a shorter window.

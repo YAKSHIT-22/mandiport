@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Noto_Sans_Devanagari, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import { getEnv } from "@/env";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
@@ -11,20 +11,18 @@ import { themeScript } from "@/components/site/theme-toggle";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+// Headings only, so it is not preloaded: the h1 paints immediately in the fallback face and
+// swaps when the webfont arrives, which keeps the largest paint early on slow connections.
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
   display: "swap",
   weight: ["600", "700"],
-});
-// Loaded on demand for Hindi text only (preload off keeps English pages light).
-const notoDeva = Noto_Sans_Devanagari({
-  subsets: ["devanagari"],
-  variable: "--font-noto-deva",
-  display: "swap",
-  weight: ["400", "600"],
   preload: false,
+  adjustFontFallback: true,
 });
+// Devanagari is not loaded yet: no Hindi page is routed publicly. The i18n phase adds
+// Noto Sans Devanagari on those routes only, so English pages stay light.
 
 const env = getEnv();
 
@@ -45,7 +43,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IN" className={`${inter.variable} ${spaceGrotesk.variable} ${notoDeva.variable}`}>
+    <html lang="en-IN" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
