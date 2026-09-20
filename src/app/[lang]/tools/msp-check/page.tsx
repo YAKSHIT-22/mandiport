@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDict } from "@/lib/i18n/dictionary";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { cropName } from "@/lib/i18n/names";
 import { ToolArt } from "@/components/art/tool-art";
 import { EmptyState, PlainDate, SourceNote } from "@/components/data/meta";
 import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
@@ -30,6 +31,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
 export default async function MspCheckPage({ searchParams }: Props) {
   const t = await getDict();
+  const locale = await getLocale();
   const [{ crop: cropSlug, state: stateSlug }, crops] = await Promise.all([searchParams, getCropOptions()]);
   const crop = cropSlug ? await getCropBySlug(cropSlug) : null;
   const [msp, comparison] = crop
@@ -55,51 +57,55 @@ export default async function MspCheckPage({ searchParams }: Props) {
       </div>
 
       <form className="bg-card flex flex-wrap items-end gap-3 rounded-lg border p-4" method="get">
-        <Field label="Crop" htmlFor="crop" className="min-w-56">
+        <Field label={t.bestMandi.crop} htmlFor="crop" className="min-w-56">
           <Select id="crop" name="crop" defaultValue={cropSlug ?? ""}>
-            <option value="">Choose a crop</option>
+            <option value="">{t.msp.chooseCrop}</option>
             {crops.map((c) => (
               <option key={c.slug} value={c.slug}>
-                {c.name}
+                {cropName(c.slug, c.name, locale)}
               </option>
             ))}
           </Select>
         </Field>
-        <Button type="submit">Compare with MSP</Button>
+        <Button type="submit">{t.msp.compare}</Button>
       </form>
 
       {!crop ? (
-        <EmptyState title="Choose a crop to compare">
-          Crops with an MSP include wheat, paddy, gram, mustard and cotton.
-        </EmptyState>
+        <EmptyState title={t.msp.chooseToCompare}>{t.msp.chooseBody}</EmptyState>
       ) : !msp ? (
-        <EmptyState title={`No MSP is published for ${crop.name.toLowerCase()}`}>
-          MSP is announced for 22 mandated crops plus copra and jute.{" "}
+        <EmptyState title={format(t.msp.noMsp, { crop: cropName(crop.slug, crop.name, locale) })}>
+          {t.msp.noMspBody}{" "}
           <Link href={`/crops/${crop.slug}`} className="underline">
-            See {crop.name.toLowerCase()} market prices
+            {format(t.msp.seeMarketPrices, { crop: cropName(crop.slug, crop.name, locale) })}
           </Link>
           .
         </EmptyState>
       ) : (
         <section aria-labelledby="comparison" className="space-y-4">
           <h2 id="comparison">
-            {crop.name}: MSP {formatRupees(msp.price)} per quintal
+            {format(t.msp.heading, {
+              crop: cropName(crop.slug, crop.name, locale),
+              price: formatRupees(msp.price),
+            })}
           </h2>
           <p className="text-muted-foreground">
-            {msp.season === "other" ? "" : `${msp.season} `}marketing season {msp.year}
-            {msp.variety ? ` · variety ${msp.variety}` : ""}
+            {format(t.msp.seasonLine, {
+              season: msp.season === "other" ? "" : `${msp.season} `,
+              year: msp.year,
+            })}
+            {msp.variety ? format(t.msp.varietySuffix, { variety: msp.variety }) : ""}
           </p>
           {rows.length === 0 ? (
-            <EmptyState title="No state reported this crop in the last 45 days" />
+            <EmptyState title={t.msp.noStates} />
           ) : (
-            <LedgerTable caption={`${crop.name}: state median price against MSP`}>
+            <LedgerTable caption={format(t.msp.caption, { crop: cropName(crop.slug, crop.name, locale) })}>
               <thead>
                 <tr>
-                  <th className={th}>State</th>
-                  <th className={`${th} text-right`}>Median (₹/quintal)</th>
-                  <th className={`${th} text-right`}>Against MSP</th>
-                  <th className={`${th} text-right`}>Markets</th>
-                  <th className={th}>Price date</th>
+                  <th className={th}>{t.common.state}</th>
+                  <th className={`${th} text-right`}>{t.crop.medianColumn}</th>
+                  <th className={`${th} text-right`}>{t.msp.againstMsp}</th>
+                  <th className={`${th} text-right`}>{t.common.markets}</th>
+                  <th className={th}>{t.msp.priceDate}</th>
                 </tr>
               </thead>
               <tbody>
@@ -123,11 +129,11 @@ export default async function MspCheckPage({ searchParams }: Props) {
                             </span>{" "}
                             {formatPercent(change.percent)}{" "}
                             {change.direction === "up"
-                              ? "above"
+                              ? t.msp.above
                               : change.direction === "down"
-                                ? "below"
-                                : "at"}{" "}
-                            MSP
+                                ? t.msp.below
+                                : t.msp.at}{" "}
+                            {t.msp.mspWord}
                           </>
                         ) : (
                           "—"
@@ -143,10 +149,7 @@ export default async function MspCheckPage({ searchParams }: Props) {
               </tbody>
             </LedgerTable>
           )}
-          <p className="text-muted-foreground text-sm">
-            MSP applies to procurement of fair average quality produce at designated centres. Being below MSP
-            in a mandi does not mean procurement is unavailable.
-          </p>
+          <p className="text-muted-foreground text-sm">{t.msp.footnote}</p>
         </section>
       )}
       <SourceNote datasets={["mandiVariety", "msp", "mspRabi"]} />

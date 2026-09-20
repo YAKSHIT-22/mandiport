@@ -1,5 +1,7 @@
 "use client";
 
+import type { Dictionary } from "@/content/i18n/en";
+
 import { useState } from "react";
 import { Field, Textarea } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
@@ -13,17 +15,29 @@ interface AskResponse {
   error?: string;
 }
 
-const TOOL_LABELS: Record<string, string> = {
-  list_crops: "Crop list",
-  get_latest_prices: "Latest prices",
-  get_price_trend: "Price trend",
-  compare_markets: "Market comparison",
-  get_msp: "Minimum support price",
-  get_export_summary: "Export summary",
-  get_top_destinations: "Top export destinations",
-};
+type AskLabels = Dictionary["ask"];
 
-export function AskForm({ examples, disabled }: { examples: string[]; disabled: boolean }) {
+function toolLabels(labels: AskLabels): Record<string, string> {
+  return {
+    list_crops: labels.toolCropList,
+    get_latest_prices: labels.toolLatestPrices,
+    get_price_trend: labels.toolPriceTrend,
+    compare_markets: labels.toolCompareMarkets,
+    get_msp: labels.toolMsp,
+    get_export_summary: labels.toolExportSummary,
+    get_top_destinations: labels.toolTopDestinations,
+  };
+}
+
+export function AskForm({
+  examples,
+  disabled,
+  labels,
+}: {
+  examples: string[];
+  disabled: boolean;
+  labels: AskLabels;
+}) {
   const [question, setQuestion] = useState("");
   const [state, setState] = useState<{
     status: "idle" | "loading" | "error";
@@ -43,7 +57,7 @@ export function AskForm({ examples, disabled }: { examples: string[]; disabled: 
       });
       const data = (await response.json()) as AskResponse & { error?: string };
       if (!response.ok) {
-        setState({ status: "error", message: data.error ?? "Something went wrong. Try again." });
+        setState({ status: "error", message: data.error ?? labels.genericError });
         return;
       }
       setState({ status: "idle", data });
@@ -54,18 +68,14 @@ export function AskForm({ examples, disabled }: { examples: string[]; disabled: 
           tools_called_count: data.toolCalls.length,
         });
     } catch {
-      setState({ status: "error", message: "The request failed. Check your connection and try again." });
+      setState({ status: "error", message: labels.requestFailed });
     }
   }
 
   return (
     <div className="space-y-6">
       <form onSubmit={submit} className="bg-card space-y-3 rounded-lg border p-4">
-        <Field
-          label="Your question"
-          htmlFor="question"
-          hint="For example: what is the onion price in Nashik?"
-        >
+        <Field label={labels.question} htmlFor="question" hint={labels.questionHint}>
           <Textarea
             id="question"
             rows={3}
@@ -77,13 +87,13 @@ export function AskForm({ examples, disabled }: { examples: string[]; disabled: 
           />
         </Field>
         <Button type="submit" disabled={disabled || state.status === "loading" || question.trim().length < 5}>
-          {state.status === "loading" ? "Looking it up…" : "Ask"}
+          {state.status === "loading" ? labels.looking : labels.submit}
         </Button>
       </form>
 
       <section aria-labelledby="examples">
         <h2 id="examples" className="text-lg">
-          Questions you can ask
+          {labels.examplesHeading}
         </h2>
         <ul className="mt-2 flex flex-wrap gap-2">
           {examples.map((example) => (
@@ -111,18 +121,18 @@ export function AskForm({ examples, disabled }: { examples: string[]; disabled: 
         {state.data && (
           <article className="bg-card space-y-4 rounded-lg border p-4">
             <p className="font-heading text-muted-foreground text-[0.78rem] font-bold tracking-[0.12em] uppercase">
-              AI-assisted answer from official data
+              {labels.answerLabel}
             </p>
             <p className="whitespace-pre-line">{state.data.answer}</p>
             {state.data.toolCalls.length > 0 && (
               <details className="border-t pt-3">
                 <summary className="cursor-pointer font-semibold">
-                  Data used ({state.data.toolCalls.length})
+                  {labels.dataUsed.replace("{count}", String(state.data.toolCalls.length))}
                 </summary>
                 <ul className="mt-2 space-y-3">
                   {state.data.toolCalls.map((call, index) => (
                     <li key={index}>
-                      <p className="font-semibold">{TOOL_LABELS[call.tool] ?? call.tool}</p>
+                      <p className="font-semibold">{toolLabels(labels)[call.tool] ?? call.tool}</p>
                       <pre className="bg-muted mt-1 overflow-x-auto rounded-md p-2 text-sm">
                         {JSON.stringify(call.output, null, 2)}
                       </pre>
@@ -131,10 +141,7 @@ export function AskForm({ examples, disabled }: { examples: string[]; disabled: 
                 </ul>
               </details>
             )}
-            <p className="text-muted-foreground text-sm">
-              Mandiport does not predict prices or give trading advice. Check the dates shown in the data
-              used.
-            </p>
+            <p className="text-muted-foreground text-sm">{labels.caveat}</p>
           </article>
         )}
       </div>

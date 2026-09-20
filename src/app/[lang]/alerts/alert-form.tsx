@@ -1,5 +1,7 @@
 "use client";
 
+import type { Dictionary } from "@/content/i18n/en";
+
 import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select } from "@/components/ui/field";
@@ -12,11 +14,13 @@ export function AlertForm({
   states,
   initialCrop,
   disabled,
+  labels,
 }: {
   crops: CropOption[];
   states: StateOption[];
   initialCrop?: string;
   disabled: boolean;
+  labels: Dictionary["alerts"];
 }) {
   const [state, action, pending] = useActionState<AlertState, FormData>(createAlert, { status: "idle" });
   const [direction, setDirection] = useState<"above" | "below">("above");
@@ -45,7 +49,7 @@ export function AlertForm({
           {state.message}
         </p>
       )}
-      <Field label="Code from the bot" htmlFor="code" error={err.code}>
+      <Field label={labels.code} htmlFor="code" error={err.code}>
         <Input
           id="code"
           name="code"
@@ -56,7 +60,7 @@ export function AlertForm({
           aria-invalid={Boolean(err.code)}
         />
       </Field>
-      <Field label="Crop" htmlFor="crop" error={err.crop}>
+      <Field label={labels.crop} htmlFor="crop" error={err.crop}>
         <Select
           id="crop"
           name="crop"
@@ -72,9 +76,9 @@ export function AlertForm({
           ))}
         </Select>
       </Field>
-      <Field label="State (optional)" htmlFor="state" hint="Leave blank to watch the national median price.">
+      <Field label={labels.state} htmlFor="state" hint={labels.stateHint}>
         <Select id="state" name="state" defaultValue="" disabled={disabled}>
-          <option value="">All India</option>
+          <option value="">{labels.allIndia}</option>
           {states.map((s) => (
             <option key={s.slug} value={s.slug}>
               {s.name}
@@ -103,7 +107,7 @@ export function AlertForm({
           ))}
         </div>
       </fieldset>
-      <Field label="Price (₹ per quintal)" htmlFor="threshold" error={err.threshold}>
+      <Field label={labels.threshold} htmlFor="threshold" error={err.threshold}>
         <Input
           id="threshold"
           name="threshold"
@@ -114,7 +118,7 @@ export function AlertForm({
         />
       </Field>
       <Button type="submit" disabled={disabled || pending}>
-        {pending ? "Saving…" : "Create alert"}
+        {pending ? labels.saving : labels.create}
       </Button>
       <p className="text-muted-foreground text-sm">
         At most one message per alert per day. Prices are as reported by markets and may be a few days old.

@@ -50,7 +50,7 @@ export default async function AskPage({ searchParams }: Props) {
       {!configured && (
         <p className="border-highlight bg-muted border-l-4 px-4 py-3">{t.pages.askNotConfigured}</p>
       )}
-      <AskForm examples={examples} disabled={!configured} />
+      <AskForm examples={examples} disabled={!configured} labels={t.ask} />
       <SourceNote datasets={["mandiVariety", "mandiDaily", "msp", "exports"]} />
     </main>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDict } from "@/lib/i18n/dictionary";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { cropName } from "@/lib/i18n/names";
 import { ToolArt } from "@/components/art/tool-art";
 import { EmptyState, SourceNote } from "@/components/data/meta";
 import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
@@ -34,6 +35,7 @@ const MIN_VALUE_FOR_GROWTH = 1;
 
 export default async function ExportDestinationsPage({ searchParams }: Props) {
   const t = await getDict();
+  const locale = await getLocale();
   const [{ crop: cropSlug }, options] = await Promise.all([searchParams, getExportCropOptions()]);
   const crop = cropSlug ? await getCropBySlug(cropSlug) : null;
   const mapping = crop ? await getExportMapping(crop.id) : null;
@@ -73,9 +75,9 @@ export default async function ExportDestinationsPage({ searchParams }: Props) {
       </div>
 
       <form className="bg-card flex flex-wrap items-end gap-3 rounded-lg border p-4" method="get">
-        <Field label="Crop" htmlFor="crop" className="min-w-56">
+        <Field label={t.bestMandi.crop} htmlFor="crop" className="min-w-56">
           <Select id="crop" name="crop" defaultValue={cropSlug ?? ""}>
-            <option value="">Choose a crop</option>
+            <option value="">{t.exportsTool.chooseCrop}</option>
             {options.map((c) => (
               <option key={c.slug} value={c.slug}>
                 {c.name} → {c.exportName}
@@ -83,16 +85,16 @@ export default async function ExportDestinationsPage({ searchParams }: Props) {
             ))}
           </Select>
         </Field>
-        <Button type="submit">Show destinations</Button>
+        <Button type="submit">{t.exportsTool.show}</Button>
       </form>
 
       {!crop ? (
-        <EmptyState title="Choose a crop">Only crops mapped to an export group are listed.</EmptyState>
+        <EmptyState title={t.exportsTool.chooseCrop}>{t.exportsTool.chooseBody}</EmptyState>
       ) : !mapping || !latest ? (
-        <EmptyState title={`No export data is mapped to ${crop.name.toLowerCase()}`}>
+        <EmptyState title={format(t.exportsTool.noMapping, { crop: cropName(crop.slug, crop.name, locale) })}>
           Many crops traded in mandis are sold domestically, or are not reported separately in trade data.{" "}
           <Link href={`/crops/${crop.slug}`} className="underline">
-            See {crop.name.toLowerCase()} mandi prices
+            {format(t.exportsTool.seeMandiPrices, { crop: cropName(crop.slug, crop.name, locale) })}
           </Link>
           .
         </EmptyState>
@@ -100,10 +102,14 @@ export default async function ExportDestinationsPage({ searchParams }: Props) {
         <div className="space-y-6">
           <section aria-labelledby="summary">
             <h2 id="summary">
-              {crop.name} → {mapping.exportName}, {latest.year}
+              {format(t.exportsTool.heading, {
+                crop: cropName(crop.slug, crop.name, locale),
+                group: mapping.exportName,
+                year: latest.year,
+              })}
             </h2>
             <p className="mt-2">
-              Total exports of this group:{" "}
+              {t.exportsTool.total}{" "}
               <strong className="figures">{formatUsdMillion(latest.valueUsdMillion)}</strong>
               {latest.quantity !== null && latest.unit
                 ? ` (${formatNumber(latest.quantity)} ${latest.unit.toLowerCase()})`
@@ -112,22 +118,20 @@ export default async function ExportDestinationsPage({ searchParams }: Props) {
             </p>
             {mapping.status !== "verified" && (
               <p className="border-highlight bg-muted mt-2 border-l-4 px-3 py-2 text-sm">
-                <strong>Unverified mapping.</strong> This crop was matched to the group automatically and has
-                not been reviewed.
+                <strong>{t.exportsTool.unverifiedLabel}</strong> {t.exportsTool.unverifiedBody}
               </p>
             )}
             <p className="text-muted-foreground mt-2 text-sm">
-              Annual data with a lag: {latest.year} is the latest year published on data.gov.in, and no
-              2020-21 figures are available.
+              {format(t.exportsTool.lag, { year: latest.year })}
             </p>
           </section>
 
           {ranked.length === 0 ? (
-            <EmptyState title="No destination countries reported for this year" />
+            <EmptyState title={t.exportsTool.noCountries} />
           ) : (
             <>
               <section aria-labelledby="top">
-                <h2 id="top">Largest buyers</h2>
+                <h2 id="top">{t.exportsTool.largestBuyers}</h2>
                 <ol className="mt-3 space-y-1">
                   {ranked.slice(0, 15).map((c) => (
                     <li
@@ -150,17 +154,17 @@ export default async function ExportDestinationsPage({ searchParams }: Props) {
 
               {growing.length > 0 && (
                 <section aria-labelledby="growing">
-                  <h2 id="growing">Fastest-growing markets</h2>
+                  <h2 id="growing">{t.exportsTool.fastestGrowing}</h2>
                   <p className="text-muted-foreground mt-1 text-sm">
                     Countries buying at least US$1 million in both years, ranked by growth.
                   </p>
-                  <LedgerTable caption="Fastest-growing destinations" className="mt-3">
+                  <LedgerTable caption={t.exportsTool.fastestCaption} className="mt-3">
                     <thead>
                       <tr>
-                        <th className={th}>Country</th>
+                        <th className={th}>{t.exportsTool.country}</th>
                         <th className={`${th} text-right`}>{latest.year}</th>
-                        <th className={`${th} text-right`}>Previous year</th>
-                        <th className={`${th} text-right`}>Change</th>
+                        <th className={`${th} text-right`}>{t.exportsTool.previousYear}</th>
+                        <th className={`${th} text-right`}>{t.exportsTool.change}</th>
                       </tr>
                     </thead>
                     <tbody>

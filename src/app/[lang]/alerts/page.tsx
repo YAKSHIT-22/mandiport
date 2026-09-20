@@ -46,7 +46,13 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
       {!botConfigured && (
         <p className="border-highlight bg-muted border-l-4 px-4 py-3">{t.pages.alertsNotConfigured}</p>
       )}
-      <AlertForm crops={crops} states={states} initialCrop={crop} disabled={!botConfigured} />
+      <AlertForm
+        crops={crops}
+        states={states}
+        initialCrop={crop}
+        disabled={!botConfigured}
+        labels={t.alerts}
+      />
       <SourceNote datasets={["mandiVariety", "mandiDaily"]} />
     </main>
   );
