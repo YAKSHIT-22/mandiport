@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { categoryName, cropName } from "@/lib/i18n/names";
 import { CategoryArt } from "@/components/art/category-art";
 import { SourceNote } from "@/components/data/meta";
 import { Section } from "@/components/data/panels";
@@ -34,6 +36,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CategoryPage({ params }: Props) {
+  const t = await getDict();
+  const locale = await getLocale();
   const { category } = await params;
   const overview = CATEGORY_OVERVIEWS[category];
   const [cats, allCrops] = await Promise.all([
@@ -60,16 +64,16 @@ export default async function CategoryPage({ params }: Props) {
     <main className="container-mp space-y-8 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Crops", path: "/crops" },
-          { name: cat.name, path: `/categories/${category}` },
+          { name: t.chrome.home, path: "/" },
+          { name: t.nav.crops, path: "/crops" },
+          { name: categoryName(category, cat.name, locale), path: `/categories/${category}` },
         ]}
       />
       <div className="flex items-center gap-4">
         <span className="bg-accent flex size-16 shrink-0 items-center justify-center rounded-lg border">
           <CategoryArt slug={category} />
         </span>
-        <h1>{cat.name}</h1>
+        <h1>{categoryName(category, cat.name, locale)}</h1>
       </div>
       <div className="prose-mp">
         {overview.intro.map((p) => (
@@ -77,26 +81,32 @@ export default async function CategoryPage({ params }: Props) {
         ))}
       </div>
       {moverList.length > 0 && (
-        <Section id="movers" title="Biggest price moves this week">
+        <Section id="movers" title={t.pages.categoryMovers}>
           <ul>
             {moverList.map((m) => (
               <li key={m.slug} className="border-border border-b py-2">
                 <Link href={`/crops/${m.slug}`} className="font-semibold underline">
-                  {m.name}
+                  {cropName(m.slug, m.name, locale)}
                 </Link>{" "}
                 <span className="figures">
-                  {formatRupees(m.latest)} on {formatDataDate(m.latestDate)},{" "}
+                  {format(t.pages.moverLine, {
+                    price: formatRupees(m.latest),
+                    date: formatDataDate(m.latestDate, locale),
+                  })}{" "}
                   <span className={m.percent > 0 ? "text-rise" : "text-fall"}>
-                    {m.percent > 0 ? "▲ up" : "▼ down"} {formatPercent(m.percent)}
+                    {m.percent > 0 ? `▲ ${t.common.up}` : `▼ ${t.common.down}`} {formatPercent(m.percent)}
                   </span>{" "}
-                  from {formatRupees(m.previous)} on {formatDataDate(m.previousDate)}
+                  {format(t.pages.moverFromLine, {
+                    price: formatRupees(m.previous),
+                    date: formatDataDate(m.previousDate, locale),
+                  })}
                 </span>
               </li>
             ))}
           </ul>
         </Section>
       )}
-      <Section id="crops" title={`${crops.length} crops in this category`}>
+      <Section id="crops" title={format(t.pages.categoryCrops, { count: crops.length })}>
         <ul className="xs:grid-cols-2 grid grid-cols-1 gap-x-6 md:grid-cols-3">
           {crops.map((c) => (
             <li key={c.slug} className="border-border border-b">
@@ -104,8 +114,10 @@ export default async function CategoryPage({ params }: Props) {
                 href={`/crops/${c.slug}`}
                 className="flex min-h-11 flex-wrap items-center gap-x-2 underline"
               >
-                {c.name}
-                {c.tier === 3 && <span className="text-muted-foreground text-sm">limited data</span>}
+                {cropName(c.slug, c.name, locale)}
+                {c.tier === 3 && (
+                  <span className="text-muted-foreground text-sm">{t.common.limitedData}</span>
+                )}
               </Link>
             </li>
           ))}

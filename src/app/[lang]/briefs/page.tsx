@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { sql } from "drizzle-orm";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { cropName } from "@/lib/i18n/names";
 import { EmptyState, SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { getDb } from "@/lib/db";
@@ -18,6 +20,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function BriefsPage() {
+  const t = await getDict();
+  const locale = await getLocale();
   const briefs = await tryQuery(
     "briefs.list",
     async () =>
@@ -35,23 +39,19 @@ export default async function BriefsPage() {
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Briefs", path: "/briefs" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.nav.briefs, path: "/briefs" },
         ]}
       />
-      <h1>Weekly briefs</h1>
-      <p className="prose-mp">
-        Every Monday we summarise the week&rsquo;s price movement for the most traded crops. Each brief is
-        written by a language model from figures in our database, and reviewed by a person before it is
-        published. Briefs describe what happened; they never predict prices.
-      </p>
+      <h1>{t.pages.briefsTitle}</h1>
+      <p className="prose-mp">{t.pages.briefsIntro}</p>
       {briefs.length === 0 ? (
-        <EmptyState title="No briefs have been published yet">
-          Briefs appear here once the first week of data has been summarised and reviewed.{" "}
+        <EmptyState title={t.pages.briefsEmptyTitle}>
+          {t.pages.briefsEmptyBodyBefore}{" "}
           <Link href="/crops" className="underline">
-            Browse crop prices
+            {t.pages.briefsEmptyLink}
           </Link>{" "}
-          in the meantime.
+          {t.pages.briefsEmptyBodyAfter}
         </EmptyState>
       ) : (
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -63,7 +63,8 @@ export default async function BriefsPage() {
               >
                 <span className="font-heading font-semibold">{b.headline}</span>
                 <span className="text-muted-foreground mt-2 text-sm">
-                  {b.name} · week of {formatDataDate(b.week)}
+                  {cropName(b.slug, b.name, locale)} ·{" "}
+                  {format(t.home.briefWeekOf, { date: formatDataDate(b.week, locale) })}
                 </span>
               </Link>
             </li>

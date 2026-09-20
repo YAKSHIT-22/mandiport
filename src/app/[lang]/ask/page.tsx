@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getEnv } from "@/env";
+import { getDict } from "@/lib/i18n/dictionary";
 import { ToolArt } from "@/components/art/tool-art";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -18,6 +19,7 @@ export const metadata: Metadata = pageMetadata({
 type Props = { searchParams: Promise<{ crop?: string }> };
 
 export default async function AskPage({ searchParams }: Props) {
+  const t = await getDict();
   const { crop: cropSlug } = await searchParams;
   const crop = cropSlug ? await getCropBySlug(cropSlug) : null;
   const configured = Boolean(getEnv().AI_GATEWAY_API_KEY && getEnv().AI_MODEL_ID);
@@ -34,24 +36,19 @@ export default async function AskPage({ searchParams }: Props) {
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Ask Mandiport", path: "/ask" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.chrome.askCta, path: "/ask" },
         ]}
       />
       <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
         <div className="space-y-4">
-          <h1>Ask Mandiport</h1>
-          <p className="prose-mp">
-            Answers are written by a language model that can only read the official figures in our database,
-            and every answer lists the data it used. It does not predict prices or give trading advice.
-          </p>
+          <h1>{t.chrome.askCta}</h1>
+          <p className="prose-mp">{t.pages.askIntro}</p>
         </div>
         <ToolArt name="ask" className="hidden w-52 self-center sm:block" />
       </div>
       {!configured && (
-        <p className="border-highlight bg-muted border-l-4 px-4 py-3">
-          AI answers are not configured on this site yet. The tools and crop pages work as usual.
-        </p>
+        <p className="border-highlight bg-muted border-l-4 px-4 py-3">{t.pages.askNotConfigured}</p>
       )}
       <AskForm examples={examples} disabled={!configured} />
       <SourceNote datasets={["mandiVariety", "mandiDaily", "msp", "exports"]} />

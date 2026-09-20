@@ -124,6 +124,47 @@ export const en = {
     cropColumn: "Crop",
     notFound: "Not found",
   },
+  static: {
+    lastUpdated: "Last updated {date}",
+    aboutTitle: "About Mandiport",
+    methodologyTitle: "Methodology",
+    contactTitle: "Contact",
+    privacyTitle: "Privacy",
+    termsTitle: "Terms of use",
+    disclaimerTitle: "Disclaimer",
+  },
+  pages: {
+    alertsTitle: "Price alerts on Telegram",
+    alertsIntro:
+      "We send a Telegram message when the price you are watching crosses your level. We store only the Telegram chat ID and your alert settings: no name, no phone number, no account.",
+    alertsStep1Before: "Open the Mandiport bot in Telegram and send",
+    alertsStep2: "The bot replies with a 6-character code, valid for 30 minutes.",
+    alertsStep3: "Enter that code below with the crop and price you want to watch.",
+    alertsStopBefore: "Send",
+    alertsStopAfter: "to the bot at any time to delete your alerts and chat ID.",
+    alertsNotConfigured:
+      "Alerts are not configured on this site yet. The bot link will appear here once it is.",
+    briefsTitle: "Weekly briefs",
+    briefsIntro:
+      "Every Monday we summarise the week’s price movement for the most traded crops. Each brief is written by a language model from figures in our database, and reviewed by a person before it is published. Briefs describe what happened; they never predict prices.",
+    briefsEmptyTitle: "No briefs have been published yet",
+    briefsEmptyBodyBefore: "Briefs appear here once the first week of data has been summarised and reviewed.",
+    briefsEmptyLink: "Browse crop prices",
+    briefsEmptyBodyAfter: "in the meantime.",
+    askIntro:
+      "Answers are written by a language model that can only read the official figures in our database, and every answer lists the data it used. It does not predict prices or give trading advice.",
+    askNotConfigured:
+      "AI answers are not configured on this site yet. The tools and crop pages work as usual.",
+    guidesTitle: "Guides",
+    guidesIntro:
+      "Practical explanations of how mandi prices, support prices and export data actually work, written for people who trade in them.",
+    guidesBasics: "Understanding the data",
+    guidesCrops: "Crop guides",
+    categoryMovers: "Biggest price moves this week",
+    categoryCrops: "{count} crops in this category",
+    moverLine: "{price} on {date},",
+    moverFromLine: "from {price} on {date}",
+  },
   panel: {
     unit: "/quintal",
     priceChange: "Price change",
