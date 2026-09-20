@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sql } from "drizzle-orm";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { cropName } from "@/lib/i18n/names";
 import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
 import { EmptyState, PlainDate, SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -26,6 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function StateDirectoryPage({ params }: Props) {
+  const t = await getDict();
+  const locale = await getLocale();
   const state = await getStateBySlug((await params).state);
   if (!state) notFound();
   const rows = await getDb().execute<{
@@ -44,25 +48,22 @@ export default async function StateDirectoryPage({ params }: Props) {
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
+          { name: t.chrome.home, path: "/" },
           { name: state.name, path: `/states/${state.slug}` },
         ]}
       />
-      <h1>Mandi prices in {state.name}</h1>
-      <p>
-        Crops reported by markets in {state.name} in the last 30 days, with the state median on the latest
-        date.
-      </p>
+      <h1>{format(t.place.statePrices, { state: state.name })}</h1>
+      <p>{format(t.place.stateIntro, { state: state.name })}</p>
       {crops.length === 0 ? (
-        <EmptyState title="No crops reported in the last 30 days" />
+        <EmptyState title={t.place.noCropsState} />
       ) : (
-        <LedgerTable caption={`Crops in ${state.name}`}>
+        <LedgerTable caption={format(t.place.captionStateCrops, { state: state.name })}>
           <thead>
             <tr>
-              <th className={th}>Crop</th>
-              <th className={`${th} text-right`}>Median (₹/quintal)</th>
-              <th className={`${th} text-right`}>Markets</th>
-              <th className={th}>Date</th>
+              <th className={th}>{t.place.cropColumn}</th>
+              <th className={`${th} text-right`}>{t.crop.medianColumn}</th>
+              <th className={`${th} text-right`}>{t.common.markets}</th>
+              <th className={th}>{t.crop.dateColumn}</th>
             </tr>
           </thead>
           <tbody>
@@ -70,7 +71,7 @@ export default async function StateDirectoryPage({ params }: Props) {
               <tr key={c.slug}>
                 <td className={td}>
                   <Link href={`/crops/${c.slug}/${state.slug}`} className="underline">
-                    {c.name}
+                    {cropName(c.slug, c.name, locale)}
                   </Link>
                 </td>
                 <td className={tdNum}>{formatRupees(c.median)}</td>

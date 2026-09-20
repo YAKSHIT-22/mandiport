@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { cropName } from "@/lib/i18n/names";
 import { LedgerTable, PricePanel, Section, td, tdNum, th } from "@/components/data/panels";
 import { EmptyState, PlainDate, SourceNote } from "@/components/data/meta";
 import { TrendChart } from "@/components/data/trend-chart";
@@ -63,6 +65,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CropStatePage({ params }: Props) {
+  const t = await getDict();
+  const locale = await getLocale();
   const data = await load(params);
   if (!data) notFound();
   const { crop, state, series, markets } = data;
@@ -96,21 +100,23 @@ export default async function CropStatePage({ params }: Props) {
     <main className="container-mp space-y-8 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Crops", path: "/crops" },
-          { name: crop.name, path: `/crops/${crop.slug}` },
+          { name: t.chrome.home, path: "/" },
+          { name: t.nav.crops, path: "/crops" },
+          { name: cropName(crop.slug, crop.name, locale), path: `/crops/${crop.slug}` },
           { name: state.name, path },
         ]}
       />
       <h1>
-        {crop.name} prices in {state.name}
+        {format(t.place.cropInState, { crop: cropName(crop.slug, crop.name, locale), state: state.name })}
       </h1>
       <PricePanel
-        label={`${state.name} median modal price`}
+        label={format(t.place.stateMedian, { state: state.name })}
         headline={headline}
         marketsLabel={
           headline.latest
-            ? `${formatNumber(headline.latest.markets)} ${headline.latest.markets === 1 ? "market" : "markets"} reporting`
+            ? format(headline.latest.markets === 1 ? t.crop.marketReporting : t.crop.marketsReporting, {
+                count: formatNumber(headline.latest.markets),
+              })
             : undefined
         }
       />
@@ -121,7 +127,7 @@ export default async function CropStatePage({ params }: Props) {
           ))}
         </div>
       )}
-      <Section id="trend" title="State median trend">
+      <Section id="trend" title={t.place.stateTrend}>
         <TrendChart
           id={`state-${crop.slug}-${state.slug}`}
           crop={crop.slug}
@@ -130,23 +136,31 @@ export default async function CropStatePage({ params }: Props) {
           msp={msp?.price}
         />
       </Section>
-      <Section id="markets" title="Markets reporting">
+      <Section id="markets" title={t.place.marketsReportingSection}>
         {markets.length === 0 ? (
           <EmptyState
-            title={`No market in ${state.name} reported ${crop.name.toLowerCase()} in the last 180 days`}
+            title={format(t.place.noMarketInState, {
+              state: state.name,
+              crop: cropName(crop.slug, crop.name, locale),
+            })}
           >
             <Link href={`/crops/${crop.slug}`} className="underline">
               See national prices
             </Link>
           </EmptyState>
         ) : (
-          <LedgerTable caption={`${crop.name} markets in ${state.name}`}>
+          <LedgerTable
+            caption={format(t.place.captionCropMarkets, {
+              crop: cropName(crop.slug, crop.name, locale),
+              state: state.name,
+            })}
+          >
             <thead>
               <tr>
-                <th className={th}>Market</th>
-                <th className={`${th} text-right`}>Latest (₹/quintal)</th>
-                <th className={th}>Date</th>
-                <th className={`${th} text-right`}>Days reported (90)</th>
+                <th className={th}>{t.common.market}</th>
+                <th className={`${th} text-right`}>{t.place.latestColumn}</th>
+                <th className={th}>{t.crop.dateColumn}</th>
+                <th className={`${th} text-right`}>{t.place.daysReported90}</th>
               </tr>
             </thead>
             <tbody>

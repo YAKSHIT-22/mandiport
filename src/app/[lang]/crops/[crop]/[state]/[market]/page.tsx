@@ -6,6 +6,8 @@ import { PlainDate, SourceNote } from "@/components/data/meta";
 import { SeasonalityBlock } from "@/components/data/seasonality-table";
 import { TrendChart } from "@/components/data/trend-chart";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { cropName } from "@/lib/i18n/names";
 import { JsonLd } from "@/components/site/json-ld";
 import { INDEXING } from "@/config/tiers";
 import { daysBefore, formatDataDate } from "@/lib/dates";
@@ -65,6 +67,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function MarketPage({ params }: Props) {
+  const t = await getDict();
+  const locale = await getLocale();
   const data = await load(params);
   if (!data) notFound();
   const { crop, state, market, series, days180 } = data;
@@ -90,21 +94,28 @@ export default async function MarketPage({ params }: Props) {
     <main className="container-mp space-y-8 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: crop.name, path: `/crops/${crop.slug}` },
+          { name: t.chrome.home, path: "/" },
+          { name: cropName(crop.slug, crop.name, locale), path: `/crops/${crop.slug}` },
           { name: state.name, path: `/crops/${crop.slug}/${state.slug}` },
           { name: market.name, path },
         ]}
       />
       <header>
         <h1>
-          {crop.name} prices at {market.name}
+          {format(t.place.cropAtMarket, {
+            crop: cropName(crop.slug, crop.name, locale),
+            market: market.name,
+          })}
         </h1>
         <p className="text-muted-foreground mt-1">
-          {market.district} district, {state.name} · reported on {formatNumber(days180)} days in the last 180
+          {format(t.place.marketSubtitle, {
+            district: market.district,
+            state: state.name,
+            days: formatNumber(days180),
+          })}
         </p>
       </header>
-      <PricePanel label="Modal price at this market" headline={headline} />
+      <PricePanel label={t.panel.modalAtMarket} headline={headline} />
       {copy.length > 0 && (
         <div className="prose-mp">
           {copy.map((p) => (
@@ -112,7 +123,7 @@ export default async function MarketPage({ params }: Props) {
           ))}
         </div>
       )}
-      <Section id="trend" title="Price history">
+      <Section id="trend" title={t.place.priceHistorySection}>
         <TrendChart
           id={`market-${market.id}-${crop.slug}`}
           crop={crop.slug}
@@ -121,17 +132,22 @@ export default async function MarketPage({ params }: Props) {
           msp={msp?.price}
         />
       </Section>
-      <Section id="seasonality" title="Monthly averages and seasonality">
+      <Section id="seasonality" title={t.place.seasonalitySection}>
         <SeasonalityBlock monthly={monthly} firstDate={firstDate} place={market.name} />
       </Section>
       {varieties.length > 0 && (
-        <Section id="varieties" title="Varieties at this market">
-          <LedgerTable caption={`${crop.name} varieties at ${market.name}`}>
+        <Section id="varieties" title={t.place.varietiesHere}>
+          <LedgerTable
+            caption={format(t.place.captionVarietiesHere, {
+              crop: cropName(crop.slug, crop.name, locale),
+              market: market.name,
+            })}
+          >
             <thead>
               <tr>
-                <th className={th}>Variety</th>
-                <th className={`${th} text-right`}>Modal (₹/quintal)</th>
-                <th className={th}>Date</th>
+                <th className={th}>{t.common.variety}</th>
+                <th className={`${th} text-right`}>{t.place.modalColumn}</th>
+                <th className={th}>{t.crop.dateColumn}</th>
               </tr>
             </thead>
             <tbody>

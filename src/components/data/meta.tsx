@@ -6,13 +6,7 @@ import { cn } from "@/lib/utils";
 import { SourceLink } from "./source-link";
 
 /** "Data from 16 Sep 2026" or "Data from today" — never "today" unless it is (SPEC §6.1). */
-export async function DataDate({
-  date,
-  className,
-}: {
-  date: string | null | undefined;
-  className?: string;
-}) {
+export async function DataDate({ date, className }: { date: string | null | undefined; className?: string }) {
   const t = await getDict();
   const locale = await getLocale();
   if (!date) return <span className={cn("text-muted-foreground text-sm", className)}>{t.common.noData}</span>;

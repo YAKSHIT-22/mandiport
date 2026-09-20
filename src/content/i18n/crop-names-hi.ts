@@ -46,7 +46,7 @@ export const CROP_NAMES_HI: Record<string, string> = {
   "knool-khol": "गांठ गोभी",
   "leafy-vegetable": "पत्तेदार सब्ज़ी",
   "little-gourd-kundru": "कुंदरू",
-  "snakegourd": "चिचिंडा",
+  snakegourd: "चिचिंडा",
   "long-melon-kakri": "ककड़ी",
   "chow-chow": "चाउ चाउ",
   "baby-corn": "बेबी कॉर्न",
@@ -122,7 +122,7 @@ export const CROP_NAMES_HI: Record<string, string> = {
   "cowpea-lobia-karamani": "लोबिया",
   "kulthi-horse-gram": "कुल्थी",
   "moth-dal": "मोठ दाल",
-  "soanf": "सौंफ",
+  soanf: "सौंफ",
 
   // Oilseeds and oils
   groundnut: "मूँगफली",

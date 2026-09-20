@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sql } from "drizzle-orm";
 import { CategoryArt } from "@/components/art/category-art";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { categoryName, cropName } from "@/lib/i18n/names";
 import { PricePanel, LedgerTable, Section, td, tdNum, th, CropLink } from "@/components/data/panels";
 import { EmptyState, PlainDate, SourceNote } from "@/components/data/meta";
 import { TrendChart } from "@/components/data/trend-chart";
@@ -64,6 +66,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CropHubPage({ params }: Props) {
+  const t = await getDict();
+  const locale = await getLocale();
   const { crop: slug } = await params;
   const crop = await getCropBySlug(slug);
   if (!crop) notFound();
@@ -124,10 +128,11 @@ export default async function CropHubPage({ params }: Props) {
   });
 
   const path = `/crops/${crop.slug}`;
+  const name = cropName(crop.slug, crop.name, locale);
   const crumbs = [
-    { name: "Home", path: "/" },
-    { name: "Crops", path: "/crops" },
-    { name: crop.name, path },
+    { name: t.chrome.home, path: "/" },
+    { name: t.nav.crops, path: "/crops" },
+    { name, path },
   ];
   const datasets = [
     "mandiVariety",
@@ -147,11 +152,11 @@ export default async function CropHubPage({ params }: Props) {
           </span>
         )}
         <div className="space-y-2">
-          <h1>{crop.name} prices</h1>
+          <h1>{format(t.crop.titleSuffix, { crop: name })}</h1>
           {crop.categoryConfirmed && crop.categoryName && (
             <p className="text-muted-foreground">
               <Link href={`/categories/${crop.categorySlug}`} className="underline">
-                {crop.categoryName}
+                {categoryName(crop.categorySlug ?? "", crop.categoryName, locale)}
               </Link>
             </p>
           )}
@@ -159,20 +164,24 @@ export default async function CropHubPage({ params }: Props) {
       </header>
 
       <PricePanel
-        label="National median modal price"
+        label={t.crop.nationalMedian}
         headline={headline}
         marketsLabel={
           headline.latest
-            ? `${formatNumber(headline.latest.markets)} ${headline.latest.markets === 1 ? "market" : "markets"} reporting`
+            ? format(headline.latest.markets === 1 ? t.crop.marketReporting : t.crop.marketsReporting, {
+                count: formatNumber(headline.latest.markets),
+              })
             : undefined
         }
       />
 
       {crop.tier === 3 && (
         <EmptyState
-          title={`Limited data: ${formatNumber(crop.marketsReporting90d)} ${crop.marketsReporting90d === 1 ? "market" : "markets"} reported in the last 90 days`}
+          title={format(crop.marketsReporting90d === 1 ? t.crop.limitedTitleOne : t.crop.limitedTitle, {
+            count: formatNumber(crop.marketsReporting90d),
+          })}
         >
-          Figures below may reflect only a few markets and days.
+          {t.crop.limitedBody}
         </EmptyState>
       )}
 
@@ -186,32 +195,32 @@ export default async function CropHubPage({ params }: Props) {
         </div>
       )}
 
-      <Section id="trend" title="Price trend">
+      <Section id="trend" title={t.crop.trend}>
         <TrendChart
           id={`hub-${crop.slug}`}
           crop={crop.slug}
           points={series}
-          label={`${crop.name} national median price`}
+          label={format(t.crop.trendLabel, { crop: name })}
           msp={msp?.price}
           mspLabel={msp ? `MSP ${formatRupees(msp.price)} (${msp.year})` : undefined}
         />
         <p className="mt-3">
           <Link href={`/tools/price-history?crop=${crop.slug}`} className="underline">
-            Explore price history by market
+            {t.crop.explorePriceHistory}
           </Link>
         </p>
       </Section>
 
-      <Section id="markets" title="Highest recent prices by market">
+      <Section id="markets" title={t.crop.topMarkets}>
         {topMarkets.length === 0 ? (
-          <EmptyState title="No market reported this crop in the last 30 days" />
+          <EmptyState title={t.crop.noMarkets} />
         ) : (
-          <LedgerTable caption={`${crop.name}: latest modal price by market`}>
+          <LedgerTable caption={format(t.crop.captionByMarket, { crop: name })}>
             <thead>
               <tr>
-                <th className={th}>Market</th>
-                <th className={`${th} text-right`}>Modal price (₹/quintal)</th>
-                <th className={th}>Date</th>
+                <th className={th}>{t.common.market}</th>
+                <th className={`${th} text-right`}>{t.crop.modalPriceColumn}</th>
+                <th className={th}>{t.crop.dateColumn}</th>
               </tr>
             </thead>
             <tbody>
@@ -236,20 +245,20 @@ export default async function CropHubPage({ params }: Props) {
         )}
         <p className="mt-3">
           <Link href={`/tools/best-mandi?crop=${crop.slug}`} className="underline">
-            Find the best mandi to sell {crop.name.toLowerCase()} after transport costs
+            {format(t.crop.findBestMandi, { crop: name })}
           </Link>
         </p>
       </Section>
 
       {states.length > 0 && (
-        <Section id="states" title="Prices by state">
-          <LedgerTable caption={`${crop.name}: median price by state`}>
+        <Section id="states" title={t.crop.byState}>
+          <LedgerTable caption={format(t.crop.captionByState, { crop: name })}>
             <thead>
               <tr>
-                <th className={th}>State</th>
-                <th className={`${th} text-right`}>Median (₹/quintal)</th>
-                <th className={`${th} text-right`}>Markets</th>
-                <th className={th}>Date</th>
+                <th className={th}>{t.common.state}</th>
+                <th className={`${th} text-right`}>{t.crop.medianColumn}</th>
+                <th className={`${th} text-right`}>{t.common.markets}</th>
+                <th className={th}>{t.crop.dateColumn}</th>
               </tr>
             </thead>
             <tbody>
@@ -273,30 +282,33 @@ export default async function CropHubPage({ params }: Props) {
       )}
 
       {msp && (
-        <Section id="msp" title="Minimum support price">
+        <Section id="msp" title={t.crop.mspTitle}>
           <p>
-            MSP for {msp.name}
-            {msp.variety ? ` (${msp.variety})` : ""}, {msp.season === "other" ? "" : `${msp.season} `}
-            marketing season {msp.year}: <strong className="figures">{formatRupees(msp.price)}</strong> per
-            quintal.
+            {format(t.crop.mspLine, {
+              name: msp.name,
+              variety: msp.variety ? ` (${msp.variety})` : "",
+              season: msp.season === "other" ? "" : `${msp.season} `,
+              year: msp.year,
+            })}{" "}
+            <strong className="figures">{formatRupees(msp.price)}</strong> {t.crop.perQuintalSuffix}
           </p>
           <p className="mt-2">
             <Link href={`/tools/msp-check?crop=${crop.slug}`} className="underline">
-              Compare mandi prices with MSP by state
+              {t.crop.compareMsp}
             </Link>
           </p>
         </Section>
       )}
 
       {varieties.length > 0 && (
-        <Section id="varieties" title="Varieties">
-          <LedgerTable caption={`${crop.name}: latest median price by variety`}>
+        <Section id="varieties" title={t.crop.varieties}>
+          <LedgerTable caption={format(t.crop.captionByVariety, { crop: name })}>
             <thead>
               <tr>
-                <th className={th}>Variety</th>
-                <th className={`${th} text-right`}>Median (₹/quintal)</th>
-                <th className={`${th} text-right`}>Markets</th>
-                <th className={th}>Date</th>
+                <th className={th}>{t.common.variety}</th>
+                <th className={`${th} text-right`}>{t.crop.medianColumn}</th>
+                <th className={`${th} text-right`}>{t.common.markets}</th>
+                <th className={th}>{t.crop.dateColumn}</th>
               </tr>
             </thead>
             <tbody>
@@ -316,7 +328,7 @@ export default async function CropHubPage({ params }: Props) {
       )}
 
       {mapping && exportYears.length > 0 && (
-        <Section id="exports" title="Exports">
+        <Section id="exports" title={t.crop.exports}>
           <ExportSummary
             mapping={mapping}
             years={exportYears}
@@ -326,16 +338,19 @@ export default async function CropHubPage({ params }: Props) {
         </Section>
       )}
 
-      <Section id="brief" title={crop.tier === 1 ? "Weekly brief" : `Ask about ${crop.name.toLowerCase()}`}>
+      <Section
+        id="brief"
+        title={crop.tier === 1 ? t.crop.weeklyBrief : format(t.crop.askAbout, { crop: name })}
+      >
         <LatestBrief crop={crop} />
       </Section>
 
       {related.length > 0 && (
-        <Section id="related" title="Related crops">
+        <Section id="related" title={t.crop.related}>
           <ul className="flex flex-wrap gap-x-6">
             {related.map((r) => (
               <li key={r.slug}>
-                <CropLink slug={r.slug} name={r.name} />
+                <CropLink slug={r.slug} name={cropName(r.slug, r.name, locale)} />
               </li>
             ))}
           </ul>

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sql } from "drizzle-orm";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { cropName } from "@/lib/i18n/names";
 import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
 import { EmptyState, PlainDate, SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -29,6 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function MarketDirectoryPage({ params }: Props) {
+  const t = await getDict();
+  const locale = await getLocale();
   const { state: s, market: m } = await params;
   const state = await getStateBySlug(s);
   const market = state ? await getMarketInState(state.id, m) : null;
@@ -44,24 +48,22 @@ export default async function MarketDirectoryPage({ params }: Props) {
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
+          { name: t.chrome.home, path: "/" },
           { name: state.name, path: `/states/${state.slug}` },
           { name: market.name, path: `/markets/${state.slug}/${market.slug}` },
         ]}
       />
       <h1>{market.name}</h1>
-      <p>
-        {market.district} district, {state.name}. Crops reported here in the last 90 days, most recent first.
-      </p>
+      <p>{format(t.place.marketSubtitleShort, { district: market.district, state: state.name })}</p>
       {crops.length === 0 ? (
-        <EmptyState title="No crops reported here in the last 90 days" />
+        <EmptyState title={t.place.noCropsMarket} />
       ) : (
-        <LedgerTable caption={`Latest prices at ${market.name}`}>
+        <LedgerTable caption={format(t.place.captionMarketPrices, { market: market.name })}>
           <thead>
             <tr>
-              <th className={th}>Crop</th>
-              <th className={`${th} text-right`}>Modal (₹/quintal)</th>
-              <th className={th}>Date</th>
+              <th className={th}>{t.place.cropColumn}</th>
+              <th className={`${th} text-right`}>{t.place.modalColumn}</th>
+              <th className={th}>{t.crop.dateColumn}</th>
             </tr>
           </thead>
           <tbody>
@@ -69,7 +71,7 @@ export default async function MarketDirectoryPage({ params }: Props) {
               <tr key={c.slug}>
                 <td className={td}>
                   <Link href={`/crops/${c.slug}/${state.slug}/${market.slug}`} className="underline">
-                    {c.name}
+                    {cropName(c.slug, c.name, locale)}
                   </Link>
                 </td>
                 <td className={tdNum}>{formatRupees(c.modal)}</td>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatDataDate } from "@/lib/dates";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
 import { formatNumber, formatRupees } from "@/lib/format";
 import type { Headline } from "@/lib/queries/crop";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -8,10 +9,10 @@ import { DataDate } from "./meta";
 import { ChangeMark, PriceFigure } from "./price";
 
 /** Price panel: the one bold element per page (DESIGN.md), in the reference card style. */
-export function PricePanel({
+export async function PricePanel({
   label,
   headline,
-  unitLabel = "/quintal",
+  unitLabel,
   marketsLabel,
   className,
 }: {
@@ -22,6 +23,9 @@ export function PricePanel({
   className?: string;
 }) {
   const { latest, weekAgo, monthAgo } = headline;
+  const t = await getDict();
+  const locale = await getLocale();
+  const unit = unitLabel ?? t.panel.unit;
   return (
     <section
       aria-label={label}
@@ -36,35 +40,43 @@ export function PricePanel({
       {latest ? (
         <>
           <p className="mt-2">
-            <PriceFigure value={latest.value} size="xl" unit={unitLabel} />
+            <PriceFigure value={latest.value} size="xl" unit={unit} />
           </p>
           <p className="text-panel-foreground/85 mt-2">
             <DataDate date={latest.date} />
             {marketsLabel && <span> · {marketsLabel}</span>}
           </p>
-          <ul className="mt-4 flex flex-wrap gap-2" aria-label="Price change">
+          <ul className="mt-4 flex flex-wrap gap-2" aria-label={t.panel.priceChange}>
             <li>
-              <ChangeMark from={weekAgo?.value} to={latest.value} label="vs 7 days" onDark />
+              <ChangeMark from={weekAgo?.value} to={latest.value} label={t.panel.vs7} onDark />
             </li>
             <li>
-              <ChangeMark from={monthAgo?.value} to={latest.value} label="vs 30 days" onDark />
+              <ChangeMark from={monthAgo?.value} to={latest.value} label={t.panel.vs30} onDark />
             </li>
           </ul>
           {(weekAgo || monthAgo) && (
             <p className="text-panel-foreground/75 mt-3 text-sm">
-              Compared with{" "}
+              {t.panel.comparedWith}{" "}
               {[
-                weekAgo && `${formatRupees(weekAgo.value)} on ${formatDataDate(weekAgo.date)}`,
-                monthAgo && `${formatRupees(monthAgo.value)} on ${formatDataDate(monthAgo.date)}`,
+                weekAgo &&
+                  format(t.panel.onDate, {
+                    price: formatRupees(weekAgo.value),
+                    date: formatDataDate(weekAgo.date, locale),
+                  }),
+                monthAgo &&
+                  format(t.panel.onDate, {
+                    price: formatRupees(monthAgo.value),
+                    date: formatDataDate(monthAgo.date, locale),
+                  }),
               ]
                 .filter(Boolean)
-                .join(" and ")}
+                .join(` ${t.panel.and} `)}
               .
             </p>
           )}
         </>
       ) : (
-        <p className="mt-2">No prices reported yet.</p>
+        <p className="mt-2">{t.panel.noPrices}</p>
       )}
     </section>
   );

@@ -1,4 +1,5 @@
 import { computeChange, formatPercent, formatRupees } from "@/lib/format";
+import { format, getDict } from "@/lib/i18n/dictionary";
 import { cn } from "@/lib/utils";
 
 export function PriceFigure({
@@ -30,7 +31,7 @@ export function PriceFigure({
 }
 
 /** ▲/▼ change with words, never colour alone (DESIGN.md). */
-export function ChangeMark({
+export async function ChangeMark({
   from,
   to,
   label,
@@ -43,20 +44,21 @@ export function ChangeMark({
   onDark?: boolean;
   className?: string;
 }) {
+  const t = await getDict();
   const change = computeChange(from, to);
   if (!change) {
     return (
       <span
         className={cn("text-sm", onDark ? "text-panel-foreground/80" : "text-muted-foreground", className)}
       >
-        No comparison {label}
+        {format(t.panel.noComparison, { label })}
       </span>
     );
   }
   const symbol = change.direction === "up" ? "▲" : change.direction === "down" ? "▼" : "–";
   const words =
     change.direction === "flat"
-      ? "No change"
+      ? t.panel.noChange
       : `${formatRupees(Math.abs(change.absolute))} (${formatPercent(change.percent)})`;
   const tone = onDark
     ? change.direction === "up"
@@ -69,7 +71,12 @@ export function ChangeMark({
       : change.direction === "down"
         ? "text-fall"
         : "text-muted-foreground";
-  const srDirection = change.direction === "up" ? "up" : change.direction === "down" ? "down" : "unchanged";
+  const srDirection =
+    change.direction === "up"
+      ? t.common.up
+      : change.direction === "down"
+        ? t.common.down
+        : t.common.unchanged;
   return (
     <span
       className={cn(
