@@ -3,7 +3,7 @@ import { formatRupees } from "@/lib/format";
 import { daysBefore } from "@/lib/dates";
 import { ChartPeriodTracker } from "./chart-period-tracker";
 import type { Dictionary } from "@/content/i18n/en";
-import { EmptyState } from "./meta";
+import { EmptyState } from "./states";
 
 const PERIODS = [30, 90, 365] as const;
 

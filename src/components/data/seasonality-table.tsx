@@ -3,8 +3,8 @@ import type { Dictionary } from "@/content/i18n/en";
 import { formatNumber, formatRupees } from "@/lib/format";
 import type { MonthlyAverage } from "@/lib/queries/crop";
 import { computeSeasonality, MONTH_NAMES } from "@/lib/seasonality";
-import { LedgerTable, td, tdNum, th } from "./panels";
-import { EmptyState } from "./meta";
+import { LedgerTable, td, tdNum, th } from "./table";
+import { EmptyState } from "./states";
 
 /** Monthly averages and, after 12 months of data, historically highest months (SPEC §8.3). */
 export type SeasonalityLabels = Dictionary["chart"] & { emptyTitle: string; emptyBody: string };
