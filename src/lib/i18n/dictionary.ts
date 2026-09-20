@@ -3,6 +3,7 @@ import { lang } from "next/root-params";
 import { en, type Dictionary } from "@/content/i18n/en";
 import { hi } from "@/content/i18n/hi";
 import { DEFAULT_LOCALE, toLocale, type Locale } from "./config";
+import { format } from "./format";
 
 const DICTIONARIES: Record<Locale, Dictionary> = { en, hi };
 
@@ -28,11 +29,5 @@ export function dictionaryFor(locale: Locale): Dictionary {
   return DICTIONARIES[locale];
 }
 
-/** Fills `{name}` placeholders: format(t.common.dataFrom, { date }). */
-export function format(template: string, values: Record<string, string | number>): string {
-  return template.replace(/\{(\w+)\}/g, (match, key: string) =>
-    key in values ? String(values[key]) : match,
-  );
-}
-
+export { format };
 export type { Dictionary, Locale };

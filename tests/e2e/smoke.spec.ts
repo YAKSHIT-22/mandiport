@@ -80,3 +80,22 @@ test("dark theme can be switched and is remembered", async ({ page }) => {
   await page.reload();
   await expect(page.locator("html")).toHaveClass(/dark/);
 });
+
+test("the site can be read in Hindi, and the choice is remembered", async ({ page }) => {
+  await page.goto("/tools");
+  await expect(page.getByRole("heading", { level: 1, name: "Tools" })).toBeVisible();
+
+  await page.getByRole("button", { name: "हिन्दी में देखें" }).click();
+
+  // Same URL, Hindi content, and the document language changed for screen readers.
+  await expect(page).toHaveURL(/\/tools$/);
+  await expect(page.getByRole("heading", { level: 1, name: "टूल" })).toBeVisible();
+  expect(await page.locator("html").getAttribute("lang")).toBe("hi-IN");
+
+  // The choice follows the reader to the next page.
+  await page.goto("/crops");
+  await expect(page.getByRole("heading", { level: 1, name: "सभी फसलें" })).toBeVisible();
+
+  await page.getByRole("button", { name: "View in English" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "All crops" })).toBeVisible();
+});
