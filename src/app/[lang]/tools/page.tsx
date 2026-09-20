@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BarChart3, Compass, IndianRupee, MessageSquare, Ruler, Ship } from "lucide-react";
 import { ToolArt, type ToolArtName } from "@/components/art/tool-art";
+import type { Dictionary } from "@/content/i18n/en";
+import { getDict } from "@/lib/i18n/dictionary";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -13,65 +15,66 @@ export const metadata: Metadata = pageMetadata({
   path: "/tools",
 });
 
-const TOOLS = [
-  {
-    href: "/tools/best-mandi",
-    art: "best-mandi" as ToolArtName,
-    label: "Best mandi to sell",
-    text: "Rank nearby markets by what you would take home after transport.",
-    icon: Compass,
-  },
-  {
-    href: "/tools/price-history",
-    art: "price-history" as ToolArtName,
-    label: "Price history and best month",
-    text: "Daily trends, monthly averages and past seasonal peaks.",
-    icon: BarChart3,
-  },
-  {
-    href: "/tools/msp-check",
-    art: "msp-check" as ToolArtName,
-    label: "MSP check",
-    text: "How state mandi prices compare with the minimum support price.",
-    icon: IndianRupee,
-  },
-  {
-    href: "/tools/export-destinations",
-    art: "export-destinations" as ToolArtName,
-    label: "Export destinations",
-    text: "Which countries buy, and which markets are growing.",
-    icon: Ship,
-  },
-  {
-    href: "/tools/unit-converter",
-    art: "unit-converter" as ToolArtName,
-    label: "Unit converter",
-    text: "₹ per quintal, kg and tonne, plus rupees to dollars.",
-    icon: Ruler,
-  },
-  {
-    href: "/ask",
-    art: "ask" as ToolArtName,
-    label: "Ask Mandiport",
-    text: "Ask a question and get an answer from official data only.",
-    icon: MessageSquare,
-  },
-];
+function toolList(t: Dictionary) {
+  return [
+    {
+      href: "/tools/best-mandi",
+      art: "best-mandi" as ToolArtName,
+      label: t.footer.bestMandi,
+      text: t.tools.bestMandiLong,
+      icon: Compass,
+    },
+    {
+      href: "/tools/price-history",
+      art: "price-history" as ToolArtName,
+      label: t.tools.priceHistoryTitle,
+      text: t.tools.priceHistoryLong,
+      icon: BarChart3,
+    },
+    {
+      href: "/tools/msp-check",
+      art: "msp-check" as ToolArtName,
+      label: t.footer.mspCheck,
+      text: t.tools.mspLong,
+      icon: IndianRupee,
+    },
+    {
+      href: "/tools/export-destinations",
+      art: "export-destinations" as ToolArtName,
+      label: t.footer.exportDestinations,
+      text: t.tools.exportsLong,
+      icon: Ship,
+    },
+    {
+      href: "/tools/unit-converter",
+      art: "unit-converter" as ToolArtName,
+      label: t.footer.unitConverter,
+      text: t.tools.unitsLong,
+      icon: Ruler,
+    },
+    {
+      href: "/ask",
+      art: "ask" as ToolArtName,
+      label: t.chrome.askCta,
+      text: t.tools.askLong,
+      icon: MessageSquare,
+    },
+  ];
+}
 
-export default function ToolsPage() {
+export default async function ToolsPage() {
+  const t = await getDict();
+  const TOOLS = toolList(t);
   return (
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Tools", path: "/tools" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.tools.indexTitle, path: "/tools" },
         ]}
       />
-      <h1>Tools</h1>
-      <p className="prose-mp">
-        Each tool works for every commodity in the data, shows the date of every figure, and says plainly when
-        data is missing.
-      </p>
+      <h1>{t.tools.indexTitle}</h1>
+      <p className="prose-mp">{t.tools.indexIntro}</p>
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {TOOLS.map((t) => (
           <li key={t.href}>

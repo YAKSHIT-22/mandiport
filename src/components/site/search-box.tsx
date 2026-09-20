@@ -10,8 +10,17 @@ interface Result {
   href: string;
 }
 
+export interface SearchLabels {
+  placeholder: string;
+  label: string;
+  search: string;
+  results: string;
+  notResponding: string;
+  noMatches: string;
+}
+
 /** Typeahead over /api/search. Works as a plain form (to /crops?q=) without JavaScript. */
-export function SearchBox({ placeholder = "Search a crop, market or state" }: { placeholder?: string }) {
+export function SearchBox({ labels }: { labels: SearchLabels }) {
   const id = useId();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
@@ -48,7 +57,7 @@ export function SearchBox({ placeholder = "Search a crop, market or state" }: { 
   return (
     <form action="/crops" method="get" role="search" className="relative">
       <label htmlFor={id} className="sr-only">
-        Search crops, markets and states
+        {labels.label}
       </label>
       <div className="flex gap-2">
         <input
@@ -58,7 +67,7 @@ export function SearchBox({ placeholder = "Search a crop, market or state" }: { 
           autoComplete="off"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={placeholder}
+          placeholder={labels.placeholder}
           aria-describedby={`${id}-status`}
           className="border-input bg-card text-body block min-h-12 w-full rounded-sm border px-3"
         />
@@ -66,18 +75,18 @@ export function SearchBox({ placeholder = "Search a crop, market or state" }: { 
           type="submit"
           className="bg-panel text-panel-foreground min-h-12 rounded-sm px-4 font-semibold"
         >
-          Search
+          {labels.search}
         </button>
       </div>
       <p id={`${id}-status`} className="sr-only" aria-live="polite">
-        {showResults && status === "idle" ? `${results.length} results` : ""}
+        {showResults && status === "idle" ? labels.results.replace("{count}", String(results.length)) : ""}
       </p>
       {showResults && (
         <div className="border-input bg-card absolute inset-x-0 top-full z-30 mt-1 max-h-96 overflow-y-auto rounded-sm border">
           {status === "error" ? (
-            <p className="p-3">Search is not responding. Press Search to see the full crop list.</p>
+            <p className="p-3">{labels.notResponding}</p>
           ) : results.length === 0 && status === "idle" ? (
-            <p className="p-3">No matches. Try another spelling, such as “jeera” or “cumin”.</p>
+            <p className="p-3">{labels.noMatches}</p>
           ) : (
             <ul>
               {results.map((r) => (

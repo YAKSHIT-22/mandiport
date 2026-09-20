@@ -14,7 +14,9 @@ import { getDb } from "@/lib/db";
 import { tryQuery } from "@/lib/db/safe";
 import { formatDataDate } from "@/lib/dates";
 import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { categoryName, cropName } from "@/lib/i18n/names";
 import type { Dictionary } from "@/content/i18n/en";
+import type { Locale } from "@/lib/i18n/config";
 import { formatNumber, formatPercent, formatRupees } from "@/lib/format";
 import {
   getBiggestMovers,
@@ -90,7 +92,7 @@ function MoverRow({
   mover: Mover;
   direction: "up" | "down";
   t: Dictionary;
-  locale: string;
+  locale: Locale;
 }) {
   return (
     <li className="border-b last:border-0">
@@ -98,7 +100,7 @@ function MoverRow({
         href={`/crops/${mover.slug}`}
         className="hover:bg-accent flex min-h-14 flex-wrap items-baseline justify-between gap-x-4 py-2"
       >
-        <span className="font-semibold">{mover.name}</span>
+        <span className="font-semibold">{cropName(mover.slug, mover.name, locale)}</span>
         <span className="figures text-right">
           <strong>{formatRupees(mover.latest)}</strong>{" "}
           <span className={direction === "up" ? "text-rise" : "text-fall"}>
@@ -153,7 +155,16 @@ export default async function HomePage() {
             </h1>
             <p className="text-muted-foreground mt-5 max-w-xl text-lg">{t.home.intro}</p>
             <div className="mt-7 max-w-xl">
-              <SearchBox />
+              <SearchBox
+                labels={{
+                  placeholder: t.chrome.searchPlaceholder,
+                  label: t.search.label,
+                  search: t.chrome.search,
+                  results: t.search.results,
+                  notResponding: t.search.notResponding,
+                  noMatches: t.search.noMatches,
+                }}
+              />
             </div>
             <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
               {[
@@ -189,7 +200,8 @@ export default async function HomePage() {
                   <Button variant="outline" size="sm" asChild>
                     <Link href={`/categories/${c.slug}`}>
                       <CategoryArt slug={c.slug} className="size-5" />
-                      {c.name} <span className="text-muted-foreground">{c.count}</span>
+                      {categoryName(c.slug, c.name, locale)}{" "}
+                      <span className="text-muted-foreground">{c.count}</span>
                     </Link>
                   </Button>
                 </li>
@@ -303,7 +315,8 @@ export default async function HomePage() {
                   >
                     <span className="font-heading font-semibold">{b.headline}</span>
                     <span className="text-muted-foreground mt-2 text-sm">
-                      {b.name} · {format(t.home.briefWeekOf, { date: formatDataDate(b.week, locale) })}
+                      {cropName(b.slug, b.name, locale)} ·{" "}
+                      {format(t.home.briefWeekOf, { date: formatDataDate(b.week, locale) })}
                     </span>
                   </Link>
                 </li>

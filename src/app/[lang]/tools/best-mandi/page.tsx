@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getEnv } from "@/env";
+import { getDict } from "@/lib/i18n/dictionary";
 import { ToolArt } from "@/components/art/tool-art";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -19,6 +20,7 @@ export const metadata: Metadata = pageMetadata({
 type Props = { searchParams: Promise<{ crop?: string }> };
 
 export default async function BestMandiPage({ searchParams }: Props) {
+  const t = await getDict();
   const [{ crop }, crops] = await Promise.all([searchParams, getCropOptions()]);
   const mapsConfigured = Boolean(getEnv().OLA_MAPS_API_KEY);
 
@@ -26,18 +28,15 @@ export default async function BestMandiPage({ searchParams }: Props) {
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Tools", path: "/tools" },
-          { name: "Best mandi to sell", path: "/tools/best-mandi" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.tools.indexTitle, path: "/tools" },
+          { name: t.tools.bestMandi.title, path: "/tools/best-mandi" },
         ]}
       />
       <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
         <div className="space-y-4">
-          <h1>Best mandi to sell</h1>
-          <p className="prose-mp">
-            Compare what you would take home after transport, using each market’s most recent reported price.
-            Prices may have changed since the date shown, and the transport cost is your own estimate.
-          </p>
+          <h1>{t.tools.bestMandi.title}</h1>
+          <p className="prose-mp">{t.tools.bestMandi.intro}</p>
         </div>
         <ToolArt name="best-mandi" className="hidden w-52 self-center sm:block" />
       </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getDict } from "@/lib/i18n/dictionary";
 import { ToolArt } from "@/components/art/tool-art";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -18,23 +19,21 @@ export const metadata: Metadata = pageMetadata({
 type Props = { searchParams: Promise<{ crop?: string; state?: string; market?: string }> };
 
 export default async function PriceHistoryPage({ searchParams }: Props) {
+  const t = await getDict();
   const [params, crops] = await Promise.all([searchParams, getCropOptions()]);
   return (
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Tools", path: "/tools" },
-          { name: "Price history", path: "/tools/price-history" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.tools.indexTitle, path: "/tools" },
+          { name: t.tools.priceHistory.title, path: "/tools/price-history" },
         ]}
       />
       <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
         <div className="space-y-4">
-          <h1>Price history and best month to sell</h1>
-          <p className="prose-mp">
-            Pick a crop, and narrow to a state or a single market. Monthly averages show which months have
-            paid most in the past. They describe the past only and are not a forecast.
-          </p>
+          <h1>{t.tools.priceHistory.title}</h1>
+          <p className="prose-mp">{t.tools.priceHistory.intro}</p>
         </div>
         <ToolArt name="price-history" className="hidden w-52 self-center sm:block" />
       </div>

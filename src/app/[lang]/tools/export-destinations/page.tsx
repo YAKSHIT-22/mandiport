@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getDict } from "@/lib/i18n/dictionary";
 import { ToolArt } from "@/components/art/tool-art";
 import { EmptyState, SourceNote } from "@/components/data/meta";
 import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
@@ -32,6 +33,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 const MIN_VALUE_FOR_GROWTH = 1;
 
 export default async function ExportDestinationsPage({ searchParams }: Props) {
+  const t = await getDict();
   const [{ crop: cropSlug }, options] = await Promise.all([searchParams, getExportCropOptions()]);
   const crop = cropSlug ? await getCropBySlug(cropSlug) : null;
   const mapping = crop ? await getExportMapping(crop.id) : null;
@@ -57,18 +59,15 @@ export default async function ExportDestinationsPage({ searchParams }: Props) {
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Tools", path: "/tools" },
-          { name: "Export destinations", path: "/tools/export-destinations" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.tools.indexTitle, path: "/tools" },
+          { name: t.tools.exports.title, path: "/tools/export-destinations" },
         ]}
       />
       <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
         <div className="space-y-4">
-          <h1>Export destination finder</h1>
-          <p className="prose-mp">
-            India’s export figures are published by broad commodity group, per financial year, in US dollars.
-            Pick a crop to see the group it belongs to and which countries buy the most.
-          </p>
+          <h1>{t.tools.exports.title}</h1>
+          <p className="prose-mp">{t.tools.exports.intro}</p>
         </div>
         <ToolArt name="export-destinations" className="hidden w-52 self-center sm:block" />
       </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getDict } from "@/lib/i18n/dictionary";
 import { ToolArt } from "@/components/art/tool-art";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -11,23 +12,21 @@ export const metadata: Metadata = pageMetadata({
   path: "/tools/unit-converter",
 });
 
-export default function UnitConverterPage() {
+export default async function UnitConverterPage() {
+  const t = await getDict();
   return (
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Tools", path: "/tools" },
-          { name: "Unit converter", path: "/tools/unit-converter" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.tools.indexTitle, path: "/tools" },
+          { name: t.tools.units.title, path: "/tools/unit-converter" },
         ]}
       />
       <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
         <div className="space-y-4">
-          <h1>Unit converter</h1>
-          <p className="prose-mp">
-            Mandi prices are published in rupees per quintal (100 kg). Convert to the unit you trade in. The
-            dollar rate is the one you enter: we do not publish exchange rates.
-          </p>
+          <h1>{t.tools.units.title}</h1>
+          <p className="prose-mp">{t.tools.units.intro}</p>
         </div>
         <ToolArt name="unit-converter" className="hidden w-52 self-center sm:block" />
       </div>

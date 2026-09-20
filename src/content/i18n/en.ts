@@ -91,6 +91,68 @@ export const en = {
     showingOf: "Showing {shown} of {total} crops",
     loading: "Loading",
   },
+  notFound: {
+    title: "Page not found",
+    body: "This page does not exist, or the crop or market name has changed. Search for it below or browse all crops.",
+    browse: "Browse all crops",
+  },
+  crops: {
+    title: "All crops",
+    intro:
+      "{count} commodities have been reported by Indian mandis in the data we collect. The most widely traded are listed first; the full list is below, A to Z. Crops reported by only a few markets are marked “limited data”.",
+    browseByCategory: "Browse by category",
+    cropCount: "{count} crops",
+    noMatch: "No crop matches. Try a shorter name or another category.",
+  },
+  search: {
+    label: "Search crops, markets and states",
+    results: "{count} results",
+    notResponding: "Search is not responding. Press Search to see the full crop list.",
+    noMatches: "No matches. Try another spelling, such as “jeera” or “cumin”.",
+    filterByName: "Filter by name",
+    filterPlaceholder: "e.g. onion",
+    category: "Category",
+    allCategories: "All categories",
+    mostTraded: "Most traded",
+    aToZ: "A to Z",
+  },
+  tools: {
+    indexTitle: "Tools",
+    indexIntro:
+      "Each tool works for every commodity in the data, shows the date of every figure, and says plainly when data is missing.",
+    bestMandiLong: "Rank nearby markets by what you would take home after transport.",
+    priceHistoryLong: "Daily trends, monthly averages and past seasonal peaks.",
+    mspLong: "How state mandi prices compare with the minimum support price.",
+    exportsLong: "Which countries buy, and which markets are growing.",
+    unitsLong: "₹ per quintal, kg and tonne, plus rupees to dollars.",
+    askLong: "Ask a question and get an answer from official data only.",
+    priceHistoryTitle: "Price history and best month",
+    bestMandi: {
+      title: "Best mandi to sell",
+      intro:
+        "Compare what you would take home after transport, using each market’s most recent reported price. Prices may have changed since the date shown, and the transport cost is your own estimate.",
+    },
+    priceHistory: {
+      title: "Price history and best month to sell",
+      intro:
+        "Pick a crop, and narrow to a state or a single market. Monthly averages show which months have paid most in the past. They describe the past only and are not a forecast.",
+    },
+    msp: {
+      title: "MSP check",
+      intro:
+        "The minimum support price (MSP) is the price at which government agencies procure certain crops. Most mandi sales are not procurement, so market prices can sit above or below MSP.",
+    },
+    exports: {
+      title: "Export destination finder",
+      intro:
+        "India’s export figures are published by broad commodity group, per financial year, in US dollars. Pick a crop to see the group it belongs to and which countries buy the most.",
+    },
+    units: {
+      title: "Unit converter",
+      intro:
+        "Mandi prices are published in rupees per quintal (100 kg). Convert to the unit you trade in. The dollar rate is the one you enter: we do not publish exchange rates.",
+    },
+  },
   toolBlurbs: {
     bestMandiShort: "Compare take-home prices after transport.",
     priceHistoryShort: "Trends and monthly averages for any market.",

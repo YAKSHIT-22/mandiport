@@ -1,20 +1,28 @@
 import Link from "next/link";
 import { SearchBox } from "@/components/site/search-box";
+import { getDict } from "@/lib/i18n/dictionary";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const t = await getDict();
   return (
     <main className="container-mp space-y-4 py-10">
-      <h1>Page not found</h1>
-      <p>
-        This page does not exist, or the crop or market name has changed. Search for it below or browse all
-        crops.
-      </p>
+      <h1>{t.notFound.title}</h1>
+      <p>{t.notFound.body}</p>
       <div className="max-w-xl">
-        <SearchBox />
+        <SearchBox
+          labels={{
+            placeholder: t.chrome.searchPlaceholder,
+            label: t.search.label,
+            search: t.chrome.search,
+            results: t.search.results,
+            notResponding: t.search.notResponding,
+            noMatches: t.search.noMatches,
+          }}
+        />
       </div>
       <p>
         <Link href="/crops" className="underline">
-          Browse all crops
+          {t.notFound.browse}
         </Link>
       </p>
     </main>

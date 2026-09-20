@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { sql } from "drizzle-orm";
 import { getDb } from "@/lib/db";
 import { formatDataDate } from "@/lib/dates";
@@ -33,12 +34,12 @@ export default async function AdminBriefsPage({
         publishing; only published briefs appear on the site and in sitemaps.
       </p>
       <nav className="flex gap-4">
-        <a href="/admin/briefs?status=draft" className="underline">
+        <Link href="/admin/briefs?status=draft" className="underline">
           Drafts
-        </a>
-        <a href="/admin/briefs?status=published" className="underline">
+        </Link>
+        <Link href="/admin/briefs?status=published" className="underline">
           Published
-        </a>
+        </Link>
       </nav>
       {rows.rows.length === 0 ? (
         <p>Nothing here.</p>

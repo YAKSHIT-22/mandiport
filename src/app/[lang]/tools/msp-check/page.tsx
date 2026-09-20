@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getDict } from "@/lib/i18n/dictionary";
 import { ToolArt } from "@/components/art/tool-art";
 import { EmptyState, PlainDate, SourceNote } from "@/components/data/meta";
 import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
@@ -28,6 +29,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 }
 
 export default async function MspCheckPage({ searchParams }: Props) {
+  const t = await getDict();
   const [{ crop: cropSlug, state: stateSlug }, crops] = await Promise.all([searchParams, getCropOptions()]);
   const crop = cropSlug ? await getCropBySlug(cropSlug) : null;
   const [msp, comparison] = crop
@@ -39,18 +41,15 @@ export default async function MspCheckPage({ searchParams }: Props) {
     <main className="container-mp space-y-6 py-6">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Tools", path: "/tools" },
-          { name: "MSP check", path: "/tools/msp-check" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.tools.indexTitle, path: "/tools" },
+          { name: t.tools.msp.title, path: "/tools/msp-check" },
         ]}
       />
       <div className="grid items-center gap-6 sm:grid-cols-[1fr_auto]">
         <div className="space-y-4">
-          <h1>MSP check</h1>
-          <p className="prose-mp">
-            The minimum support price (MSP) is the price at which government agencies procure certain crops.
-            Most mandi sales are not procurement, so market prices can sit above or below MSP.
-          </p>
+          <h1>{t.tools.msp.title}</h1>
+          <p className="prose-mp">{t.tools.msp.intro}</p>
         </div>
         <ToolArt name="msp-check" className="hidden w-52 self-center sm:block" />
       </div>
