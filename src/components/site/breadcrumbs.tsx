@@ -1,11 +1,13 @@
 import Link from "next/link";
+import { getDict } from "@/lib/i18n/dictionary";
 import { breadcrumbJsonLd, type Crumb } from "@/lib/seo/jsonld";
 import { JsonLd } from "./json-ld";
 
-export function Breadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
+export async function Breadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
+  const t = await getDict();
   return (
     <>
-      <nav aria-label="Breadcrumb" className="text-sm">
+      <nav aria-label={t.chrome.breadcrumb} className="text-sm">
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
           {crumbs.map((c, i) => (
             <li key={c.path} className="flex items-center gap-2">

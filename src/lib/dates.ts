@@ -15,18 +15,24 @@ export function todayInIst(now: Date = new Date()): string {
   }).format(now);
 }
 
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const MONTHS: Record<string, string[]> = {
+  en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  // Hindi month names as people read them on a calendar, not the Vikram Samvat months.
+  hi: ["जन", "फ़र", "मार्च", "अप्रैल", "मई", "जून", "जुल", "अग", "सित", "अक्तू", "नव", "दिस"],
+};
 
-/** "2026-09-17" → "17 Sep 2026" (SPEC §13 date label format). */
-export function formatDataDate(isoDate: string): string {
+/** "2026-09-17" → "17 Sep 2026", or "17 सित 2026" (SPEC §13 date label format). */
+export function formatDataDate(isoDate: string, locale = "en"): string {
   const [year, month, day] = isoDate.split("-").map(Number);
   if (!year || !month || !day || month > 12) throw new Error(`Invalid ISO date: ${isoDate}`);
-  return `${String(day).padStart(2, "0")} ${MONTHS[month - 1]} ${year}`;
+  const months = MONTHS[locale] ?? MONTHS.en;
+  return `${String(day).padStart(2, "0")} ${months[month - 1]} ${year}`;
 }
 
 /** "today" only when the data is from today in IST; otherwise the formatted date. */
-export function describeDataDate(isoDate: string, now: Date = new Date()): string {
-  return isoDate === todayInIst(now) ? "today" : formatDataDate(isoDate);
+export function describeDataDate(isoDate: string, now: Date = new Date(), locale = "en"): string {
+  if (isoDate === todayInIst(now)) return locale === "hi" ? "आज" : "today";
+  return formatDataDate(isoDate, locale);
 }
 
 /** Days before `date` (YYYY-MM-DD), as YYYY-MM-DD. */

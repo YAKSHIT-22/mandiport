@@ -14,13 +14,28 @@ import {
 } from "@/components/ui/sheet";
 import { NavLinks, type NavItem } from "./nav-links";
 
-export function MobileNav({ items, extra }: { items: NavItem[]; extra: NavItem[] }) {
+export interface NavLabels {
+  open: string;
+  close: string;
+  menu: string;
+  tagline: string;
+}
+
+export function MobileNav({
+  items,
+  extra,
+  labels,
+}: {
+  items: NavItem[];
+  extra: NavItem[];
+  labels: NavLabels;
+}) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon-sm" className="md:hidden" aria-label="Open menu">
+        <Button variant="ghost" size="icon-sm" className="md:hidden" aria-label={labels.open}>
           <Menu />
         </Button>
       </SheetTrigger>
@@ -29,9 +44,9 @@ export function MobileNav({ items, extra }: { items: NavItem[]; extra: NavItem[]
           <SheetTitle className="font-heading flex items-center gap-2">
             <LogoMark className="size-7" /> Mandiport
           </SheetTitle>
-          <SheetDescription>Mandi prices and export demand, crop by crop.</SheetDescription>
+          <SheetDescription>{labels.tagline}</SheetDescription>
         </SheetHeader>
-        <nav aria-label="Mobile" className="flex flex-col gap-4 overflow-y-auto p-3">
+        <nav aria-label={labels.menu} className="flex flex-col gap-4 overflow-y-auto p-3">
           <NavLinks items={items} vertical onNavigate={close} />
           <div className="border-t pt-3">
             <NavLinks items={extra} vertical onNavigate={close} />

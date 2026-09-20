@@ -13,6 +13,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDb } from "@/lib/db";
 import { tryQuery } from "@/lib/db/safe";
 import { formatDataDate } from "@/lib/dates";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import type { Dictionary } from "@/content/i18n/en";
 import { formatNumber, formatPercent, formatRupees } from "@/lib/format";
 import {
   getBiggestMovers,
@@ -32,52 +34,64 @@ export const metadata: Metadata = pageMetadata({
   path: "/",
 });
 
-const TOOLS = [
-  {
-    href: "/tools/best-mandi",
-    art: "best-mandi" as ToolArtName,
-    label: "Best mandi to sell",
-    text: "Compare take-home prices after transport.",
-    icon: Compass,
-  },
-  {
-    href: "/tools/price-history",
-    art: "price-history" as ToolArtName,
-    label: "Price history",
-    text: "Trends and monthly averages for any market.",
-    icon: BarChart3,
-  },
-  {
-    href: "/tools/msp-check",
-    art: "msp-check" as ToolArtName,
-    label: "MSP check",
-    text: "Mandi prices against the support price.",
-    icon: IndianRupee,
-  },
-  {
-    href: "/tools/export-destinations",
-    art: "export-destinations" as ToolArtName,
-    label: "Export destinations",
-    text: "Which countries buy, and how that is changing.",
-    icon: Ship,
-  },
-  {
-    href: "/tools/unit-converter",
-    art: "unit-converter" as ToolArtName,
-    label: "Unit converter",
-    text: "Quintal, kg and tonne; rupees and dollars.",
-    icon: Ruler,
-  },
-  {
-    href: "/ask",
-    art: "ask" as ToolArtName,
-    label: "Ask Mandiport",
-    text: "Plain answers from official data only.",
-    icon: MessageSquare,
-  },
-];
+function toolCards(t: Dictionary) {
+  return [
+    {
+      href: "/tools/best-mandi",
+      art: "best-mandi" as ToolArtName,
+      label: t.footer.bestMandi,
+      text: t.toolBlurbs.bestMandiShort,
+      icon: Compass,
+    },
+    {
+      href: "/tools/price-history",
+      art: "price-history" as ToolArtName,
+      label: t.footer.priceHistory,
+      text: t.toolBlurbs.priceHistoryShort,
+      icon: BarChart3,
+    },
+    {
+      href: "/tools/msp-check",
+      art: "msp-check" as ToolArtName,
+      label: t.footer.mspCheck,
+      text: t.toolBlurbs.mspShort,
+      icon: IndianRupee,
+    },
+    {
+      href: "/tools/export-destinations",
+      art: "export-destinations" as ToolArtName,
+      label: t.footer.exportDestinations,
+      text: t.toolBlurbs.exportsShort,
+      icon: Ship,
+    },
+    {
+      href: "/tools/unit-converter",
+      art: "unit-converter" as ToolArtName,
+      label: t.footer.unitConverter,
+      text: t.toolBlurbs.unitsShort,
+      icon: Ruler,
+    },
+    {
+      href: "/ask",
+      art: "ask" as ToolArtName,
+      label: t.chrome.askCta,
+      text: t.toolBlurbs.askShort,
+      icon: MessageSquare,
+    },
+  ];
+}
 
-function MoverRow({ mover, direction }: { mover: Mover; direction: "up" | "down" }) {
+function MoverRow({
+  mover,
+  direction,
+  t,
+  locale,
+}: {
+  mover: Mover;
+  direction: "up" | "down";
+  t: Dictionary;
+  locale: string;
+}) {
   return (
     <li className="border-b last:border-0">
       <Link
@@ -89,11 +103,14 @@ function MoverRow({ mover, direction }: { mover: Mover; direction: "up" | "down"
           <strong>{formatRupees(mover.latest)}</strong>{" "}
           <span className={direction === "up" ? "text-rise" : "text-fall"}>
             <span aria-hidden="true">{direction === "up" ? "▲" : "▼"}</span>
-            <span className="sr-only">{direction === "up" ? "up" : "down"}</span>{" "}
+            <span className="sr-only">{direction === "up" ? t.common.up : t.common.down}</span>{" "}
             {formatPercent(mover.percent)}
           </span>
           <span className="text-muted-foreground block text-sm font-normal">
-            from {formatRupees(mover.previous)} on {formatDataDate(mover.previousDate)}
+            {format(t.home.moverFrom, {
+              price: formatRupees(mover.previous),
+              date: formatDataDate(mover.previousDate, locale),
+            })}
           </span>
         </span>
       </Link>
@@ -102,6 +119,9 @@ function MoverRow({ mover, direction }: { mover: Mover; direction: "up" | "down"
 }
 
 export default async function HomePage() {
+  const t = await getDict();
+  const locale = await getLocale();
+  const TOOLS = toolCards(t);
   const [categories, movers, latestDate, stats, briefs] = await Promise.all([
     tryQuery("home.categories", () => getCategories(), []),
     tryQuery("home.movers", () => getBiggestMovers(5, 10), { up: [], down: [] }),
@@ -126,25 +146,21 @@ export default async function HomePage() {
         <div className="container-mp grid items-center gap-8 py-12 sm:py-16 lg:grid-cols-[1.15fr_1fr]">
           <div>
             <p className="eyebrow">
-              <span className="bg-primary size-1.5 rounded-full" aria-hidden="true" /> Official Government of
-              India data
+              <span className="bg-primary size-1.5 rounded-full" aria-hidden="true" /> {t.home.eyebrow}
             </p>
             <h1 className="mt-4 max-w-3xl text-4xl leading-[1.05] font-bold sm:text-5xl">
-              Mandi prices and export demand, <span className="text-primary">crop by crop.</span>
+              {t.home.titleLead} <span className="text-primary">{t.home.titleAccent}</span>
             </h1>
-            <p className="text-muted-foreground mt-5 max-w-xl text-lg">
-              Where a crop’s price is heading, where to sell it in India, and who buys it abroad — with the
-              date every figure refers to.
-            </p>
+            <p className="text-muted-foreground mt-5 max-w-xl text-lg">{t.home.intro}</p>
             <div className="mt-7 max-w-xl">
               <SearchBox />
             </div>
             <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
               {[
-                ["Commodities", formatNumber(stats.commodities)],
-                ["Markets", formatNumber(stats.markets)],
-                ["States and UTs", formatNumber(stats.states)],
-                ["Days of price data", formatNumber(stats.days)],
+                [t.home.statCommodities, formatNumber(stats.commodities)],
+                [t.home.statMarkets, formatNumber(stats.markets)],
+                [t.home.statStates, formatNumber(stats.states)],
+                [t.home.statDays, formatNumber(stats.days)],
               ].map(([label, value]) => (
                 <div key={label}>
                   <dt className="font-heading text-muted-foreground text-[0.76rem] font-bold tracking-[0.12em] uppercase">
@@ -163,7 +179,7 @@ export default async function HomePage() {
       <div className="container-mp space-y-12 py-12">
         <nav aria-labelledby="categories-heading">
           <h2 id="categories-heading" className="sr-only">
-            Categories
+            {t.home.categoriesHeading}
           </h2>
           <ul className="flex flex-wrap gap-2">
             {categories
@@ -184,52 +200,52 @@ export default async function HomePage() {
         <section aria-labelledby="movers-heading">
           <SectionHeading
             id="movers-heading"
-            eyebrow={latestDate ? `Data from ${formatDataDate(latestDate)}` : undefined}
-            title="Biggest price moves"
-            description="National median price against about a week earlier, for crops reported by at least 10 markets on both days."
+            eyebrow={
+              latestDate ? format(t.common.dataFrom, { date: formatDataDate(latestDate, locale) }) : undefined
+            }
+            title={t.home.moversTitle}
+            description={t.home.moversDescription}
             action={
               <Button variant="outline" size="sm" asChild>
                 <Link href="/crops">
-                  All crops <ArrowRight />
+                  {t.home.allCrops} <ArrowRight />
                 </Link>
               </Button>
             }
           />
           {movers.up.length + movers.down.length === 0 ? (
-            <EmptyState title="Not enough data for price moves yet">
-              Moves appear once widely traded crops have a week of reports.
-            </EmptyState>
+            <EmptyState title={t.home.moversEmpty}>{t.home.moversEmptyBody}</EmptyState>
           ) : (
             <div className="grid gap-5 md:grid-cols-2">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-rise">Rising</CardTitle>
+                  <CardTitle className="text-rise">{t.home.rising}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {movers.up.length ? (
                     <ul>
                       {movers.up.map((m) => (
-                        <MoverRow key={m.slug} mover={m} direction="up" />
+                        <MoverRow key={m.slug} mover={m} direction="up" t={t} locale={locale} />
                       ))}
                     </ul>
                   ) : (
-                    <p>No rising crops.</p>
+                    <p>{t.home.noRising}</p>
                   )}
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-fall">Falling</CardTitle>
+                  <CardTitle className="text-fall">{t.home.falling}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {movers.down.length ? (
                     <ul>
                       {movers.down.map((m) => (
-                        <MoverRow key={m.slug} mover={m} direction="down" />
+                        <MoverRow key={m.slug} mover={m} direction="down" t={t} locale={locale} />
                       ))}
                     </ul>
                   ) : (
-                    <p>No falling crops.</p>
+                    <p>{t.home.noFalling}</p>
                   )}
                 </CardContent>
               </Card>
@@ -238,7 +254,7 @@ export default async function HomePage() {
         </section>
 
         <section aria-labelledby="tools-heading">
-          <SectionHeading id="tools-heading" eyebrow="Built for selling decisions" title="Tools" />
+          <SectionHeading id="tools-heading" eyebrow={t.home.toolsEyebrow} title={t.home.toolsTitle} />
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {TOOLS.map((t) => (
               <li key={t.href}>
@@ -265,15 +281,15 @@ export default async function HomePage() {
         <section aria-labelledby="briefs-heading">
           <SectionHeading
             id="briefs-heading"
-            eyebrow="Reviewed before publishing"
-            title="Latest weekly briefs"
-            description="AI-assisted summaries of official data for the most traded crops."
+            eyebrow={t.home.briefsEyebrow}
+            title={t.home.briefsTitle}
+            description={t.home.briefsDescription}
           />
           {briefs.length === 0 ? (
             <p>
-              No briefs have been published yet.{" "}
+              {t.home.briefsEmpty}{" "}
               <Link href="/briefs" className="underline">
-                See how briefs work
+                {t.home.briefsEmptyLink}
               </Link>
               .
             </p>
@@ -287,7 +303,7 @@ export default async function HomePage() {
                   >
                     <span className="font-heading font-semibold">{b.headline}</span>
                     <span className="text-muted-foreground mt-2 text-sm">
-                      {b.name} · week of {formatDataDate(b.week)}
+                      {b.name} · {format(t.home.briefWeekOf, { date: formatDataDate(b.week, locale) })}
                     </span>
                   </Link>
                 </li>

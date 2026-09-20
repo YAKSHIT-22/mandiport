@@ -1,46 +1,51 @@
 import Link from "next/link";
 import { describeDataDate, formatDataDate } from "@/lib/dates";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
 import { DATASETS, GODL_LICENCE_NAME, GODL_LICENCE_URL, type DatasetKey } from "@/lib/sources";
 import { cn } from "@/lib/utils";
 import { SourceLink } from "./source-link";
 
 /** "Data from 16 Sep 2026" or "Data from today" — never "today" unless it is (SPEC §6.1). */
-export function DataDate({
+export async function DataDate({
   date,
-  prefix = "Data from",
   className,
 }: {
   date: string | null | undefined;
-  prefix?: string;
   className?: string;
 }) {
-  if (!date) return <span className={cn("text-muted-foreground text-sm", className)}>No data yet</span>;
+  const t = await getDict();
+  const locale = await getLocale();
+  if (!date) return <span className={cn("text-muted-foreground text-sm", className)}>{t.common.noData}</span>;
+  const [before, after] = t.common.dataFrom.split("{date}");
   return (
     <span className={cn("text-sm", className)}>
-      {prefix} <time dateTime={date}>{describeDataDate(date)}</time>
+      {before}
+      <time dateTime={date}>{describeDataDate(date, new Date(), locale)}</time>
+      {after}
     </span>
   );
 }
 
-export function PlainDate({ date }: { date: string }) {
-  return <time dateTime={date}>{formatDataDate(date)}</time>;
+export async function PlainDate({ date }: { date: string }) {
+  return <time dateTime={date}>{formatDataDate(date, await getLocale())}</time>;
 }
 
 /** Attribution block required on every page with data (SPEC §11). */
-export function SourceNote({ datasets, className }: { datasets: DatasetKey[]; className?: string }) {
+export async function SourceNote({ datasets, className }: { datasets: DatasetKey[]; className?: string }) {
   const unique = [...new Set(datasets)].map((k) => DATASETS[k]);
+  const t = await getDict();
   return (
     <aside
-      aria-label="Data sources"
+      aria-label={t.common.dataSources}
       className={cn("border-border text-muted-foreground border-t pt-4 text-sm", className)}
     >
       {unique.map((d) => (
         <p key={d.key} className="mt-1">
-          Source: {d.agency} via Open Government Data Platform India (data.gov.in), dataset “
+          {format(t.common.sourceLine, { agency: d.agency })} “
           <SourceLink href={d.pageUrl} dataset={d.key}>
             {d.title}
           </SourceLink>
-          ”. Licensed under{" "}
+          ”. {t.common.licensedUnder}{" "}
           <a href={GODL_LICENCE_URL} className="underline" rel="license noopener" target="_blank">
             {GODL_LICENCE_NAME}
           </a>
@@ -48,9 +53,9 @@ export function SourceNote({ datasets, className }: { datasets: DatasetKey[]; cl
         </p>
       ))}
       <p className="mt-2">
-        Prices are as published and may be delayed, incomplete or revised. Not trading advice.{" "}
+        {t.common.pricesCaveat}{" "}
         <Link href="/methodology" className="underline">
-          How we collect and calculate
+          {t.common.howWeCollect}
         </Link>
         .
       </p>

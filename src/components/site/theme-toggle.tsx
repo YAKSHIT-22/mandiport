@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 const KEY = "mp-theme";
 
 /** Light by default (readable outdoors); dark available and remembered per device. */
-export function ThemeToggle() {
+export function ThemeToggle({ labels }: { labels: { toLight: string; toDark: string } }) {
   const [dark, setDark] = useState(false);
   const [ready, setReady] = useState(false);
 
@@ -35,7 +35,7 @@ export function ThemeToggle() {
       size="icon-sm"
       onClick={toggle}
       aria-pressed={ready ? dark : undefined}
-      aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
+      aria-label={dark ? labels.toLight : labels.toDark}
     >
       {dark ? <Sun /> : <Moon />}
     </Button>
