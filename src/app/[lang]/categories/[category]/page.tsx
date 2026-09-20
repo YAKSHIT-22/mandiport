@@ -8,6 +8,7 @@ import { SourceNote } from "@/components/data/meta";
 import { Section } from "@/components/data/panels";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { CATEGORY_OVERVIEWS } from "@/content/categories";
+import { CATEGORY_OVERVIEWS_HI } from "@/content/categories-hi";
 import { formatDataDate } from "@/lib/dates";
 import { formatPercent, formatRupees } from "@/lib/format";
 import { tryQuery } from "@/lib/db/safe";
@@ -47,6 +48,7 @@ export default async function CategoryPage({ params }: Props) {
   // With no data yet (a fresh database), still render the category's written overview.
   const cat = cats.find((c) => c.slug === category) ?? { slug: category, name: category, count: 0 };
   if (!overview) notFound();
+  const intro = (locale === "hi" ? CATEGORY_OVERVIEWS_HI[category] : overview).intro;
   const crops = allCrops
     .filter((c) => c.categorySlug === category)
     .sort((a, b) => a.tier - b.tier || b.markets - a.markets);
@@ -76,7 +78,7 @@ export default async function CategoryPage({ params }: Props) {
         <h1>{categoryName(category, cat.name, locale)}</h1>
       </div>
       <div className="prose-mp">
-        {overview.intro.map((p) => (
+        {intro.map((p) => (
           <p key={p.slice(0, 30)}>{p}</p>
         ))}
       </div>

@@ -95,3 +95,17 @@ describe("crop and category names", () => {
     }
   });
 });
+
+describe("written content", () => {
+  it("has a Hindi overview for every category, with the same number of paragraphs", async () => {
+    const { CATEGORY_OVERVIEWS } = await import("@/content/categories");
+    const { CATEGORY_OVERVIEWS_HI } = await import("@/content/categories-hi");
+    expect(Object.keys(CATEGORY_OVERVIEWS_HI).sort()).toEqual(Object.keys(CATEGORY_OVERVIEWS).sort());
+    for (const [slug, overview] of Object.entries(CATEGORY_OVERVIEWS)) {
+      expect(CATEGORY_OVERVIEWS_HI[slug]!.intro, slug).toHaveLength(overview.intro.length);
+      for (const paragraph of CATEGORY_OVERVIEWS_HI[slug]!.intro) {
+        expect(paragraph, slug).toMatch(/[ऀ-ॿ]/);
+      }
+    }
+  });
+});
