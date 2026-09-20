@@ -30,12 +30,22 @@ export function readConsentCookie(cookie: string): ConsentState {
   return value === "accepted" || value === "declined" ? value : "unknown";
 }
 
+export interface ConsentLabels {
+  title: string;
+  body: string;
+  bodyLink: string;
+  accept: string;
+  decline: string;
+}
+
 export function ConsentProvider({
   children,
   needsConsent,
+  labels,
 }: {
   children: React.ReactNode;
   needsConsent: boolean;
+  labels: ConsentLabels;
 }) {
   const [consent, setConsent] = useState<ConsentState>("unknown");
   const [ready, setReady] = useState(false);
@@ -62,7 +72,7 @@ export function ConsentProvider({
   return (
     <ConsentContext.Provider value={value}>
       {children}
-      {needsConsent && ready && consent === "unknown" && <ConsentBanner onDecide={decide} />}
+      {needsConsent && ready && consent === "unknown" && <ConsentBanner onDecide={decide} labels={labels} />}
     </ConsentContext.Provider>
   );
 }
@@ -71,18 +81,23 @@ export function useConsent() {
   return useContext(ConsentContext);
 }
 
-function ConsentBanner({ onDecide }: { onDecide: (value: "accepted" | "declined") => void }) {
+function ConsentBanner({
+  onDecide,
+  labels,
+}: {
+  onDecide: (value: "accepted" | "declined") => void;
+  labels: ConsentLabels;
+}) {
   return (
     <div
       role="region"
-      aria-label="Analytics consent"
+      aria-label={labels.title}
       className="border-input bg-background fixed inset-x-2 bottom-2 z-40 mx-auto max-w-2xl rounded-sm border p-4"
     >
       <p>
-        We would like to use Google Analytics to count visits and see which tools help. No personal details
-        are sent. You can change your choice on the{" "}
+        {labels.body}{" "}
         <Link href="/privacy" className="underline">
-          privacy page
+          {labels.bodyLink}
         </Link>
         .
       </p>
@@ -92,14 +107,14 @@ function ConsentBanner({ onDecide }: { onDecide: (value: "accepted" | "declined"
           onClick={() => onDecide("accepted")}
           className="bg-panel text-panel-foreground min-h-11 rounded-sm px-4 font-semibold"
         >
-          Accept analytics
+          {labels.accept}
         </button>
         <button
           type="button"
           onClick={() => onDecide("declined")}
           className="border-input min-h-11 rounded-sm border px-4 font-semibold"
         >
-          Decline
+          {labels.decline}
         </button>
       </div>
     </div>

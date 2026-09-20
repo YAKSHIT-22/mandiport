@@ -197,6 +197,8 @@ export default async function CropHubPage({ params }: Props) {
 
       <Section id="trend" title={t.crop.trend}>
         <TrendChart
+          labels={t.chart}
+          locale={locale}
           id={`hub-${crop.slug}`}
           crop={crop.slug}
           points={series}

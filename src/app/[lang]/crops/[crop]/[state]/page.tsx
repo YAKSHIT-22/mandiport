@@ -129,6 +129,8 @@ export default async function CropStatePage({ params }: Props) {
       )}
       <Section id="trend" title={t.place.stateTrend}>
         <TrendChart
+          labels={t.chart}
+          locale={locale}
           id={`state-${crop.slug}-${state.slug}`}
           crop={crop.slug}
           points={series}

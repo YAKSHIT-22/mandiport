@@ -125,6 +125,8 @@ export default async function MarketPage({ params }: Props) {
       )}
       <Section id="trend" title={t.place.priceHistorySection}>
         <TrendChart
+          labels={t.chart}
+          locale={locale}
           id={`market-${market.id}-${crop.slug}`}
           crop={crop.slug}
           points={series}
@@ -133,7 +135,13 @@ export default async function MarketPage({ params }: Props) {
         />
       </Section>
       <Section id="seasonality" title={t.place.seasonalitySection}>
-        <SeasonalityBlock monthly={monthly} firstDate={firstDate} place={market.name} />
+        <SeasonalityBlock
+          monthly={monthly}
+          firstDate={firstDate}
+          place={market.name}
+          labels={{ ...t.chart, emptyTitle: t.panel.seasonalityEmpty, emptyBody: t.panel.seasonalityNone }}
+          locale={locale}
+        />
       </Section>
       {varieties.length > 0 && (
         <Section id="varieties" title={t.place.varietiesHere}>

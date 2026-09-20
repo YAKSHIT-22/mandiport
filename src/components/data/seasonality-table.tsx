@@ -1,4 +1,5 @@
 import { formatDataDate } from "@/lib/dates";
+import type { Dictionary } from "@/content/i18n/en";
 import { formatNumber, formatRupees } from "@/lib/format";
 import type { MonthlyAverage } from "@/lib/queries/crop";
 import { computeSeasonality, MONTH_NAMES } from "@/lib/seasonality";
@@ -6,42 +7,50 @@ import { LedgerTable, td, tdNum, th } from "./panels";
 import { EmptyState } from "./meta";
 
 /** Monthly averages and, after 12 months of data, historically highest months (SPEC §8.3). */
+export type SeasonalityLabels = Dictionary["chart"] & { emptyTitle: string; emptyBody: string };
+
 export function SeasonalityBlock({
   monthly,
   firstDate,
   place,
+  labels,
+  locale,
 }: {
   monthly: MonthlyAverage[];
   firstDate: string | null;
   place: string;
+  labels: SeasonalityLabels;
+  locale: string;
 }) {
+  const fill = (template: string, values: Record<string, string | number>) =>
+    template.replace(/\{(\w+)\}/g, (m, k: string) => (k in values ? String(values[k]) : m));
   const seasonality = computeSeasonality(monthly);
   return (
     <div className="space-y-4">
       {seasonality ? (
         <p>
-          Historically highest average months at {place}:{" "}
+          {fill(labels.seasonalityLine, { place })}{" "}
           <strong>
             {seasonality.highest.map((h) => `${h.name} (${formatRupees(h.average)})`).join(", ")}
           </strong>
-          . These are past averages, not a forecast; prices in any year can differ.
+          . {labels.seasonalityCaveat}
         </p>
       ) : (
-        <EmptyState title="Seasonality appears after 12 months of data">
+        <EmptyState title={labels.emptyTitle}>
           {firstDate
-            ? `Data collection started on ${formatDataDate(firstDate)}.`
-            : "No data has been collected yet."}
+            ? fill(labels.collectionStarted, { date: formatDataDate(firstDate, locale) })
+            : labels.emptyBody}
         </EmptyState>
       )}
       {monthly.length > 0 && (
-        <LedgerTable caption={`Monthly average modal price at ${place}`}>
+        <LedgerTable caption={fill(labels.monthlyCaption, { place })}>
           <thead>
             <tr>
-              <th className={th}>Month</th>
-              <th className={`${th} text-right`}>Average (₹/quintal)</th>
-              <th className={`${th} text-right`}>Low</th>
-              <th className={`${th} text-right`}>High</th>
-              <th className={`${th} text-right`}>Days</th>
+              <th className={th}>{labels.month}</th>
+              <th className={`${th} text-right`}>{labels.average}</th>
+              <th className={`${th} text-right`}>{labels.low}</th>
+              <th className={`${th} text-right`}>{labels.high}</th>
+              <th className={`${th} text-right`}>{labels.daysColumn}</th>
             </tr>
           </thead>
           <tbody>

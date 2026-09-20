@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getEnv } from "@/env";
-import { getDict } from "@/lib/i18n/dictionary";
+import { getDict, getLocale } from "@/lib/i18n/dictionary";
 import { ToolArt } from "@/components/art/tool-art";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -40,7 +40,13 @@ export default async function BestMandiPage({ searchParams }: Props) {
         </div>
         <ToolArt name="best-mandi" className="hidden w-52 self-center sm:block" />
       </div>
-      <BestMandiTool crops={crops} initialCrop={crop} mapsConfigured={mapsConfigured} />
+      <BestMandiTool
+        crops={crops}
+        initialCrop={crop}
+        mapsConfigured={mapsConfigured}
+        labels={t.bestMandi}
+        locale={await getLocale()}
+      />
       <SourceNote datasets={["mandiVariety", "mandiDaily"]} />
     </main>
   );

@@ -4,7 +4,17 @@ import { useActionState } from "react";
 import { Field, Input, Textarea } from "@/components/ui/field";
 import { sendContact, type ContactState } from "./actions";
 
-export function ContactForm() {
+export interface ContactLabels {
+  name: string;
+  email: string;
+  emailHint: string;
+  message: string;
+  website: string;
+  sending: string;
+  send: string;
+}
+
+export function ContactForm({ labels }: { labels: ContactLabels }) {
   const [state, action, pending] = useActionState<ContactState, FormData>(sendContact, { status: "idle" });
   if (state.status === "sent") {
     return (
@@ -21,10 +31,10 @@ export function ContactForm() {
           {state.message}
         </p>
       )}
-      <Field label="Your name" htmlFor="name" error={err.name}>
+      <Field label={labels.name} htmlFor="name" error={err.name}>
         <Input id="name" name="name" autoComplete="name" required aria-invalid={Boolean(err.name)} />
       </Field>
-      <Field label="Email address" htmlFor="email" hint="Only used to reply to you." error={err.email}>
+      <Field label={labels.email} htmlFor="email" hint={labels.emailHint} error={err.email}>
         <Input
           id="email"
           name="email"
@@ -34,11 +44,11 @@ export function ContactForm() {
           aria-invalid={Boolean(err.email)}
         />
       </Field>
-      <Field label="Message" htmlFor="message" error={err.message}>
+      <Field label={labels.message} htmlFor="message" error={err.message}>
         <Textarea id="message" name="message" rows={6} required aria-invalid={Boolean(err.message)} />
       </Field>
       <div aria-hidden="true" className="absolute -left-[9999px]">
-        <label htmlFor="website">Website</label>
+        <label htmlFor="website">{labels.website}</label>
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
       <button
@@ -46,7 +56,7 @@ export function ContactForm() {
         disabled={pending}
         className="bg-panel text-panel-foreground min-h-12 rounded-sm px-6 font-semibold"
       >
-        {pending ? "Sending…" : "Send message"}
+        {pending ? labels.sending : labels.send}
       </button>
     </form>
   );

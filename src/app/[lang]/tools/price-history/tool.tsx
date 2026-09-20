@@ -1,5 +1,8 @@
 "use client";
 
+import type { SeasonalityLabels } from "@/components/data/seasonality-table";
+import type { ChartLabels } from "@/components/data/trend-chart";
+
 import { useEffect, useState } from "react";
 import { TrendChart } from "@/components/data/trend-chart";
 import { SeasonalityBlock } from "@/components/data/seasonality-table";
@@ -17,12 +20,34 @@ interface HistoryResponse {
   error?: string;
 }
 
+export interface PriceHistoryLabels {
+  crop: string;
+  state: string;
+  allIndia: string;
+  market: string;
+  allMarkets: string;
+  error: string;
+  loading: string;
+  cropIn: string;
+  chartLabel: string;
+  monthlyAverages: string;
+  chooseMarket: string;
+}
+
 export function PriceHistoryTool({
   crops,
   initial,
+  labels,
+  chartLabels,
+  seasonalityLabels,
+  locale,
 }: {
   crops: CropOption[];
   initial: { crop?: string; state?: string; market?: string };
+  labels: PriceHistoryLabels;
+  chartLabels: ChartLabels;
+  seasonalityLabels: SeasonalityLabels;
+  locale: string;
 }) {
   const [crop, setCrop] = useState(initial.crop ?? crops[0]?.slug ?? "");
   const [state, setState] = useState(initial.state ?? "");
@@ -104,7 +129,7 @@ export function PriceHistoryTool({
         className="bg-card grid gap-4 rounded-lg border p-4 sm:grid-cols-3"
         onSubmit={(e) => e.preventDefault()}
       >
-        <Field label="Crop" htmlFor="ph-crop">
+        <Field label={labels.crop} htmlFor="ph-crop">
           <Select
             id="ph-crop"
             value={crop}
@@ -121,7 +146,7 @@ export function PriceHistoryTool({
             ))}
           </Select>
         </Field>
-        <Field label="State" htmlFor="ph-state">
+        <Field label={labels.state} htmlFor="ph-state">
           <Select
             id="ph-state"
             value={state}
@@ -130,7 +155,7 @@ export function PriceHistoryTool({
               setMarket("");
             }}
           >
-            <option value="">All India</option>
+            <option value="">{labels.allIndia}</option>
             {states.map((s) => (
               <option key={s.slug} value={s.slug}>
                 {s.name}
@@ -138,9 +163,9 @@ export function PriceHistoryTool({
             ))}
           </Select>
         </Field>
-        <Field label="Market" htmlFor="ph-market">
+        <Field label={labels.market} htmlFor="ph-market">
           <Select id="ph-market" value={market} onChange={(e) => setMarket(e.target.value)} disabled={!state}>
-            <option value="">All markets in the state</option>
+            <option value="">{labels.allMarkets}</option>
             {markets.map((m) => (
               <option key={m.slug} value={m.slug}>
                 {m.name} ({m.district})
@@ -153,40 +178,44 @@ export function PriceHistoryTool({
       <div aria-live="polite">
         {status === "error" && (
           <p role="alert" className="border-destructive bg-muted border-l-4 px-4 py-3 font-semibold">
-            Could not load this price history. Try another crop or reload the page.
+            {labels.error}
           </p>
         )}
         {status === "loading" && (
-          <p className="border-border bg-muted border-l-4 px-4 py-3">Loading prices…</p>
+          <p className="border-border bg-muted border-l-4 px-4 py-3">{labels.loading}</p>
         )}
         {status === "idle" && data && (
           <div className="space-y-8">
             <section aria-labelledby="ph-trend">
               <h2 id="ph-trend">
-                {data.crop.name} in {data.place}
+                {labels.cropIn.replace("{crop}", data.crop.name).replace("{place}", data.place)}
               </h2>
               <div className="mt-4">
                 <TrendChart
+                  labels={chartLabels}
+                  locale={locale}
                   id="price-history"
                   crop={data.crop.slug}
                   points={data.series}
-                  label={`${data.crop.name} price in ${data.place}`}
+                  label={labels.chartLabel.replace("{crop}", data.crop.name).replace("{place}", data.place)}
                 />
               </div>
             </section>
             {market && (
               <section aria-labelledby="ph-months">
-                <h2 id="ph-months">Monthly averages</h2>
+                <h2 id="ph-months">{labels.monthlyAverages}</h2>
                 <div className="mt-4">
-                  <SeasonalityBlock monthly={data.monthly} firstDate={data.firstDate} place={data.place} />
+                  <SeasonalityBlock
+                    monthly={data.monthly}
+                    firstDate={data.firstDate}
+                    place={data.place}
+                    labels={seasonalityLabels}
+                    locale={locale}
+                  />
                 </div>
               </section>
             )}
-            {!market && (
-              <p className="border-border bg-muted border-l-4 px-4 py-3">
-                Choose a state and market to see monthly averages and the historically highest months.
-              </p>
-            )}
+            {!market && <p className="border-border bg-muted border-l-4 px-4 py-3">{labels.chooseMarket}</p>}
           </div>
         )}
       </div>

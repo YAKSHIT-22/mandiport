@@ -132,16 +132,32 @@ export function buildChartGeometry(
 }
 
 /** Screen-reader and no-chart summary (SPEC §13). */
-export function summarizeSeries(points: SeriesPoint[], label: string): string {
-  if (points.length === 0) return `No ${label} data in this period.`;
+export interface SeriesSummaryStrings {
+  none: string;
+  summary: string;
+  locale: string;
+}
+
+/** Fills the caption template from the dictionary, so the sentence reads naturally in each language. */
+export function summarizeSeries(points: SeriesPoint[], label: string, strings: SeriesSummaryStrings): string {
+  const fill = (template: string, values: Record<string, string | number>) =>
+    template.replace(/\{(\w+)\}/g, (m, k: string) => (k in values ? String(values[k]) : m));
+  if (points.length === 0) return fill(strings.none, { label });
   const sorted = [...points].sort((a, b) => a.date.localeCompare(b.date));
   const first = sorted[0]!;
   const last = sorted.at(-1)!;
   const low = sorted.reduce((a, b) => (b.value < a.value ? b : a));
   const high = sorted.reduce((a, b) => (b.value > a.value ? b : a));
-  return (
-    `${label} from ${formatDataDate(first.date)} to ${formatDataDate(last.date)} (${sorted.length} days with data): ` +
-    `lowest ${formatRupees(low.value)} on ${formatDataDate(low.date)}, highest ${formatRupees(high.value)} on ${formatDataDate(high.date)}, ` +
-    `latest ${formatRupees(last.value)} on ${formatDataDate(last.date)}.`
-  );
+  return fill(strings.summary, {
+    label,
+    from: formatDataDate(first.date, strings.locale),
+    to: formatDataDate(last.date, strings.locale),
+    days: sorted.length,
+    low: formatRupees(low.value),
+    lowDate: formatDataDate(low.date, strings.locale),
+    high: formatRupees(high.value),
+    highDate: formatDataDate(high.date, strings.locale),
+    latest: formatRupees(last.value),
+    latestDate: formatDataDate(last.date, strings.locale),
+  });
 }

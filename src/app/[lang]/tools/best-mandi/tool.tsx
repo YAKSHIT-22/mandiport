@@ -1,5 +1,7 @@
 "use client";
 
+import type { Dictionary } from "@/content/i18n/en";
+
 import Link from "next/link";
 import { useState } from "react";
 import { LocateFixed } from "lucide-react";
@@ -22,15 +24,23 @@ interface Response {
   error?: string;
 }
 
+type BestMandiLabels = Dictionary["bestMandi"];
+
 export function BestMandiTool({
   crops,
   initialCrop,
   mapsConfigured,
+  labels,
+  locale,
 }: {
   crops: CropOption[];
   initialCrop?: string;
   mapsConfigured: boolean;
+  labels: BestMandiLabels;
+  locale: string;
 }) {
+  const fill = (template: string, values: Record<string, string | number>) =>
+    template.replace(/\{(\w+)\}/g, (m, k: string) => (k in values ? String(values[k]) : m));
   const [crop, setCrop] = useState(initialCrop ?? crops[0]?.slug ?? "");
   const [place, setPlace] = useState("");
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
@@ -47,7 +57,7 @@ export function BestMandiTool({
     if (!("geolocation" in navigator)) {
       setState({
         status: "error",
-        message: "This browser cannot share your location. Enter a pincode instead.",
+        message: labels.noGeolocation,
       });
       return;
     }
@@ -59,7 +69,7 @@ export function BestMandiTool({
       () =>
         setState({
           status: "error",
-          message: "Location permission was declined. Enter a pincode or town instead.",
+          message: labels.permissionDenied,
         }),
       { timeout: 10_000 },
     );
@@ -83,7 +93,7 @@ export function BestMandiTool({
       });
       const data = (await response.json()) as Response;
       if (!response.ok) {
-        setState({ status: "error", message: data.error ?? "Something went wrong. Try again." });
+        setState({ status: "error", message: data.error ?? labels.genericError });
         return;
       }
       setState({ status: "done", data });
@@ -94,7 +104,7 @@ export function BestMandiTool({
         max_distance_km: Number(maxDistance),
       });
     } catch {
-      setState({ status: "error", message: "The request failed. Check your connection and try again." });
+      setState({ status: "error", message: labels.requestFailed });
     }
   }
 
@@ -103,7 +113,7 @@ export function BestMandiTool({
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,22rem)_1fr]">
       <form onSubmit={submit} className="bg-card space-y-4 rounded-lg border p-4">
-        <Field label="Crop" htmlFor="crop">
+        <Field label={labels.crop} htmlFor="crop">
           <Select id="crop" value={crop} onChange={(e) => setCrop(e.target.value)} required>
             {crops.map((c) => (
               <option key={c.slug} value={c.slug}>
@@ -112,11 +122,7 @@ export function BestMandiTool({
             ))}
           </Select>
         </Field>
-        <Field
-          label="Your place"
-          htmlFor="place"
-          hint={coords ? "Using your device location." : "Pincode or town, for example 422202 or Nashik."}
-        >
+        <Field label={labels.place} htmlFor="place" hint={coords ? labels.usingLocation : labels.placeHint}>
           <Input
             id="place"
             value={place}
@@ -124,14 +130,14 @@ export function BestMandiTool({
               setPlace(e.target.value);
               setCoords(null);
             }}
-            placeholder="Pincode or town"
+            placeholder={labels.placePlaceholder}
             autoComplete="postal-code"
           />
         </Field>
         <Button type="button" variant="outline" onClick={useMyLocation}>
-          <LocateFixed /> Use my location
+          <LocateFixed /> {labels.useMyLocation}
         </Button>
-        <Field label="Quantity (quintals)" htmlFor="quantity">
+        <Field label={labels.quantity} htmlFor="quantity">
           <Input
             id="quantity"
             inputMode="decimal"
@@ -140,11 +146,7 @@ export function BestMandiTool({
             required
           />
         </Field>
-        <Field
-          label="Transport cost (₹ per km per quintal)"
-          htmlFor="rate"
-          hint="Your own estimate, including loading and return."
-        >
+        <Field label={labels.transportCost} htmlFor="rate" hint={labels.transportHint}>
           <Input
             id="rate"
             inputMode="decimal"
@@ -153,7 +155,7 @@ export function BestMandiTool({
             required
           />
         </Field>
-        <Field label="Maximum distance (km)" htmlFor="maxDistance">
+        <Field label={labels.maxDistance} htmlFor="maxDistance">
           <Input
             id="maxDistance"
             inputMode="numeric"
@@ -163,13 +165,9 @@ export function BestMandiTool({
           />
         </Field>
         <Button type="submit" size="lg" disabled={state.status === "loading" || !crop}>
-          {state.status === "loading" ? "Finding…" : "Find best mandi"}
+          {state.status === "loading" ? labels.finding : labels.find}
         </Button>
-        {!mapsConfigured && (
-          <p className="text-muted-foreground text-sm">
-            Distance lookups are not configured on this site yet, so results are ranked by price alone.
-          </p>
-        )}
+        {!mapsConfigured && <p className="text-muted-foreground text-sm">{labels.noMapsKey}</p>}
       </form>
 
       <div aria-live="polite">
@@ -179,23 +177,19 @@ export function BestMandiTool({
           </p>
         )}
         {state.status === "idle" && (
-          <p className="border-border bg-muted border-l-4 px-4 py-3">
-            Choose a crop and enter your place, then press “Find best mandi”.
-          </p>
+          <p className="border-border bg-muted border-l-4 px-4 py-3">{labels.idle}</p>
         )}
         {state.status === "done" && results.length === 0 && (
           <p className="border-border bg-muted border-l-4 px-4 py-3">
-            {state.data?.note ??
-              "No market reported this crop within your distance limit in the last 7 days."}{" "}
-            Try a larger distance.
+            {state.data?.note ?? labels.noResults} {labels.tryLarger}
           </p>
         )}
         {results.length > 0 && (
           <div className="space-y-4">
             <p className="text-muted-foreground text-sm">
-              {state.data?.originLabel ? `From ${state.data.originLabel}. ` : ""}
+              {state.data?.originLabel ? `${fill(labels.fromPlace, { place: state.data.originLabel })} ` : ""}
               {state.data?.marketsConsidered
-                ? `${formatNumber(state.data.marketsConsidered)} markets considered. `
+                ? `${fill(labels.marketsConsidered, { count: formatNumber(state.data.marketsConsidered) })} `
                 : ""}
               {state.data?.note ?? ""}
             </p>
@@ -219,33 +213,34 @@ export function BestMandiTool({
                   </p>
                   <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-sm sm:grid-cols-4">
                     <div>
-                      <dt className="text-muted-foreground">Price</dt>
-                      <dd className="figures font-semibold">{formatRupees(r.modalPrice)}/qtl</dd>
-                    </div>
-                    <div>
-                      <dt className="text-muted-foreground">Price date</dt>
-                      <dd>{formatDataDate(r.date)}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-muted-foreground">Distance</dt>
-                      <dd className="figures">
-                        {r.distanceKm === null ? "unknown" : `${formatNumber(r.distanceKm)} km`}
-                        {r.straightLineOnly && r.distanceKm !== null ? " (straight line)" : ""}
+                      <dt className="text-muted-foreground">{labels.price}</dt>
+                      <dd className="figures font-semibold">
+                        {formatRupees(r.modalPrice)}
+                        {labels.perQtl}
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-muted-foreground">Transport</dt>
+                      <dt className="text-muted-foreground">{labels.priceDate}</dt>
+                      <dd>{formatDataDate(r.date, locale)}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-muted-foreground">{labels.distance}</dt>
+                      <dd className="figures">
+                        {r.distanceKm === null
+                          ? labels.unknown
+                          : fill(labels.km, { count: formatNumber(r.distanceKm) })}
+                        {r.straightLineOnly && r.distanceKm !== null ? labels.straightLine : ""}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-muted-foreground">{labels.transport}</dt>
                       <dd className="figures">−{formatRupees(r.transportCost)}</dd>
                     </div>
                   </dl>
                 </li>
               ))}
             </ol>
-            <p className="text-muted-foreground text-sm">
-              Estimated take-home = price × quantity − distance × your transport rate × quantity. Prices are
-              as last reported and may have changed. Check quality requirements and mandi fees before you
-              travel.
-            </p>
+            <p className="text-muted-foreground text-sm">{labels.formula}</p>
           </div>
         )}
       </div>

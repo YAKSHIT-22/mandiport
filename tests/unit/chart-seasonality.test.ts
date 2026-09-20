@@ -64,10 +64,16 @@ describe("chart geometry", () => {
   });
 
   it("summarizes a series in words for screen readers", () => {
-    const text = summarizeSeries(series, "Onion national median price");
+    const strings = {
+      none: "No {label} data in this period.",
+      summary:
+        "{label} from {from} to {to} ({days} days with data): lowest {low} on {lowDate}, highest {high} on {highDate}, latest {latest} on {latestDate}.",
+      locale: "en",
+    };
+    const text = summarizeSeries(series, "Onion national median price", strings);
     expect(text).toContain("lowest ₹2,000 on 01 Sep 2026");
     expect(text).toContain("latest ₹2,450 on 10 Sep 2026");
-    expect(summarizeSeries([], "x")).toBe("No x data in this period.");
+    expect(summarizeSeries([], "x", strings)).toBe("No x data in this period.");
   });
 });
 

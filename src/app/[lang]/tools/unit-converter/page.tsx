@@ -30,7 +30,7 @@ export default async function UnitConverterPage() {
         </div>
         <ToolArt name="unit-converter" className="hidden w-52 self-center sm:block" />
       </div>
-      <UnitConverter />
+      <UnitConverter labels={t.converter} />
     </main>
   );
 }

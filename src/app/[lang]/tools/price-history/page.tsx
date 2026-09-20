@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getDict } from "@/lib/i18n/dictionary";
+import { getDict, getLocale } from "@/lib/i18n/dictionary";
 import { ToolArt } from "@/components/art/tool-art";
 import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
@@ -37,7 +37,18 @@ export default async function PriceHistoryPage({ searchParams }: Props) {
         </div>
         <ToolArt name="price-history" className="hidden w-52 self-center sm:block" />
       </div>
-      <PriceHistoryTool crops={crops} initial={params} />
+      <PriceHistoryTool
+        crops={crops}
+        initial={params}
+        labels={t.priceHistory}
+        chartLabels={t.chart}
+        seasonalityLabels={{
+          ...t.chart,
+          emptyTitle: t.panel.seasonalityEmpty,
+          emptyBody: t.panel.seasonalityNone,
+        }}
+        locale={await getLocale()}
+      />
       <SourceNote datasets={["mandiVariety", "mandiDaily"]} />
     </main>
   );

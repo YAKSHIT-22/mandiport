@@ -2,6 +2,7 @@ import { buildChartGeometry, summarizeSeries, type SeriesPoint } from "@/lib/cha
 import { formatRupees } from "@/lib/format";
 import { daysBefore } from "@/lib/dates";
 import { ChartPeriodTracker } from "./chart-period-tracker";
+import type { Dictionary } from "@/content/i18n/en";
 import { EmptyState } from "./meta";
 
 const PERIODS = [30, 90, 365] as const;
@@ -10,6 +11,8 @@ const PERIODS = [30, 90, 365] as const;
  * Server-rendered SVG trend with a min–max band and optional MSP line. Period tabs are radio
  * inputs switched with CSS (:has), so they work without JavaScript (DESIGN.md).
  */
+export type ChartLabels = Dictionary["chart"];
+
 export function TrendChart({
   id,
   points,
@@ -18,6 +21,8 @@ export function TrendChart({
   mspLabel,
   crop,
   defaultPeriod = 90,
+  labels,
+  locale,
 }: {
   id: string;
   points: SeriesPoint[];
@@ -26,11 +31,13 @@ export function TrendChart({
   mspLabel?: string;
   crop: string;
   defaultPeriod?: 30 | 90 | 365;
+  labels: ChartLabels;
+  locale: string;
 }) {
+  const fill = (template: string, values: Record<string, string | number>) =>
+    template.replace(/\{(\w+)\}/g, (m, k: string) => (k in values ? String(values[k]) : m));
   if (points.length === 0) {
-    return (
-      <EmptyState title="No price history yet">Prices appear here once markets report this crop.</EmptyState>
-    );
+    return <EmptyState title={labels.noHistory}>{labels.noHistoryBody}</EmptyState>;
   }
   const latest = [...points].sort((a, b) => a.date.localeCompare(b.date)).at(-1)!.date;
   const earliest = [...points].sort((a, b) => a.date.localeCompare(b.date))[0]!.date;
@@ -41,7 +48,7 @@ export function TrendChart({
   return (
     <div className="chart-tabs" data-chart={id}>
       <fieldset className="mb-3 flex flex-wrap items-center gap-2">
-        <legend className="sr-only">Chart period</legend>
+        <legend className="sr-only">{labels.period}</legend>
         {available.map((p) => (
           <label key={p} className="relative">
             <input
@@ -53,7 +60,7 @@ export function TrendChart({
               data-period-input={p}
             />
             <span className="figures border-input peer-checked:bg-primary peer-checked:text-primary-foreground peer-focus-visible:outline-ring inline-flex min-h-11 min-w-16 cursor-pointer items-center justify-center rounded-sm border px-3 font-semibold peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2">
-              {p} days
+              {fill(labels.days, { count: p })}
             </span>
           </label>
         ))}
@@ -70,7 +77,7 @@ export function TrendChart({
                 viewBox={`0 0 ${geometry.width} ${geometry.height}`}
                 className="h-auto w-full"
                 role="img"
-                aria-label={`${label}, last ${p} days`}
+                aria-label={fill(labels.seriesAria, { label, count: p })}
               >
                 {geometry.yTicks.map((t) => (
                   <g key={t.value}>
@@ -143,7 +150,12 @@ export function TrendChart({
               </svg>
             )}
             <figcaption className="text-muted-foreground mt-2 text-sm">
-              {summarizeSeries(series, label)} Shaded band: lowest to highest market price reported.
+              {summarizeSeries(series, label, {
+                none: labels.noneInPeriod,
+                summary: labels.summary,
+                locale,
+              })}{" "}
+              {labels.band}
             </figcaption>
           </figure>
         );

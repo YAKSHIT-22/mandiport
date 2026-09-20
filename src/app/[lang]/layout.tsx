@@ -72,7 +72,16 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           {t.chrome.skipToContent}
         </a>
         <SiteHeader />
-        <SiteProviders needsConsent={Boolean(env.NEXT_PUBLIC_GA_MEASUREMENT_ID)}>
+        <SiteProviders
+          needsConsent={Boolean(env.NEXT_PUBLIC_GA_MEASUREMENT_ID)}
+          labels={{
+            title: t.consent.title,
+            body: t.consent.body,
+            bodyLink: t.consent.privacyPage,
+            accept: t.consent.accept,
+            decline: t.consent.decline,
+          }}
+        >
           <div id="main" className="flex-1">
             {children}
           </div>
