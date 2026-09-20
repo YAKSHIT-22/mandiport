@@ -10,12 +10,14 @@ import { BestMandiTool } from "./tool";
 
 export const revalidate = 21600;
 
-export const metadata: Metadata = pageMetadata({
-  title: "Best mandi to sell: compare after transport",
-  description:
-    "Rank mandis near you by what you would take home for your crop after transport costs, using the latest reported prices.",
-  path: "/tools/best-mandi",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({
+    title: t.seo.bestMandiTitle,
+    description: t.seo.bestMandiDescription,
+    path: "/tools/best-mandi",
+  });
+}
 
 type Props = { searchParams: Promise<{ crop?: string }> };
 

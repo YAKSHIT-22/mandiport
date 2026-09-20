@@ -9,12 +9,14 @@ import { PriceHistoryTool } from "./tool";
 
 export const revalidate = 21600;
 
-export const metadata: Metadata = pageMetadata({
-  title: "Price history and best month to sell",
-  description:
-    "See daily price trends, monthly averages and the months that have historically paid most for any crop and mandi.",
-  path: "/tools/price-history",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({
+    title: t.seo.priceHistoryTitle,
+    description: t.seo.priceHistoryDescription,
+    path: "/tools/price-history",
+  });
+}
 
 type Props = { searchParams: Promise<{ crop?: string; state?: string; market?: string }> };
 

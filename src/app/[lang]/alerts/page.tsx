@@ -9,12 +9,10 @@ import { AlertForm } from "./alert-form";
 
 export const revalidate = 21600;
 
-export const metadata: Metadata = pageMetadata({
-  title: "Telegram price alerts for mandi crops",
-  description:
-    "Get a Telegram message when a crop's mandi price crosses the level you choose. No account, no phone number: just a chat with the bot.",
-  path: "/alerts",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({ title: t.seo.alertsTitle, description: t.seo.alertsDescription, path: "/alerts" });
+}
 
 export default async function AlertsPage({ searchParams }: { searchParams: Promise<{ crop?: string }> }) {
   const t = await getDict();

@@ -263,13 +263,7 @@ export default async function CropGuidePage({ params }: Props) {
 }
 
 /** Fallback when the crop is not in the database yet: the written guide, without figures. */
-async function GuideWithoutData({
-  guide,
-  slug,
-}: {
-  guide: (typeof CROP_GUIDES)[number];
-  slug: string;
-}) {
+async function GuideWithoutData({ guide, slug }: { guide: (typeof CROP_GUIDES)[number]; slug: string }) {
   const t = await getDict();
   return (
     <article className="w-full max-w-none space-y-2">

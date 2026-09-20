@@ -12,12 +12,10 @@ import { pageMetadata } from "@/lib/seo/metadata";
 
 export const revalidate = 21600;
 
-export const metadata: Metadata = pageMetadata({
-  title: "All crops: mandi prices A to Z",
-  description:
-    "Every commodity reported by Indian mandis, from ajwain to wheat, with daily prices, trends and markets from official data.",
-  path: "/crops",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({ title: t.seo.cropsTitle, description: t.seo.cropsDescription, path: "/crops" });
+}
 
 export default async function CropsPage() {
   const t = await getDict();

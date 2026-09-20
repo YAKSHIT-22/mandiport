@@ -20,12 +20,14 @@ type Props = { searchParams: Promise<{ crop?: string }> };
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { crop } = await searchParams;
+  const t = await getDict();
   const name = crop ? (await getCropBySlug(crop))?.name : undefined;
+  // A crop in the query string keeps the English crop name; the rest follows the reader's language.
   return pageMetadata({
-    title: name ? `Where India exports ${name.toLowerCase()}` : "Export destination finder for Indian crops",
+    title: name ? `Where India exports ${name.toLowerCase()}` : t.seo.exportsTitle,
     description: name
       ? `Countries buying Indian ${name.toLowerCase()}, ranked by value, with year-on-year growth from official trade data.`
-      : "Find which countries buy an Indian crop, ranked by export value, with growth from official Department of Commerce data.",
+      : t.seo.exportsDescription,
     path: "/tools/export-destinations",
   });
 }

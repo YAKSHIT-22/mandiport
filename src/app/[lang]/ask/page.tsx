@@ -9,12 +9,10 @@ import { getCropBySlug } from "@/lib/queries/crop";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { AskForm } from "./ask-form";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Ask Mandiport about mandi prices",
-  description:
-    "Ask about mandi prices, MSP or agricultural exports and get a short answer built only from the official data on this site.",
-  path: "/ask",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({ title: t.seo.askTitle, description: t.seo.askDescription, path: "/ask" });
+}
 
 type Props = { searchParams: Promise<{ crop?: string }> };
 

@@ -29,6 +29,7 @@ import {
 } from "@/lib/queries/crop";
 import { getExportCountries, getExportMapping, getExportYears } from "@/lib/queries/exports";
 import { buildPageCopy } from "@/lib/seo/copy";
+import { buildPageCopyHi } from "@/lib/seo/copy-hi";
 import { hubIndexable } from "@/lib/seo/indexing";
 import { datasetJsonLd } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -92,9 +93,9 @@ export default async function CropHubPage({ params }: Props) {
   const lowest = topMarkets.at(-1);
   const highest = topMarkets[0];
   const previousExportYear = exportYears.at(-2);
-  const copy = buildPageCopy({
+  const copy = (locale === "hi" ? buildPageCopyHi : buildPageCopy)({
     slug: crop.slug,
-    crop: crop.name,
+    crop: cropName(crop.slug, crop.name, locale),
     place: "India",
     latest: headline.latest
       ? { price: headline.latest.value, date: headline.latest.date, markets: headline.latest.markets }

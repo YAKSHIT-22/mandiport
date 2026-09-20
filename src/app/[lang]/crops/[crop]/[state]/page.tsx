@@ -20,6 +20,7 @@ import {
   headlineFrom,
 } from "@/lib/queries/crop";
 import { buildPageCopy } from "@/lib/seo/copy";
+import { buildPageCopyHi } from "@/lib/seo/copy-hi";
 import { datasetJsonLd } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -74,9 +75,9 @@ export default async function CropStatePage({ params }: Props) {
   const headline = headlineFrom(series);
   const sortedByPrice = [...markets].sort((a, b) => b.modal - a.modal);
   const path = `/crops/${crop.slug}/${state.slug}`;
-  const copy = buildPageCopy({
+  const copy = (locale === "hi" ? buildPageCopyHi : buildPageCopy)({
     slug: `${crop.slug}-${state.slug}`,
-    crop: crop.name,
+    crop: cropName(crop.slug, crop.name, locale),
     place: state.name,
     latest: headline.latest
       ? { price: headline.latest.value, date: headline.latest.date, markets: headline.latest.markets }

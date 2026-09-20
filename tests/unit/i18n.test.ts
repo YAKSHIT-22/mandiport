@@ -134,3 +134,31 @@ describe("crop guides", () => {
     }
   });
 });
+
+describe("Hindi page copy", () => {
+  it("states only facts it was given, in Devanagari", async () => {
+    const { buildPageCopyHi } = await import("@/lib/seo/copy-hi");
+    const facts = {
+      slug: "onion",
+      crop: "प्याज",
+      place: "India",
+      latest: { price: 2450, date: "2026-09-10", markets: 412 },
+      weekAgo: { price: 2200, date: "2026-09-03" },
+      msp: null,
+      exports: null,
+    };
+    const copy = buildPageCopyHi(facts);
+    expect(copy.length).toBeGreaterThan(0);
+    const text = copy.join(" ");
+    expect(text).toMatch(/[ऀ-ॿ]/);
+    expect(text).toContain("₹2,450");
+    // No MSP or export facts were supplied, so no such sentence may appear.
+    expect(text).not.toContain("एमएसपी");
+    expect(text).not.toContain("निर्यात");
+  });
+
+  it("returns nothing when there are no figures at all", async () => {
+    const { buildPageCopyHi } = await import("@/lib/seo/copy-hi");
+    expect(buildPageCopyHi({ slug: "x", crop: "X", place: "India" })).toEqual([]);
+  });
+});

@@ -7,12 +7,10 @@ import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { GUIDES } from "@/content/guides";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Guides to mandi prices, MSP and exports",
-  description:
-    "Plain-language guides: how to read mandi prices, compare markets before selling, understand MSP, and read India's agricultural export data.",
-  path: "/guides",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({ title: t.seo.guidesTitle, description: t.seo.guidesDescription, path: "/guides" });
+}
 
 export default async function GuidesPage() {
   const t = await getDict();

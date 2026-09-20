@@ -26,15 +26,13 @@ import {
   type Mover,
 } from "@/lib/queries/site";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { SITE_DESCRIPTION } from "@/lib/seo/site";
 
 export const revalidate = 21600;
 
-export const metadata: Metadata = pageMetadata({
-  title: "Mandiport: mandi prices and export demand, crop by crop",
-  description: SITE_DESCRIPTION,
-  path: "/",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({ title: t.seo.homeTitle, description: t.home.intro, path: "/" });
+}
 
 function toolCards(t: Dictionary) {
   return [

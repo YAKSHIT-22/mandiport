@@ -124,6 +124,42 @@ export const en = {
     cropColumn: "Crop",
     notFound: "Not found",
   },
+  seo: {
+    homeTitle: "Mandiport: mandi prices and export demand, crop by crop",
+    cropsTitle: "All crops: mandi prices A to Z",
+    cropsDescription:
+      "Every commodity reported by Indian mandis, from ajwain to wheat, with daily prices, trends and markets from official data.",
+    toolsTitle: "Tools for mandi sellers and exporters",
+    toolsDescription:
+      "Compare mandis after transport, read price history and seasonality, check MSP, find export destinations and convert units.",
+    bestMandiTitle: "Best mandi to sell: compare after transport",
+    bestMandiDescription:
+      "Rank mandis near you by what you would take home for your crop after transport costs, using the latest reported prices.",
+    priceHistoryTitle: "Price history and best month to sell",
+    priceHistoryDescription:
+      "Daily price trends, monthly averages and past seasonal peaks for any crop, state or market, from official data.",
+    mspTitle: "MSP check: mandi prices against support prices",
+    mspDescription:
+      "Compare mandi prices with the government's minimum support price, state by state, with the date of both figures.",
+    exportsTitle: "Export destination finder for Indian crops",
+    exportsDescription:
+      "Which countries buy an Indian crop's export group, how much they bought, and which destinations are growing fastest.",
+    unitsTitle: "Unit converter: quintal, kg, tonne and dollars",
+    unitsDescription:
+      "Convert mandi prices between rupees per quintal, kilogram and tonne, and to US dollars at a rate you enter.",
+    askTitle: "Ask Mandiport: answers from official price data",
+    askDescription:
+      "Ask about mandi prices, MSP or exports and get an answer built only from official Government of India figures, with its sources.",
+    alertsTitle: "Price alerts on Telegram",
+    alertsDescription:
+      "Get a Telegram message when a crop's mandi price crosses your level. No account, no phone number stored.",
+    briefsTitle: "Weekly crop briefs from official data",
+    briefsDescription:
+      "Weekly summaries of mandi price movement for the most traded crops, written from official figures and reviewed before publishing.",
+    guidesTitle: "Guides to mandi prices, MSP and exports",
+    guidesDescription:
+      "How mandi prices, support prices and export data actually work, written for the people who trade in them.",
+  },
   static: {
     lastUpdated: "Last updated {date}",
     aboutTitle: "About Mandiport",

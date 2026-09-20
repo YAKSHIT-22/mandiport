@@ -5,12 +5,14 @@ import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { UnitConverter } from "./converter";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Unit converter: quintal, kg, tonne and USD",
-  description:
-    "Convert mandi prices between ₹ per quintal, ₹ per kg and ₹ per tonne, and to US dollars using a rate you enter.",
-  path: "/tools/unit-converter",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({
+    title: t.seo.unitsTitle,
+    description: t.seo.unitsDescription,
+    path: "/tools/unit-converter",
+  });
+}
 
 export default async function UnitConverterPage() {
   const t = await getDict();

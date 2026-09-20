@@ -8,12 +8,10 @@ import { SourceNote } from "@/components/data/meta";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Tools for mandi sellers and exporters",
-  description:
-    "Compare mandis after transport, read price history and seasonality, check MSP, find export destinations and convert units.",
-  path: "/tools",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({ title: t.seo.toolsTitle, description: t.seo.toolsDescription, path: "/tools" });
+}
 
 function toolList(t: Dictionary) {
   return [

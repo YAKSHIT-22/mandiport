@@ -12,12 +12,10 @@ import { pageMetadata } from "@/lib/seo/metadata";
 
 export const revalidate = 21600;
 
-export const metadata: Metadata = pageMetadata({
-  title: "Weekly mandi market briefs",
-  description:
-    "Short weekly summaries of mandi price movements for India's most traded crops, written from official data and reviewed before publishing.",
-  path: "/briefs",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({ title: t.seo.briefsTitle, description: t.seo.briefsDescription, path: "/briefs" });
+}
 
 export default async function BriefsPage() {
   const t = await getDict();

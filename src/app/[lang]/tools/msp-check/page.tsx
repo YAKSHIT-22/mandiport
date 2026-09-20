@@ -19,12 +19,14 @@ type Props = { searchParams: Promise<{ crop?: string; state?: string }> };
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { crop } = await searchParams;
+  const t = await getDict();
   const name = crop ? (await getCropBySlug(crop))?.name : undefined;
+  // A crop in the query string keeps the English crop name; the rest follows the reader's language.
   return pageMetadata({
-    title: name ? `${name} price vs MSP by state` : "MSP check: mandi price vs support price",
+    title: name ? `${name} price vs MSP by state` : t.seo.mspTitle,
     description: name
       ? `Compare ${name.toLowerCase()} mandi prices in each state with the minimum support price, with the date of both figures.`
-      : "Compare mandi prices with the government's minimum support price, state by state, with the date of both figures.",
+      : t.seo.mspDescription,
     path: "/tools/msp-check",
   });
 }
