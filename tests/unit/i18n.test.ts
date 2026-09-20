@@ -109,3 +109,28 @@ describe("written content", () => {
     }
   });
 });
+
+describe("crop guides", () => {
+  it("keeps the Hindi guides the same shape as the English ones", async () => {
+    const { CROP_GUIDES } = await import("@/content/crop-guides");
+    const { CROP_GUIDES_HI } = await import("@/content/crop-guides-hi");
+    for (const [slug, hindi] of Object.entries(CROP_GUIDES_HI)) {
+      const english = CROP_GUIDES.find((g) => g.slug === slug);
+      expect(english, `${slug} has a Hindi guide but no English one`).toBeDefined();
+      for (const section of ["intro", "seasons", "varieties", "selling"] as const) {
+        expect(hindi[section].length, `${slug}.${section}`).toBe(english![section].length);
+        for (const paragraph of hindi[section]) {
+          expect(paragraph, `${slug}.${section}`).toMatch(/[ऀ-ॿ]/);
+        }
+      }
+    }
+  });
+
+  it("has a Hindi title for every general guide", async () => {
+    const { GUIDES } = await import("@/content/guides");
+    const { GENERAL_GUIDES_HI } = await import("@/content/guides-hi");
+    for (const guide of GUIDES.filter((g) => !g.crop)) {
+      expect(GENERAL_GUIDES_HI[guide.slug], guide.slug).toBeDefined();
+    }
+  });
+});

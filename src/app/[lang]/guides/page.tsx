@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDict } from "@/lib/i18n/dictionary";
+import { getDict, getLocale } from "@/lib/i18n/dictionary";
+import { CROP_GUIDES_HI } from "@/content/crop-guides-hi";
+import { GENERAL_GUIDES_HI } from "@/content/guides-hi";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { GUIDES } from "@/content/guides";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -14,8 +16,15 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function GuidesPage() {
   const t = await getDict();
-  const general = GUIDES.filter((g) => !g.crop);
-  const crops = GUIDES.filter((g) => g.crop);
+  const locale = await getLocale();
+  // Hindi titles where we have them; anything untranslated keeps its English title.
+  const localise = (g: (typeof GUIDES)[number]) => {
+    if (locale !== "hi") return g;
+    const hindi = g.crop ? CROP_GUIDES_HI[g.crop] : GENERAL_GUIDES_HI[g.slug];
+    return hindi ? { ...g, title: hindi.title, description: hindi.description } : g;
+  };
+  const general = GUIDES.filter((g) => !g.crop).map(localise);
+  const crops = GUIDES.filter((g) => g.crop).map(localise);
   return (
     <main className="w-full max-w-none space-y-8">
       <Breadcrumbs

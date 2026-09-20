@@ -6,6 +6,9 @@ import { LedgerTable, td, tdNum, th } from "@/components/data/panels";
 import { AdSlot } from "@/components/site/ad-slot";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { CROP_GUIDES } from "@/content/crop-guides";
+import { CROP_GUIDES_HI } from "@/content/crop-guides-hi";
+import { format, getDict, getLocale } from "@/lib/i18n/dictionary";
+import { cropName } from "@/lib/i18n/names";
 import { tryQuery } from "@/lib/db/safe";
 import { formatDataDate } from "@/lib/dates";
 import { formatNumber, formatRupees } from "@/lib/format";
@@ -44,8 +47,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CropGuidePage({ params }: Props) {
+  const t = await getDict();
+  const locale = await getLocale();
   const { crop: slug } = await params;
-  const guide = CROP_GUIDES.find((g) => g.slug === slug);
+  const english = CROP_GUIDES.find((g) => g.slug === slug);
+  // A crop without a Hindi guide keeps the English one rather than a half-translated page.
+  const guide = english && locale === "hi" ? { ...english, ...(CROP_GUIDES_HI[slug] ?? {}) } : english;
   if (!guide) notFound();
   // The written sections stand on their own, so the guide still renders without price data.
   const crop = await tryQuery(`guide.crop.${slug}`, () => getCropBySlug(slug), null);
@@ -71,19 +78,21 @@ export default async function CropGuidePage({ params }: Props) {
     <article className="w-full max-w-none space-y-2">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Guides", path: "/guides" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.nav.guides, path: "/guides" },
           { name: crop.name, path: `/guides/crops/${slug}` },
         ]}
       />
       <h1>{guide.title}</h1>
-      <p className="text-muted-foreground text-sm">Updated {formatDataDate(guide.updated)}</p>
+      <p className="text-muted-foreground text-sm">
+        {format(t.cropGuide.updated, { date: formatDataDate(guide.updated, locale) })}
+      </p>
 
       {guide.intro.map((p) => (
         <p key={p.slice(0, 30)}>{p}</p>
       ))}
 
-      <h2 className="mt-10">Today’s picture</h2>
+      <h2 className="mt-10">{t.cropGuide.todaysPicture}</h2>
       {headline.latest ? (
         <p>
           The national median {crop.name.toLowerCase()} price was{" "}
@@ -93,12 +102,14 @@ export default async function CropGuidePage({ params }: Props) {
           and market-wise prices.
         </p>
       ) : (
-        <EmptyState title={`No ${crop.name.toLowerCase()} prices have been reported yet`} />
+        <EmptyState
+          title={format(t.cropGuide.noPricesYet, { crop: cropName(crop.slug, crop.name, locale) })}
+        />
       )}
 
       <AdSlot position="guide-mid" />
 
-      <h2 className="mt-10">Season and calendar</h2>
+      <h2 className="mt-10">{t.cropGuide.seasonCalendar}</h2>
       {guide.seasons.map((p) => (
         <p key={p.slice(0, 30)}>{p}</p>
       ))}
@@ -110,17 +121,20 @@ export default async function CropGuidePage({ params }: Props) {
         </p>
       )}
 
-      <h2 className="mt-10">Varieties and grades</h2>
+      <h2 className="mt-10">{t.cropGuide.varietiesGrades}</h2>
       {guide.varieties.map((p) => (
         <p key={p.slice(0, 30)}>{p}</p>
       ))}
       {varieties.length > 0 && (
-        <LedgerTable caption={`${crop.name}: varieties reported recently`} className="mt-4">
+        <LedgerTable
+          caption={format(t.cropGuide.varietiesCaption, { crop: cropName(crop.slug, crop.name, locale) })}
+          className="mt-4"
+        >
           <thead>
             <tr>
-              <th className={th}>Variety</th>
-              <th className={`${th} text-right`}>Median price</th>
-              <th className={`${th} text-right`}>Markets</th>
+              <th className={th}>{t.common.variety}</th>
+              <th className={`${th} text-right`}>{t.cropGuide.medianPrice}</th>
+              <th className={`${th} text-right`}>{t.common.markets}</th>
               <th className={th}>Date</th>
             </tr>
           </thead>
@@ -139,20 +153,23 @@ export default async function CropGuidePage({ params }: Props) {
         </LedgerTable>
       )}
 
-      <h2 className="mt-10">Where it is trading now</h2>
+      <h2 className="mt-10">{t.cropGuide.tradingNow}</h2>
       {topMarkets.length === 0 ? (
-        <EmptyState title="No market has reported this crop in the last 30 days" />
+        <EmptyState title={t.cropGuide.noMarket30} />
       ) : (
         <>
           <p>
             These markets reported the highest prices recently. Prices are as reported on the date shown, and
             do not include transport or mandi charges.
           </p>
-          <LedgerTable caption={`${crop.name}: highest recent market prices`} className="mt-4">
+          <LedgerTable
+            caption={format(t.cropGuide.topMarketsCaption, { crop: cropName(crop.slug, crop.name, locale) })}
+            className="mt-4"
+          >
             <thead>
               <tr>
-                <th className={th}>Market</th>
-                <th className={`${th} text-right`}>Modal price</th>
+                <th className={th}>{t.common.market}</th>
+                <th className={`${th} text-right`}>{t.common.modalPrice}</th>
                 <th className={th}>Date</th>
               </tr>
             </thead>
@@ -188,39 +205,45 @@ export default async function CropGuidePage({ params }: Props) {
         </>
       )}
 
-      <h2 className="mt-10">Selling notes</h2>
+      <h2 className="mt-10">{t.cropGuide.sellingNotes}</h2>
       {guide.selling.map((p) => (
         <p key={p.slice(0, 30)}>{p}</p>
       ))}
       <p>
-        Use the <Link href={`/tools/best-mandi?crop=${crop.slug}`}>best mandi tool</Link> to compare take-home
-        prices after transport, and the{" "}
-        <Link href={`/tools/price-history?crop=${crop.slug}`}>price history tool</Link> to see how prices have
-        moved.
+        {t.cropGuide.useTools}{" "}
+        <Link href={`/tools/best-mandi?crop=${crop.slug}`}>{t.cropGuide.bestMandiLink}</Link>{" "}
+        {t.cropGuide.useToolsMiddle}{" "}
+        <Link href={`/tools/price-history?crop=${crop.slug}`}>{t.cropGuide.priceHistoryLink}</Link>{" "}
+        {t.cropGuide.useToolsEnd}
       </p>
 
       {msp && (
         <>
-          <h2 className="mt-10">Support price</h2>
+          <h2 className="mt-10">{t.cropGuide.supportPrice}</h2>
           <p>
-            The minimum support price for {msp.name.toLowerCase()}
-            {msp.variety ? ` (${msp.variety})` : ""} in {msp.season === "other" ? "" : `the ${msp.season} `}
-            marketing season {msp.year} is <strong className="figures">{formatRupees(msp.price)}</strong> per
-            quintal. <Link href={`/tools/msp-check?crop=${crop.slug}`}>Compare it with state prices</Link>,
-            and read <Link href="/guides/msp-explained">what MSP does and does not guarantee</Link>.
+            {format(t.cropGuide.mspSentence, {
+              crop: msp.name,
+              variety: msp.variety ? ` (${msp.variety})` : "",
+              season: msp.season === "other" ? "" : `${msp.season} `,
+              year: msp.year,
+              price: formatRupees(msp.price),
+            })}{" "}
+            <Link href={`/tools/msp-check?crop=${crop.slug}`}>{t.cropGuide.compareStates}</Link>,{" "}
+            {t.cropGuide.and} <Link href="/guides/msp-explained">{t.cropGuide.readMsp}</Link>.
           </p>
         </>
       )}
 
       {mapping && exportYears.length > 0 && (
         <>
-          <h2 className="mt-10">Export basics</h2>
+          <h2 className="mt-10">{t.cropGuide.exportBasics}</h2>
           <p>
-            In trade statistics this crop falls inside the broad group <strong>{mapping.exportName}</strong>,
-            so export figures cover more than this crop alone. The latest published year is{" "}
-            {exportYears.at(-1)!.year}.{" "}
-            <Link href={`/tools/export-destinations?crop=${crop.slug}`}>See destinations and growth</Link>,
-            and read <Link href="/guides/export-data">how export data works</Link>.
+            {format(t.cropGuide.exportSentence, {
+              group: mapping.exportName,
+              year: exportYears.at(-1)!.year,
+            })}{" "}
+            <Link href={`/tools/export-destinations?crop=${crop.slug}`}>{t.cropGuide.seeDestinations}</Link>,{" "}
+            {t.cropGuide.and} <Link href="/guides/export-data">{t.cropGuide.readExports}</Link>.
           </p>
         </>
       )}
@@ -240,13 +263,20 @@ export default async function CropGuidePage({ params }: Props) {
 }
 
 /** Fallback when the crop is not in the database yet: the written guide, without figures. */
-function GuideWithoutData({ guide, slug }: { guide: (typeof CROP_GUIDES)[number]; slug: string }) {
+async function GuideWithoutData({
+  guide,
+  slug,
+}: {
+  guide: (typeof CROP_GUIDES)[number];
+  slug: string;
+}) {
+  const t = await getDict();
   return (
     <article className="w-full max-w-none space-y-2">
       <Breadcrumbs
         crumbs={[
-          { name: "Home", path: "/" },
-          { name: "Guides", path: "/guides" },
+          { name: t.chrome.home, path: "/" },
+          { name: t.nav.guides, path: "/guides" },
           { name: guide.title, path: `/guides/crops/${slug}` },
         ]}
       />
@@ -254,8 +284,8 @@ function GuideWithoutData({ guide, slug }: { guide: (typeof CROP_GUIDES)[number]
       {[...guide.intro, ...guide.seasons, ...guide.varieties, ...guide.selling].map((p) => (
         <p key={p.slice(0, 30)}>{p}</p>
       ))}
-      <EmptyState title="Live prices for this crop are not available right now">
-        <Link href="/crops">Browse all crops</Link> or try again shortly.
+      <EmptyState title={t.cropGuide.unavailable}>
+        <Link href="/crops">{t.cropGuide.browseAll}</Link> {t.cropGuide.orRetry}
       </EmptyState>
     </article>
   );
