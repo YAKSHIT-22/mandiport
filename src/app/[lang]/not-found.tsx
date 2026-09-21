@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { SearchBox } from "@/components/site/search-box";
-import { getDict } from "@/lib/i18n/dictionary";
+import { getDict, getLocale } from "@/lib/i18n/dictionary";
 
 export default async function NotFound() {
   const t = await getDict();
+  const locale = await getLocale();
   return (
     <main className="container-mp space-y-4 py-10">
       <h1>{t.notFound.title}</h1>
@@ -18,6 +19,7 @@ export default async function NotFound() {
             notResponding: t.search.notResponding,
             noMatches: t.search.noMatches,
           }}
+          locale={locale}
         />
       </div>
       <p>

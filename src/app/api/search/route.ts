@@ -5,7 +5,7 @@ import { keys, TTL } from "@/lib/cache/keys";
 import { rateLimit } from "@/lib/cache/ratelimit";
 import { clientIp } from "@/lib/request";
 import { searchSite } from "@/lib/queries/site";
-import { LOCALE_COOKIE, toLocale } from "@/lib/i18n/config";
+import { toLocale } from "@/lib/i18n/config";
 import { dictionaryFor } from "@/lib/i18n/dictionary";
 import { categoryName, cropName } from "@/lib/i18n/names";
 
@@ -22,9 +22,11 @@ export async function GET(request: NextRequest) {
   const q = parsed.data.toLowerCase();
   const results = await cached(keys.search(q), TTL.search, () => searchSite(q));
 
-  // Results are cached once in English and translated per request, so both languages share one
-  // cache entry. Market, district and state names are proper nouns and stay as published.
-  const locale = toLocale(request.cookies.get(LOCALE_COOKIE)?.value);
+  // The language comes from the query string, not the cookie: this response is cached by the CDN
+  // for everyone, so it has to vary by URL. Results are computed once in English and translated
+  // here, so both languages share one database cache entry. Market, district and state names are
+  // proper nouns and stay as published.
+  const locale = toLocale(request.nextUrl.searchParams.get("lang"));
   const t = dictionaryFor(locale);
   const localised = results.map((r) =>
     r.type === "crop"

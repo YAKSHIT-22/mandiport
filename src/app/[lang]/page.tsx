@@ -162,6 +162,7 @@ export default async function HomePage() {
                   notResponding: t.search.notResponding,
                   noMatches: t.search.noMatches,
                 }}
+                locale={locale}
               />
             </div>
             <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">

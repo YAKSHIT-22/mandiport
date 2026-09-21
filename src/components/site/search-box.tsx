@@ -20,7 +20,7 @@ export interface SearchLabels {
 }
 
 /** Typeahead over /api/search. Works as a plain form (to /crops?q=) without JavaScript. */
-export function SearchBox({ labels }: { labels: SearchLabels }) {
+export function SearchBox({ labels, locale }: { labels: SearchLabels; locale: string }) {
   const id = useId();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
@@ -38,7 +38,7 @@ export function SearchBox({ labels }: { labels: SearchLabels }) {
       controller.current = new AbortController();
       setStatus("loading");
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&lang=${locale}`, {
           signal: controller.current.signal,
         });
         if (!res.ok) throw new Error(String(res.status));
@@ -50,7 +50,7 @@ export function SearchBox({ labels }: { labels: SearchLabels }) {
       }
     }, 200);
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, locale]);
 
   const showResults = query.trim().length >= 2;
 
