@@ -4,12 +4,14 @@ import { StaticPage } from "@/components/site/static-page";
 import { getDict, getLocale } from "@/lib/i18n/dictionary";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Disclaimer",
-  description:
-    "Mandiport shows government data as published. It may be delayed, incomplete or revised, and it is not financial or trading advice.",
-  path: "/disclaimer",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({
+    title: t.static.disclaimerTitle,
+    description: t.static.disclaimerDescription,
+    path: "/disclaimer",
+  });
+}
 
 function English() {
   return (

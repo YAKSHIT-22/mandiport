@@ -5,12 +5,14 @@ import { getDict, getLocale } from "@/lib/i18n/dictionary";
 import { ConsentControls } from "@/components/site/consent-controls";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Privacy",
-  description:
-    "What Mandiport collects (analytics only with consent, Telegram chat IDs for alerts), how long it is kept, and how to delete it.",
-  path: "/privacy",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({
+    title: t.static.privacyTitle,
+    description: t.static.privacyDescription,
+    path: "/privacy",
+  });
+}
 
 function English() {
   return (

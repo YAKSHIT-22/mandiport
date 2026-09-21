@@ -4,12 +4,10 @@ import { StaticPage } from "@/components/site/static-page";
 import { getDict, getLocale } from "@/lib/i18n/dictionary";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = pageMetadata({
-  title: "About Mandiport",
-  description:
-    "Why Mandiport exists, who it is for, and how it uses official Government of India data on mandi prices and exports.",
-  path: "/about",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({ title: t.static.aboutTitle, description: t.static.aboutDescription, path: "/about" });
+}
 
 function English() {
   return (

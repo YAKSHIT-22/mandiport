@@ -6,12 +6,14 @@ import { TIER_CONFIG, INDEXING } from "@/config/tiers";
 import { DATASETS, GODL_LICENCE_URL } from "@/lib/sources";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Methodology: sources, updates and limits",
-  description:
-    "Where Mandiport’s mandi prices, MSP and export figures come from, how often they update, how medians are calculated, and known limitations.",
-  path: "/methodology",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({
+    title: t.static.methodologyTitle,
+    description: t.static.methodologyDescription,
+    path: "/methodology",
+  });
+}
 
 function English() {
   return (

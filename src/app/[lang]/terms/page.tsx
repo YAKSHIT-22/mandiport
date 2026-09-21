@@ -5,12 +5,10 @@ import { getDict, getLocale } from "@/lib/i18n/dictionary";
 import { GODL_LICENCE_URL } from "@/lib/sources";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Terms of use",
-  description:
-    "Terms for using Mandiport, including data licensing, acceptable use of tools and alerts, and limits of liability.",
-  path: "/terms",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({ title: t.static.termsTitle, description: t.static.termsDescription, path: "/terms" });
+}
 
 function English() {
   return (

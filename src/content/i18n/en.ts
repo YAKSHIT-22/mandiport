@@ -162,6 +162,17 @@ export const en = {
   },
   static: {
     lastUpdated: "Last updated {date}",
+    aboutDescription:
+      "Why Mandiport exists, who it is for, and how it uses official Government of India data on mandi prices and exports.",
+    methodologyDescription:
+      "Sources, update times, how prices are combined into medians, retention, rejected rows, MSP seasons, export groups and known limitations.",
+    contactDescription: "Report a wrong figure, a miscategorised crop, or ask us to delete your data.",
+    privacyDescription:
+      "What Mandiport collects, why, how long it is kept, and how to have it deleted. No accounts, and analytics only after consent.",
+    termsDescription:
+      "The terms for using Mandiport, reusing the data, alerts, and the limits of our liability.",
+    disclaimerDescription:
+      "Data may be delayed, incomplete or revised, and nothing here is financial or trading advice. Verify before you transact.",
     aboutTitle: "About Mandiport",
     methodologyTitle: "Methodology",
     contactTitle: "Contact",

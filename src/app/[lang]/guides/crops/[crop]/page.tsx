@@ -36,8 +36,9 @@ type Props = { params: Promise<{ crop: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { crop } = await params;
-  const guide = CROP_GUIDES.find((g) => g.slug === crop);
-  if (!guide) return { title: "Guide not found", robots: { index: false } };
+  const english = CROP_GUIDES.find((g) => g.slug === crop);
+  if (!english) return { title: "Guide not found", robots: { index: false } };
+  const guide = (await getLocale()) === "hi" ? (CROP_GUIDES_HI[crop] ?? english) : english;
   return pageMetadata({
     title: guide.title,
     description: guide.description,

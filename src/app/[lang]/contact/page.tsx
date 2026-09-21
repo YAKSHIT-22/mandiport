@@ -4,12 +4,14 @@ import { getDict, getLocale } from "@/lib/i18n/dictionary";
 import { ContactForm, type ContactLabels } from "./contact-form";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Contact",
-  description:
-    "Report a data problem, suggest a crop category or export mapping, or ask Mandiport to delete your data.",
-  path: "/contact",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return pageMetadata({
+    title: t.static.contactTitle,
+    description: t.static.contactDescription,
+    path: "/contact",
+  });
+}
 
 function English({ labels }: { labels: ContactLabels }) {
   return (
