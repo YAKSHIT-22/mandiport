@@ -71,16 +71,42 @@ async function createUpstashStore(url: string, token: string): Promise<CacheStor
   };
 }
 
+/** Connecting must never hang a request: a cache is optional, and pages work without one. */
+const REDIS_CONNECT_TIMEOUT_MS = 3_000;
+
 async function createRedisStore(url: string): Promise<CacheStore> {
+  // A value that is not a redis URL (a stray token, a hostname) would otherwise be retried
+  // forever by the client, which turns an optional cache into a hung request.
+  if (!/^rediss?:\/\//.test(url)) {
+    throw new Error("REDIS_URL must start with redis:// or rediss://");
+  }
   const { createClient } = await import("redis");
   const client = createClient({
     url,
-    socket: { connectTimeout: 2_000, reconnectStrategy: (n) => Math.min(n * 200, 2_000) },
+    socket: {
+      connectTimeout: REDIS_CONNECT_TIMEOUT_MS,
+      // Give up rather than reconnect indefinitely; returning an Error rejects connect().
+      reconnectStrategy: (attempts) =>
+        attempts > 2 ? new Error("redis unreachable") : Math.min(attempts * 200, 1_000),
+    },
   });
   client.on("error", () => {
     // Connection errors surface on individual commands; avoid unhandled 'error' events.
   });
-  await client.connect();
+  let timer: NodeJS.Timeout | undefined;
+  try {
+    await Promise.race([
+      client.connect(),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error("redis connect timed out")), REDIS_CONNECT_TIMEOUT_MS);
+      }),
+    ]);
+  } catch (error) {
+    client.destroy();
+    throw error;
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
   return {
     kind: "redis",
     async getJson<T>(key: string) {
