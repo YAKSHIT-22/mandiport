@@ -29,7 +29,9 @@ export const keys = {
   exports: (crop: string) => p("exp", crop),
   ask: (normalizedQuestion: string) => p("ask", hash(normalizedQuestion)),
   aiTokens: (yyyymmdd: string) => p("ai", "tokens", yyyymmdd),
-  search: (query: string) => p("search", hash(query)),
+  // "s2": search results now carry slugs so they can be shown in either language. Bumping the
+  // key retires entries written by the previous shape instead of translating them wrongly.
+  search: (query: string) => p("search", "s2", hash(query)),
   geocode: (query: string) => p("geo", hash(query)),
   /** Prefix for rate-limit counters. */
   rateLimit: (name: string, id: string, window: number) => p("rl", name, hash(id), window),

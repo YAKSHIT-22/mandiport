@@ -105,6 +105,10 @@ export type SearchResult = {
   label: string;
   detail: string;
   href: string;
+  /** Commodity, market or state slug, so results can be shown in the reader's language. */
+  slug: string;
+  /** Category slug for a crop result; empty for the rest. */
+  detailSlug: string;
 };
 
 /**
@@ -115,33 +119,43 @@ export async function searchSite(query: string, limit = 12): Promise<SearchResul
   const q = query.trim().toLowerCase();
   if (q.length < 2) return [];
   const like = `%${q.replace(/[%_\\]/g, (c) => `\\${c}`)}%`;
-  const rows = await getDb().execute<SearchResult & { score: number }>(sql`
-    (select 'crop' as type, c.display_name as label, coalesce(cat.name, 'Crop') as detail, '/crops/' || c.slug as href,
+  const rows = await getDb().execute<
+    Omit<SearchResult, "detailSlug"> & { detail_slug: string; score: number }
+  >(sql`
+    (select 'crop' as type, c.display_name as label, coalesce(cat.name, 'Crop') as detail,
+            '/crops/' || c.slug as href, c.slug as slug, coalesce(cat.slug, '') as detail_slug,
             (case when lower(c.display_name) like ${`${q}%`} then 2 else 0 end + similarity(lower(c.display_name), ${q}) + (4 - c.tier) * 0.1) as score
      from commodities c left join categories cat on cat.id = c.category_id
      where lower(c.display_name) like ${like} or lower(c.source_name) like ${like} or lower(coalesce(c.name_hi, '')) like ${like}
         or similarity(lower(c.display_name), ${q}) > 0.3
      order by score desc limit ${limit})
     union all
-    (select 'variety', v.display_name, c.display_name || ' variety', '/crops/' || c.slug,
+    (select 'variety', v.display_name, c.display_name || ' variety', '/crops/' || c.slug, c.slug, '',
             similarity(lower(v.display_name), ${q}) + (case when lower(v.display_name) like ${`${q}%`} then 1 else 0 end)
      from varieties v join commodities c on c.id = v.commodity_id
      where lower(v.display_name) like ${like} and lower(v.display_name) <> lower(c.display_name) and v.display_name <> 'Other'
-     order by 5 desc limit 5)
+     order by 7 desc limit 5)
     union all
-    (select 'market', m.name, d.name || ', ' || s.name, '/markets/' || s.slug || '/' || m.slug,
+    (select 'market', m.name, d.name || ', ' || s.name, '/markets/' || s.slug || '/' || m.slug, m.slug, '',
             similarity(lower(m.name), ${q}) + (case when lower(m.name) like ${`${q}%`} then 1 else 0 end)
      from markets m join districts d on d.id = m.district_id join states s on s.id = d.state_id
      where lower(m.name) like ${like} or similarity(lower(m.name), ${q}) > 0.35
-     order by 5 desc limit 6)
+     order by 7 desc limit 6)
     union all
-    (select 'state', s.name, 'State', '/states/' || s.slug, 1.5 + similarity(lower(s.name), ${q})
+    (select 'state', s.name, 'State', '/states/' || s.slug, s.slug, '', 1.5 + similarity(lower(s.name), ${q})
      from states s where lower(s.name) like ${like}
      limit 3)`);
   return rows.rows
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
-    .map(({ type, label, detail, href }) => ({ type, label, detail, href }));
+    .map(({ type, label, detail, href, slug, detail_slug }) => ({
+      type,
+      label,
+      detail,
+      href,
+      slug,
+      detailSlug: detail_slug,
+    }));
 }
 
 export type SiteStats = {
